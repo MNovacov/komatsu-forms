@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Localización de Fallas HD785-7</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #0033A0;
+        }
+        
+        .logo h1 {
+            color: #0033A0;
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+        
+        .logo p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .form-container {
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        
+        .form-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .form-header h2 {
+            color: #0033A0;
+            font-size: 22px;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .form-section h3 {
+            background-color: #f0f0f0;
+            padding: 8px 15px;
+            margin: -15px -15px 15px -15px;
+            border-bottom: 1px solid #ddd;
+            color: #0033A0;
+            font-size: 18px;
+        }
+        
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        
+        .form-group {
+            flex: 1;
+            min-width: 200px;
+            margin-right: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .form-group:last-child {
+            margin-right: 0;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .required::after {
+            content: " *";
+            color: red;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            border-color: #0033A0;
+            outline: none;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+            font-size: 11px;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 6px 8px;
+            text-align: left;
+            vertical-align: top;
+        }
+        
+        th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .table-section {
+            overflow-x: auto;
+        }
+        
+        .form-actions {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px 0;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            background-color: #0033A0;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0 10px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn:hover {
+            background-color: #002266;
+        }
+        
+        .category-header {
+            background-color: #e8e8e8;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .centered {
+            text-align: center;
+        }
+        
+        .standard-value, .permissible-value {
+            text-align: center;
+        }
+        
+        .result-column input {
+            width: 100%;
+            border: 1px solid #ccc;
+            padding: 3px;
+            font-size: 10px;
+            text-align: center;
+        }
+        
+        .page-break {
+            page-break-before: always;
+        }
+        
+        .fault-code {
+            background-color: #ffebee;
+            border-left: 4px solid #d32f2f;
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .fault-code h4 {
+            color: #d32f2f;
+            margin-bottom: 8px;
+        }
+        
+        .measurement-point {
+            background-color: #e8f5e8;
+            padding: 5px;
+            margin: 5px 0;
+            border-radius: 3px;
+        }
+        
+        @media print {
+            body {
+                background-color: white;
+                padding: 0;
+            }
+            
+            .container {
+                box-shadow: none;
+                padding: 10px;
+            }
+            
+            .btn {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+            }
+            
+            .form-group {
+                margin-right: 0;
+            }
+            
+            table {
+                font-size: 9px;
+            }
+            
+            th, td {
+                padding: 4px 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <h1>HD785-7 - LOCALIZACIÓN DE FALLAS</h1>
+                <p>Sistema de Transmisión y Frenos</p>
+            </div>
+        </header>
+        
+        <div class="form-container">
+            <div class="form-header">
+                <h2>FORMULARIO DE DIAGNÓSTICO TÉCNICO</h2>
+            </div>
+            
+            <form id="localizacionFallasForm">
+                <!-- Información de la Máquina -->
+                <div class="form-section informacion-maquina">
+                    <h3>INFORMACIÓN DE LA MÁQUINA</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="modeloMaquina" class="required">Modelo de máquina</label>
+                            <input type="text" id="modeloMaquina" name="modeloMaquina" value="HD785-7" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="numeroSerie" class="required">Número de serie</label>
+                            <input type="text" id="numeroSerie" name="numeroSerie" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fechaInspeccion" class="required">Fecha de inspección</label>
+                            <input type="date" id="fechaInspeccion" name="fechaInspeccion" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="inspector" class="required">Inspector</label>
+                            <input type="text" id="inspector" name="inspector" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="codigoFalla">Código de falla detectado</label>
+                            <input type="text" id="codigoFalla" name="codigoFalla" placeholder="Ej: 15SHMA, 15SJMA, 2F00KM">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CÓDIGO DE FALLA [15SHMA] SOLENOIDE DEL EMBRAGUE DE 4TA -->
+                <div class="form-section falla-15shma page-break">
+                    <h3>CÓDIGO DE FALLA [15SHMA] - SOLENOIDE DEL EMBRAGUE DE 4TA: MAL FUNCIONAMIENTO</h3>
+                    
+                    <div class="fault-code">
+                        <h4>Información de la Falla</h4>
+                        <p><strong>Código de acción:</strong> E03</p>
+                        <p><strong>Problema:</strong> Solenoide del embrague de 4ta: Mal funcionamiento (El comando 4ta está reteniendo presión, el embrague 4ta, el interruptor de llenado está en "OFF" y se detecta deslizamiento)</p>
+                        <p><strong>Sistema:</strong> Controlador de la transmisión</p>
+                    </div>
+
+                    <div class="table-section">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%">#</th>
+                                    <th style="width: 25%">Causa posible</th>
+                                    <th style="width: 30%">Procedimiento de verificación / Puntos de medición</th>
+                                    <th style="width: 15%">Valor estándar</th>
+                                    <th style="width: 15%">Valor medido</th>
+                                    <th style="width: 10%">¿OK?</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="centered">1</td>
+                                    <td><strong>Defectuoso el embrague de 4ta del ECMV</strong></td>
+                                    <td>
+                                        <div class="measurement-point">
+                                            <strong>Procedimiento:</strong><br>
+                                            1) Coloque el interruptor de arranque en DESACTIVADO (OFF)<br>
+                                            2) Desconecte el conector CN14<br>
+                                            3) Conecte un adaptador en "T"
+                                        </div>
+                                        <div class="measurement-point">
+                                            <strong>Punto de medición 1:</strong><br>
+                                            Entre CN14 (macho) (1) – (2)
+                                        </div>
+                                        <div class="measurement-point">
+                                            <strong>Punto de medición 2:</strong><br>
+                                            Entre CN14 (macho) (1), (2) y tierra
+                                        </div>
+                                    </td>
+                                    <td class="standard-value">
+                                        <strong>Punto 1:</strong> 5 – 15 Ω<br>
+                                        <strong>Punto 2:</strong> Min. 1 MΩ
+                                    </td>
+                                    <td>
+                                        <input type="text" placeholder="Punto 1 (Ω)">
+                                        <input type="text" placeholder="Punto 2 (MΩ)">
+                                    </td>
+                                    <td class="centered">
+                                        <select>
+                                            <option value="">--</option>
+                                            <option value="si">Sí</option>
+                                            <option value="no">No</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                
+                                <tr>
+                                    <td class="centered">2</td>
+                                    <td><strong>Desconexion en el arnés de cables (Desconexión o contacto defectuoso)</strong></td>
+                                    <td>
+                                        <div class="measurement-point">
+                                            <strong>Procedimiento:</strong><br>
+                                            1) Coloque el interruptor de arranque en DESACTIVADO (OFF)<br>
+                                            2) Desconecte los conectores ATC3 y CN14<br>
+                                            3) Conecte un adaptador en T
+                                        </div>
+                                        <div class="measurement-point">
+                                            <strong>Punto de medición 1:</strong><br>
+                                            Arnés de cables entre ATC3 (hembra) (16) – CN14 (hembra) (1)
+                                        </div>
+                                        <div class="measurement-point">
+                                            <strong>Punto de medición 2:</strong><br>
+                                            Arnés de cables entre ATC3 (hembra) (3) – CN14 (hembra) (2)
+                                        </div>
+                                    </td>
+                                    <td class="standard-value">
+                                        <strong>Punto 1:</strong> Max. 1Ω<br>
+                                        <strong>Punto 2:</strong> Max. 1Ω
+                                    </td>
+                                    <td>
+                                        <input type="text" placeholder="Punto 1 (Ω)">
+                                        <input type="text" placeholder="Punto 2 (Ω)">
+                                    </td>
+                                    <td class="centered">
+                                        <select>
+                                            <option value="">--</option>
+                                            <option value="si">Sí</option>
+                                            <option value="no">No</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                
+                                <tr>
+                                    <td class="centered">3</td>
+                                    <td><strong>Defectuoso la detección del sensor de velocidad</strong></td>
+                                    <td>
+                                        <div class="measurement-point">
+                                            <strong>Procedimiento:</strong><br>
+                                            • Localización de fallas por los códigos de falla de DL**KA, y DL**LC
+                                        </div>
+                                    </td>
+                                    <td class="standard-value">—</td>
+                                    <td>
+                                        <input type="text" placeholder="Observaciones">
+                                    </td>
+                                    <td class="centered">
+                                        <select>
+                                            <option value="">--</option>
+                                            <option value="si">Sí</option>
+                                            <option value="no">No</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                
+                                <tr>
+                                    <td class="centered">4</td>
+                                    <td><strong>Defectuoso el controlador de la transmisión</strong></td>
+                                    <td>
+                                        <div class="measurement-point">
+                                            <strong>Procedimiento:</strong><br>
+                                            1) Coloque el interruptor de arranque en DESACTIVADO (OFF)<br>
+                                            2) Desconecte el conector ATC3<br>
+                                            3) Conecte un adaptador en "T"
+                                        </div>
+                                        <div class="measurement-point">
+                                            <strong>Punto de medición:</strong><br>
+                                            Arnés de cables entre ATC3 (hembra) (16) – (3)
+                                        </div>
+                                    </td>
+                                    <td class="standard-value">5 – 15 Ω</td>
+                                    <td>
+                                        <input type="text" placeholder="Resistencia (Ω)">
+                                    </td>
+                                    <td class="centered">
+                                        <select>
+                                            <option value="">--</option>
+                                            <option value="si">Sí</option>
+                                            <option value="no">No</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="observaciones15shma">Observaciones adicionales</label>
+                            <textarea id="observaciones15shma" name="observaciones15shma" rows="3" placeholder="Ingrese observaciones relevantes..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <img src="public/pm/1.png" alt="imagen" style="width: 600px; height: auto;">
+                </div>
+
+
+                <!-- CÓDIGO DE FALLA [15SJMA] SOLENOIDE DEL EMBRAGUE DE TRABA -->
+                <div class="form-section falla-15sjma page-break">
+                    <h3>CÓDIGO DE FALLA [15SJMA] - SOLENOIDE DEL EMBRAGUE DE TRABA: MAL FUNCIONAMIENTO</h3>
+                    
+                    <div class="fault-code">
+                        <h4>Información de la Falla</h4>
+                        <p><strong>Código de acción:</strong> E03</p>
+                        <p><strong>Problema:</strong> Solenoide del embrague de traba: Mal funcionamiento (La presión de retención del comando de traba es aplicada y se detecta deslizamiento)</p>
+                        <p><strong>Sistema:</strong> Controlador de la transmisión</p>
+                    </div>
+
+                    <div class="table-section">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%">#</th>
+                                    <th style="width: 25%">Causa posible</th>
+                                    <th style="width: 30%">Procedimiento de verificación / Puntos de medición</th>
+                                    <th style="width: 15%">Valor estándar</th>
+                                    <th style="width: 15%">Valor medido</th>
+                                    <th style="width: 10%">¿OK?</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="centered">1</td>
+                                    <td><strong>Defectuoso el solenoide del embrague de traba</strong></td>
+                                    <td>
+                                        <div class="measurement-point">
+                                            <strong>Procedimiento:</strong><br>
+                                            1) Coloque el interruptor de arranque en DESACTIVADO (OFF)<br>
+                                            2) Conecte el adaptador T al conector CN16 (macho)
+                                        </div>
+                                        <div class="measurement-point">
+                                            <strong>Punto de medición 1:</strong><br>
+                                            Entre CN16 (macho) (1) – (2)
+                                        </div>
+                                        <div class="measurement-point">
+                                            <strong>Punto de medición 2:</strong><br>
+                                            Entre CN16 (macho) (1), (2) y tierra
+                                        </div>
+                                    </td>
+                                    <td class="standard-value">
+                                        <strong>Punto 1:</strong> 5 – 15 Ω<br>
+                                        <strong>Punto 2:</strong> Min. 1 MΩ
+                                    </td>
+                                    <td>
+                                        <input type="text" placeholder="Punto 1 (Ω)">
+                                        <input type="text" placeholder="Punto 2 (MΩ)">
+                                    </td>
+                                    <td class="centered">
+                                        <select>
+                                            <option value="">--</option>
+                                            <option value="si">Sí</option>
+                                            <option value="no">No</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                
+                                <tr>
+                                    <td class="centered">2</td>
+                                    <td><strong>Desconexiones en el arnés de cables (Desconexión o contacto defectuoso)</strong></td>
+                                    <td>
+                                        <div class="measurement-point">
+                                            <strong>Procedimiento:</strong><br>
+                                            1) Coloque el interruptor de arranque en DESACTIVADO (OFF)<br>
+                                            2) Conecte el adaptador en T a los conectores ATC3 (hembra) y CN16 (hembra)
+                                        </div>
+                                        <div class="measurement-point">
+                                            <strong>Punto de medición 1:</strong><br>
+                                            Arnés de cables entre ATC3 (hembra) (35) – CN16 (hembra) (1)
+                                        </div>
+                                        <div class="measurement-point">
+                                            <strong>Punto de medición 2:</strong><br>
+                                            Arnés de cables entre ATC3 (hembra) (23) – CN16 (hembra) (2)
+                                        </div>
+                                    </td>
+                                    <td class="standard-value">
+                                        <strong>Punto 1:</strong> Max. 1Ω<br>
+                                        <strong>Punto 2:</strong> Max. 1Ω
+                                    </td>
+                                    <td>
+                                        <input type="text" placeholder="Punto 1 (Ω)">
+                                        <input type="text" placeholder="Punto 2 (Ω)">
+                                    </td>
+                                    <td class="centered">
+                                        <select>
+                                            <option value="">--</option>
+                                            <option value="si">Sí</option>
+                                            <option value="no">No</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                
+                                <tr>
+                                    <td class="centered">3</td>
+                                    <td><strong>Defectuoso la detección del sensor de velocidad</strong></td>
+                                    <td>
+                                        <div class="measurement-point">
+                                            <strong>Procedimiento:</strong><br>
+                                            • Haga la localización de fallas por los códigos de falla DL**KA, DL*LC
+                                        </div>
+                                    </td>
+                                    <td class="standard-value">—</td>
+                                    <td>
+                                        <input type="text" placeholder="Observaciones">
+                                    </td>
+                                    <td class="centered">
+                                        <select>
+                                            <option value="">--</option>
+                                            <option value="si">Sí</option>
+                                            <option value="no">No</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                
+                                <tr>
+                                    <td class="centered">4</td>
+                                    <td><strong>Defectuosa la transmisión del controlador</strong></td>
+                                    <td>
+                                        <div class="measurement-point">
+                                            <strong>Procedimiento:</strong><br>
+                                            1) Coloque el interruptor de arranque en DESACTIVADO (OFF)<br>
+                                            2) Conecte el adaptador en T al conector ATC3(hembra)
+                                        </div>
+                                        <div class="measurement-point">
+                                            <strong>Punto de medición:</strong><br>
+                                            Arnés de cables entre ATC3 (hembra) (35) – (23)
+                                        </div>
+                                    </td>
+                                    <td class="standard-value">5 – 15 Ω</td>
+                                    <td>
+                                        <input type="text" placeholder="Resistencia (Ω)">
+                                    </td>
+                                    <td class="centered">
+                                        <select>
+                                            <option value="">--</option>
+                                            <option value="si">Sí</option>
+                                            <option value="no">No</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="observaciones15sjma">Observaciones adicionales</label>
+                            <textarea id="observaciones15sjma" name="observaciones15sjma" rows="3" placeholder="Ingrese observaciones relevantes..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CÓDIGO DE FALLA [2F00KM] FRENO DE ESTACIONAMIENTO -->
+                <div class="form-section falla-2f00km page-break">
+                    <h3>CÓDIGO DE FALLA [2F00KM] - FRENO DE ESTACIONAMIENTO: ERROR EN OPERACIÓN O CONFIGURACIÓN</h3>
+                    
+                    <div class="fault-code">
+                        <h4>Información de la Falla</h4>
+                        <p><strong>Código de acción:</strong> —</p>
+                        <p><strong>Problema:</strong> Freno de estacionamiento: Error en la operación o en la configuración (El freno de estacionamiento arrastra)</p>
+                        <p><strong>Sistema:</strong> Controlador del retardador</p>
+                        <p><strong>Contenido del problema:</strong> Cuando la velocidad de salida del eje está sobre las 200 rpm (aproximadamente 5 km/h), el freno de estacionamiento o el freno de emergencia son operados.</p>
+                    </div>
+
+                    <div class="table-section">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%">#</th>
+                                    <th style="width: 25%">Causa posible</th>
+                                    <th style="width: 30%">Procedimiento de verificación / Puntos de medición</th>
+                                    <th style="width: 15%">Valor estándar</th>
+                                    <th style="width: 15%">Valor medido</th>
+                                    <th style="width: 10%">¿OK?</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="centered">1</td>
+                                    <td><strong>Error en la operación del interruptor del freno de estacionamiento</strong></td>
+                                    <td>
+                                        <div class="measurement-point">
+                                            <strong>Procedimiento:</strong><br>
+                                            Coloque el interruptor del freno de estacionamiento en posición libre "FREE" y arranque la máquina. No use el freno de estacionamiento mientras se está trasladando.
+                                        </div>
+                                    </td>
+                                    <td class="standard-value">—</td>
+                                    <td>
+                                        <input type="text" placeholder="Observaciones">
+                                    </td>
+                                    <td class="centered">
+                                        <select>
+                                            <option value="">--</option>
+                                            <option value="si">Sí</option>
+                                            <option value="no">No</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                
+                                <tr>
+                                    <td class="centered">2</td>
+                                    <td><strong>Relé del freno de estacionamiento defectuoso (R03)</strong></td>
+                                    <td>
+                                        <div class="measurement-point">
+                                            <strong>Procedimiento:</strong><br>
+                                            1) Coloque el interruptor de arranque en DESACTIVADO (OFF)<br>
+                                            2) Desconecte el conector R03<br>
+                                            3) Compruebe el relé
+                                        </div>
+                                        <div class="measurement-point">
+                                            <strong>Punto de medición:</strong><br>
+                                            Entre R03 (macho) (1) y (2)
+                                        </div>
+                                        <div class="measurement-point">
+                                            <strong>Prueba adicional:</strong><br>
+                                            Aplique 24V entre R03 (macho) (1) y (2), luego mida entre (3) y (6)
+                                        </div>
+                                    </td>
+                                    <td class="standard-value">
+                                        <strong>Resistencia:</strong> 200 – 400 Ω<br>
+                                        <strong>Con 24V:</strong> Min. 1 MΩ<br>
+                                        <strong>Sin 24V:</strong> Max. 1Ω
+                                    </td>
+                                    <td>
+                                        <input type="text" placeholder="Resistencia (Ω)">
+                                        <input type="text" placeholder="Con 24V (MΩ)">
+                                        <input type="text" placeholder="Sin 24V (Ω)">
+                                    </td>
+                                    <td class="centered">
+                                        <select>
+                                            <option value="">--</option>
+                                            <option value="si">Sí</option>
+                                            <option value="no">No</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                
+                                <tr>
+                                    <td class="centered">3</td>
+                                    <td><strong>Interruptor de presión de aceite del freno de estacionamiento defectuoso (delantero)</strong></td>
+                                    <td>
+                                        <div class="measurement-point">
+                                            <strong>Procedimiento:</strong><br>
+                                            1) Coloque el interruptor de arranque en DESACTIVADO (OFF)<br>
+                                            2) Conecte el adaptador T al conector PSWF (macho)<br>
+                                            3) Arranque el motor
+                                        </div>
+                                        <div class="measurement-point">
+                                            <strong>Punto de medición:</strong><br>
+                                            Entre PSWF (macho) (1) – (2)
+                                        </div>
+                                        <div class="measurement-point">
+                                            <strong>Condiciones:</strong><br>
+                                            • Posición FREE [LIBRE]<br>
+                                            • Posición PARK
+                                        </div>
+                                    </td>
+                                    <td class="standard-value">
+                                        <strong>FREE:</strong> Min. 1 MΩ<br>
+                                        <strong>PARK:</strong> Max. 1Ω
+                                    </td>
+                                    <td>
+                                        <input type="text" placeholder="FREE (MΩ)">
+                                        <input type="text" placeholder="PARK (Ω)">
+                                    </td>
+                                    <td class="centered">
+                                        <select>
+                                            <option value="">--</option>
+                                            <option value="si">Sí</option>
+                                            <option value="no">No</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                
+                                <tr>
+                                    <td class="centered">4</td>
+                                    <td><strong>Interruptor de presión de aceite del freno de estacionamiento defectuoso (trasero)</strong></td>
+                                    <td>
+                                        <div class="measurement-point">
+                                            <strong>Procedimiento:</strong><br>
+                                            1) Coloque el interruptor de arranque en DESACTIVADO (OFF)<br>
+                                            2) Conecte el adaptador T al conector PSWR (macho)<br>
+                                            3) Arranque el motor
+                                        </div>
+                                        <div class="measurement-point">
+                                            <strong>Punto de medición:</strong><br>
+                                            Entre PSWR (macho) (1) – (2)
+                                        </div>
+                                        <div class="measurement-point">
+                                            <strong>Condiciones:</strong><br>
+                                            • Posición FREE [LIBRE]<br>
+                                            • Posición PARK
+                                        </div>
+                                    </td>
+                                    <td class="standard-value">
+                                        <strong>FREE:</strong> Min. 1 MΩ<br>
+                                        <strong>PARK:</strong> Max. 1Ω
+                                    </td>
+                                    <td>
+                                        <input type="text" placeholder="FREE (MΩ)">
+                                        <input type="text" placeholder="PARK (Ω)">
+                                    </td>
+                                    <td class="centered">
+                                        <select>
+                                            <option value="">--</option>
+                                            <option value="si">Sí</option>
+                                            <option value="no">No</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="observaciones2f00km">Observaciones adicionales</label>
+                            <textarea id="observaciones2f00km" name="observaciones2f00km" rows="3" placeholder="Ingrese observaciones relevantes..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn" onclick="window.print()">Imprimir</button>
+                    <button type="submit" class="btn" id="submitBtn">Enviar Diagnóstico por Email</button>
+                </div>
+            </form>
+        </div>
+    </div>
+                    
+    <script>
+        document.getElementById('fechaInspeccion').valueAsDate = new Date();
+    </script>
+
+    <script src="js/localizacion-fallas.js"></script>
+</body>
+</html>

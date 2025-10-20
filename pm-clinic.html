@@ -1,0 +1,1892 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PM Clinic WD900-3 - Komatsu</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #0033A0;
+        }
+        
+        .logo h1 {
+            color: #0033A0;
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+        
+        .logo p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .form-container {
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        
+        .form-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .form-header h2 {
+            color: #0033A0;
+            font-size: 22px;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .form-section h3 {
+            background-color: #f0f0f0;
+            padding: 8px 15px;
+            margin: -15px -15px 15px -15px;
+            border-bottom: 1px solid #ddd;
+            color: #0033A0;
+            font-size: 18px;
+        }
+        
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        
+        .form-group {
+            flex: 1;
+            min-width: 200px;
+            margin-right: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .form-group:last-child {
+            margin-right: 0;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .required::after {
+            content: " *";
+            color: red;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            border-color: #0033A0;
+            outline: none;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+            font-size: 12px;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 6px 8px;
+            text-align: center;
+        }
+        
+        th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+        
+        input[type="checkbox"] {
+            width: auto;
+        }
+        
+        .table-section {
+            overflow-x: auto;
+        }
+        
+        .form-actions {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px 0;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            background-color: #0033A0;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0 10px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn:hover {
+            background-color: #002266;
+        }
+        
+        .btn-back {
+            background-color: #666;
+        }
+        
+        .btn-back:hover {
+            background-color: #555;
+        }
+        
+        #message {
+            padding: 12px 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        #message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        #message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        #message.hidden {
+            display: none;
+        }
+        
+        .notes-section {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .notes-section h4 {
+            margin-bottom: 10px;
+            color: #0033A0;
+        }
+
+        /* Estilos para la sección de Información Base mejorada */
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 5px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        .checkbox-label input[type="checkbox"],
+        .checkbox-label input[type="radio"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .suelo-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 5px;
+        }
+
+        .suelo-category {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+
+        .suelo-category-label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: block;
+            color: #0033A0;
+            font-size: 14px;
+        }
+
+        .suelo-suboptions {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .suelo-suboptions .checkbox-label {
+            font-size: 12px;
+        }
+
+        .tipo-trabajo-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 5px;
+        }
+
+        .tipo-trabajo-category {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            background-color: #f9f9f9;
+        }
+
+        .tipo-trabajo-category h4 {
+            margin-bottom: 10px;
+            color: #0033A0;
+            font-size: 14px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        .especificacion-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 5px;
+        }
+
+        .especificacion-item {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            background-color: #f9f9f9;
+        }
+
+        .especificacion-item h4 {
+            margin-bottom: 10px;
+            color: #0033A0;
+            font-size: 14px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        .neumaticos-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .turnos-container {
+            display: flex;
+            gap: 20px;
+            margin-top: 5px;
+        }
+
+        .turnos-options {
+            display: flex;
+            gap: 15px;
+        }
+
+        .small-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #0033A0;
+            margin: 10px 0;
+            padding: 5px;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+        }
+
+        /* Para hacerlo responsive */
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+            }
+            
+            .form-group {
+                margin-right: 0;
+            }
+            
+            table {
+                font-size: 10px;
+            }
+            
+            th, td {
+                padding: 4px 6px;
+            }
+
+            .suelo-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .checkbox-group {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .tipo-trabajo-container {
+                grid-template-columns: 1fr;
+            }
+
+            .especificacion-container {
+                grid-template-columns: 1fr;
+            }
+
+            .turnos-container {
+                flex-direction: column;
+            }
+
+            .turnos-options {
+                justify-content: flex-start;
+            }
+        }
+        /* Estilos para la sección de Información Base mejorada */
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 5px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        .checkbox-label input[type="checkbox"],
+        .checkbox-label input[type="radio"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .suelo-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 5px;
+        }
+
+        .suelo-category {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+
+        .suelo-category-label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: block;
+            color: #0033A0;
+            font-size: 14px;
+        }
+
+        .suelo-suboptions {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .suelo-suboptions .checkbox-label {
+            font-size: 12px;
+        }
+
+        .tipo-trabajo-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 5px;
+        }
+
+        .tipo-trabajo-category {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            background-color: #f9f9f9;
+        }
+
+        .tipo-trabajo-category h4 {
+            margin-bottom: 10px;
+            color: #0033A0;
+            font-size: 14px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        .especificacion-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 5px;
+        }
+
+        .especificacion-item {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            background-color: #f9f9f9;
+        }
+
+        .especificacion-item h4 {
+            margin-bottom: 10px;
+            color: #0033A0;
+            font-size: 14px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        .neumaticos-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .turnos-container {
+            display: flex;
+            gap: 20px;
+            margin-top: 5px;
+        }
+
+        .turnos-options {
+            display: flex;
+            gap: 15px;
+        }
+
+        .small-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #0033A0;
+            margin: 10px 0;
+            padding: 5px;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+        }
+
+        /* Estilos para la sección digitalizada */
+        .rango-temperatura {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .rango-temperatura label {
+            margin-right: 10px;
+            white-space: nowrap;
+        }
+        
+        .rango-temperatura .colores {
+            display: flex;
+            align-items: center;
+            margin-right: 10px;
+        }
+        
+        .rango-temperatura .colores span {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+            border: 1px solid #ddd;
+        }
+        
+        .rango-temperatura .colores .blanco {
+            background-color: white;
+        }
+        
+        .rango-temperatura .colores .verde {
+            background-color: #26c426;
+        }
+        
+        .rango-temperatura .colores .rojo {
+            background-color: #ff0026;
+        }
+        
+        .rango-temperatura .numeros {
+            display: flex;
+            align-items: center;
+        }
+        
+        .rango-temperatura .numeros span {
+            margin-right: 5px;
+            font-weight: bold;
+        }
+        
+        .temperatura-ambiente {
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+        }
+        
+        .temperatura-ambiente .campo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .temperatura-ambiente .campo label {
+            margin-right: 5px;
+        }
+        
+        .temperatura-ambiente .campo input {
+            width: 80px;
+            margin-right: 5px;
+        }
+        
+        .temperatura-ambiente .campo .unidad {
+            font-weight: bold;
+        }
+
+        /* Para hacerlo responsive */
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+            }
+            
+            .form-group {
+                margin-right: 0;
+            }
+            
+            table {
+                font-size: 10px;
+            }
+            
+            th, td {
+                padding: 4px 6px;
+            }
+
+            .suelo-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .checkbox-group {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .tipo-trabajo-container {
+                grid-template-columns: 1fr;
+            }
+
+            .especificacion-container {
+                grid-template-columns: 1fr;
+            }
+
+            .turnos-container {
+                flex-direction: column;
+            }
+
+            .turnos-options {
+                justify-content: flex-start;
+            }
+            
+            .rango-temperatura {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .temperatura-ambiente {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <h1>KOMATSU</h1>
+                <p>Equipos Tecnología Repuestos</p>
+            </div>
+        </header>
+        
+        <div class="form-container">
+            <div class="form-header">
+                <h2>SERVICIO PM CLINIC WD900-3</h2>
+            </div>
+            
+            <form id="pmClinicForm">
+                <!-- Información de la Orden de Trabajo -->
+                <div class="form-section">
+                    <h3>INFORMACIÓN DE LA ORDEN DE TRABAJO</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="noOrdenTrabajo" class="required">No. Orden de Trabajo</label>
+                            <input type="text" id="noOrdenTrabajo" name="noOrdenTrabajo" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="fechaRealizacion" class="required">Fecha</label>
+                            <input type="date" id="fechaRealizacion" name="fechaRealizacion" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="medidorServicio" class="required">Medidor de Servicio</label>
+                            <input type="text" id="medidorServicio" name="medidorServicio" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tecnico" class="required">Inspeccionado Por</label>
+                            <input type="text" id="tecnico" name="tecnico" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="wd900Serie" class="required">WD 900-3 No. de Serie</label>
+                            <input type="text" id="wd900Serie" name="wd900Serie" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Inspección del Motor -->
+                <div class="form-section">
+                    <h3>INSPECCIÓN DEL MOTOR (Después de Arrancar el Motor)</h3>
+                    <div class="table-section">
+                        <table id="inspeccionMotor">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2">Item</th>
+                                    <th rowspan="2">Condición</th>
+                                    <th rowspan="2">Unidad</th>
+                                    <th rowspan="2">Estándar</th>
+                                    <th rowspan="2">Permitido</th>
+                                    <th rowspan="2">Resultado</th>
+                                    <th colspan="2">S - U</th>
+                                </tr>
+                                <tr>
+                                    <th>S</th>
+                                    <th>U</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Velocidad del motor -->
+                                <tr>
+                                    <td rowspan="5">Velocidad del motor</td>
+                                    <td>Motor Bajo</td>
+                                    <td>rpm</td>
+                                    <td>650 – 700</td>
+                                    <td>650 – 700</td>
+                                    <td><input type="text" name="velocidad_motor_bajo" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_velocidad_motor_bajo"></td>
+                                    <td><input type="checkbox" name="u_velocidad_motor_bajo"></td>
+                                </tr>
+                                <tr>
+                                    <td>Motor Lleno</td>
+                                    <td>rpm</td>
+                                    <td>2170 – 2270</td>
+                                    <td>2170 – 2270</td>
+                                    <td><input type="text" name="velocidad_motor_lleno" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_velocidad_motor_lleno"></td>
+                                    <td><input type="checkbox" name="u_velocidad_motor_lleno"></td>
+                                </tr>
+                                <tr>
+                                    <td>Calado T/C</td>
+                                    <td>rpm</td>
+                                    <td>1990 – 2090</td>
+                                    <td>1940 – 2140</td>
+                                    <td><input type="text" name="velocidad_calado_tc" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_velocidad_calado_tc"></td>
+                                    <td><input type="checkbox" name="u_velocidad_calado_tc"></td>
+                                </tr>
+                                <tr>
+                                    <td>Calado Hidráulico</td>
+                                    <td>rpm</td>
+                                    <td>1980 – 2180</td>
+                                    <td>1880 – 2230</td>
+                                    <td><input type="text" name="velocidad_calado_refutado" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_velocidad_calado_refutado"></td>
+                                    <td><input type="checkbox" name="u_velocidad_calado_refutado"></td>
+                                </tr>
+                                <tr>
+                                    <td>Calado T/C + Hidráulico (Lleno)</td>
+                                    <td>rpm</td>
+                                    <td>1560 – 1760</td>
+                                    <td>1460 – 1860</td>
+                                    <td><input type="text" name="velocidad_calado_tc_hidraulico" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_velocidad_calado_tc_hidraulico"></td>
+                                    <td><input type="checkbox" name="u_velocidad_calado_tc_hidraulico"></td>
+                                </tr>
+                                
+                                <!-- Presión Paso de Gases -->
+                                <tr>
+                                    <td>Presión Paso de Gases</td>
+                                    <td>Calado T/C</td>
+                                    <td>mm H₂O</td>
+                                    <td>Máx. 150</td>
+                                    <td>Máx. 300</td>
+                                    <td><input type="text" name="presion_paso_gases" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_presion_paso_gases"></td>
+                                    <td><input type="checkbox" name="u_presion_paso_gases"></td>
+                                </tr>
+                                
+                                <!-- Presión Aceite Lubricación -->
+                                <tr>
+                                    <td rowspan="3">Presión Aceite Lubricación</td>
+                                    <td>Motor Lleno (15W40)</td>
+                                    <td rowspan="3">kg/cm²</td>
+                                    <td>2,5 – 4,0</td>
+                                    <td>Min. 1,8</td>
+                                    <td><input type="text" name="presion_aceite_lleno_15w40" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_presion_aceite_lleno_15w40"></td>
+                                    <td><input type="checkbox" name="u_presion_aceite_lleno_15w40"></td>
+                                </tr>
+                                <tr>
+                                    <td>Motor Bajo (15W40)</td>
+                                    <td>Min. 1,2</td>
+                                    <td>Min. 7</td>
+                                    <td><input type="text" name="presion_aceite_bajo_15w40" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_presion_aceite_bajo_15w40"></td>
+                                    <td><input type="checkbox" name="u_presion_aceite_bajo_15w40"></td>
+                                </tr>
+                                <tr>
+                                    <td>Motor Lleno (SAE 30)</td>
+                                    <td>----</td>
+                                    <td>----</td>
+                                    <td><input type="text" name="presion_aceite_lleno_sae30" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_presion_aceite_lleno_sae30"></td>
+                                    <td><input type="checkbox" name="u_presion_aceite_lleno_sae30"></td>
+                                </tr>
+                                <tr>
+                                    <td>Motor Bajo (SAE 30)</td>
+                                    <td>Estandar Min. 1.0</td>
+                                    <td>Permitido Min. 7</td>
+                                    <td>Min. 1.0</td>
+                                    <td>Min. 7</td>
+                                    <td><input type="text" name="presion_aceite_bajo_sae30" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_presion_aceite_bajo_sae30"></td>
+                                    <td><input type="checkbox" name="u_presion_aceite_bajo_sae30"></td>
+                                </tr>
+                                
+                                <!-- Presión de Retuerzo -->
+                                <tr>
+                                    <td>Presión de Retuerzo</td>
+                                    <td>Calado T/C</td>
+                                    <td>mmHg</td>
+                                    <td>Min. 1000</td>
+                                    <td>Min. 800</td>
+                                    <td><input type="text" name="presion_retuerzo" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_presion_retuerzo"></td>
+                                    <td><input type="checkbox" name="u_presion_retuerzo"></td>
+                                </tr>
+                                
+                                <!-- Temperatura de Escape -->
+                                <tr>
+                                    <td rowspan="2">Temperatura de Escape</td>
+                                    <td>Temp. Ambiente</td>
+                                    <td rowspan="2">°C</td>
+                                    <td>----</td>
+                                    <td>----</td>
+                                    <td><input type="text" name="temp_escape_ambiente" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_temp_escape_ambiente"></td>
+                                    <td><input type="checkbox" name="u_temp_escape_ambiente"></td>
+                                </tr>
+                                <tr>
+                                    <td>Calado T/C</td>
+                                    <td>Máx. 650</td>
+                                    <td>Máx. 700</td>
+                                    <td><input type="text" name="temp_escape_calado_tc" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_temp_escape_calado_tc"></td>
+                                    <td><input type="checkbox" name="u_temp_escape_calado_tc"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+                <!-- Notas de Ajustes o Cambios Realizados -->
+                <div class="form-section">
+                    <h3>NOTAS DE AJUSTES O CAMBIOS REALIZADOS</h3>
+                    <div class="form-group">
+                        <textarea id="notasAjustes" name="notasAjustes" rows="5"></textarea>
+                    </div>
+                </div>
+                
+
+                <div class="notes-section">
+                    <p>Asegúrese de ajustar los parámetros fuera de límites especificados o generar back-log para reparación.</p>
+                </div>
+                
+                <!-- Problemas Detectados -->
+                <div class="form-section">
+                    <h3>PROBLEMAS DETECTADOS</h3>
+                    <div class="table-section">
+                        <table id="problemasDetectados">
+                            <thead>
+                                <tr>
+                                    <th>Problema detectado</th>
+                                    <th>Repuesto solicitado</th>
+                                    <th>N° de parte</th>
+                                    <th>Cantidad</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" name="problema_1" style="width: 100%; border: none;"></td>
+                                    <td><input type="text" name="repuesto_1" style="width: 100%; border: none;"></td>
+                                    <td><input type="text" name="numero_parte_1" style="width: 100%; border: none;"></td>
+                                    <td><input type="number" name="cantidad_1" style="width: 100%; border: none;"></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" name="problema_2" style="width: 100%; border: none;"></td>
+                                    <td><input type="text" name="repuesto_2" style="width: 100%; border: none;"></td>
+                                    <td><input type="text" name="numero_parte_2" style="width: 100%; border: none;"></td>
+                                    <td><input type="number" name="cantidad_2" style="width: 100%; border: none;"></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" name="problema_3" style="width: 100%; border: none;"></td>
+                                    <td><input type="text" name="repuesto_3" style="width: 100%; border: none;"></td>
+                                    <td><input type="text" name="numero_parte_3" style="width: 100%; border: none;"></td>
+                                    <td><input type="number" name="cantidad_3" style="width: 100%; border: none;"></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" name="problema_4" style="width: 100%; border: none;"></td>
+                                    <td><input type="text" name="repuesto_4" style="width: 100%; border: none;"></td>
+                                    <td><input type="text" name="numero_parte_4" style="width: 100%; border: none;"></td>
+                                    <td><input type="number" name="cantidad_4" style="width: 100%; border: none;"></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" name="problema_5" style="width: 100%; border: none;"></td>
+                                    <td><input type="text" name="repuesto_5" style="width: 100%; border: none;"></td>
+                                    <td><input type="text" name="numero_parte_5" style="width: 100%; border: none;"></td>
+                                    <td><input type="number" name="cantidad_5" style="width: 100%; border: none;"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Información Base -->
+                <div class="form-section">
+                    <h3>HOJA DE DATOS PM CLINIC WD900-3</h3>
+                    <h3>INFORMACIÓN BASE</h3>
+    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nombreCliente" class="required">Nombre del Cliente</label>
+                            <input type="text" id="nombreCliente" name="nombreCliente" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="ubicacion" class="required">Ubicación</label>
+                            <input type="text" id="ubicacion" name="ubicacion" required>
+                        </div>
+                    </div>
+    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="noSerie" class="required">No. de Serie (5001 y superiores)</label>
+                            <input type="text" id="noSerie" name="noSerie" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="modeloMotor" class="required">Modelo del Motor</label>
+                            <input type="text" id="modeloMotor" name="modeloMotor" value="SA12V140-1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="noMotor" class="required">No. del Motor</label>
+                            <input type="text" id="noMotor" name="noMotor" required>
+                        </div>
+                    </div>
+    
+                    <!-- Especificación Principal -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="required">Especificación Principal</label>
+                            <div class="especificacion-container">
+                                <div class="especificacion-item">
+                                    <h4>Neumáticos Delanteros / Traseros</h4>
+                                    <div class="neumaticos-option">
+                                        <input type="checkbox" id="neumaticosOption" name="neumaticosOption" value="45/65-45-58PR (L-5)">
+                                        <label for="neumaticosOption">45/65-45-58PR (L-5)</label>
+                                    </div>
+                                </div>
+                                <div class="especificacion-item">
+                                    <h4>Cuchilla – (pies)</h4>
+                                    <input type="text" id="cuchillaPies" name="cuchillaPies" placeholder="Ingrese medida">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <!-- Tipo de Trabajo -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="required">Tipo de Trabajo</label>
+                            <div class="tipo-trabajo-container">
+                                <!-- Minería -->
+                                <div class="tipo-trabajo-category">
+                                    <h4>Minería</h4>
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="tipoTrabajoMineria" value="Carbono"> Carbono
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="tipoTrabajoMineria" value="Oro"> Oro
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="tipoTrabajoMineria" value="Piedra Caliza"> Piedra Caliza
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="tipoTrabajoMineria" value="Otros"> Otros
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <!-- Construcción -->
+                                <div class="tipo-trabajo-category">
+                                    <h4>Construcción</h4>
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="tipoTrabajoConstruccion" value="Preparación del Sitio"> Preparación del Sitio
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="tipoTrabajoConstruccion" value="Camino"> Camino
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="tipoTrabajoConstruccion" value="Otros"> Otros
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <!-- Tipo de Suelo -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="required">Tipo de Suelo</label>
+                            <div class="suelo-options">
+                                <!-- Roca -->
+                                <div class="suelo-category">
+                                    <label class="suelo-category-label">Roca</label>
+                                    <div class="suelo-suboptions">
+                                        <label class="checkbox-label">
+                                            <input type="radio" name="tipoSueloRoca" value="Suave"> Suave
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="radio" name="tipoSueloRoca" value="Intermedia"> Intermedia
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="radio" name="tipoSueloRoca" value="Dura"> Dura
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <!-- Suelo -->
+                                <div class="suelo-category">
+                                    <label class="suelo-category-label">Suelo</label>
+                                    <div class="suelo-suboptions">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="tipoSuelo" value="Carbono"> Carbono
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="tipoSuelo" value="Grava"> Grava
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="tipoSuelo" value="Arena"> Arena
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="tipoSuelo" value="Suelo"> Suelo
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <!-- Hora de Trabajo Programado -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="required">Hora de Trabajo Programado</label>
+                            <div class="turnos-container">
+                                <div>
+                                    <label>Turnos / día</label>
+                                    <div class="turnos-options">
+                                        <label class="checkbox-label">
+                                            <input type="radio" name="turnosDia" value="1"> 1
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="radio" name="turnosDia" value="2"> 2
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="radio" name="turnosDia" value="3"> 3
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="horasTurno" class="required">Horas / turno</label>
+                                    <input type="number" id="horasTurno" name="horasTurno" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="historiaMaquina">Historial de la Máquina</label>
+                        <textarea id="historiaMaquina" name="historiaMaquina" rows="3"></textarea>
+                    </div>
+                </div>
+                
+                
+                <!-- Sección digitalizada: Antes de la inspección del motor -->
+                <div class="form-section">
+                    <h3>OPINIÓN DEL OPERADOR</h3>
+                    <div class="form-group">
+                        <label for="opinionOperador">¿Alguna anormalidad?</label>
+                        <textarea id="opinionOperador" name="opinionOperador" rows="3"></textarea>
+                    </div>
+                    
+                    
+                    <div class="rango-temperatura">
+                        <label>¿Rango Máx. Temp. Refrigerante?</label>
+                        <div class="colores">
+                            <span class="blanco" title="Blanco"></span>
+                            <span class="verde" title="Verde"></span>
+                            <span class="rojo" title="Rojo"></span>
+                        </div>
+                        <div class="numeros">
+        <span style="color: white; background-color: rgba(0, 0, 0, 0.11); padding: 1px 1px; border-radius: 1px;">1</span>
+        <span style="color: green;">2</span>
+        <span style="color: green;">3</span>
+        <span style="color: green;">4</span>
+        <span style="color: green;">5</span>
+        <span style="color: green;">6</span>
+        <span style="color: red;">7</span>
+        <span>(durante la operación)</span>
+    </div>
+                    </div>
+                    
+                    <div class="rango-temperatura">
+                        <label>¿Rango Máx. Aceite T/C, TM?</label>
+                        <div class="colores">
+                            <span class="verde" title="Verde"></span>
+                            <span class="rojo" title="Rojo"></span>
+                        </div>
+                        <div class="numeros">
+        <span style="color: green;">1</span>
+        <span style="color: green;">2</span>
+        <span style="color: green;">3</span>
+        <span style="color: green;">4</span>
+        <span style="color: green;">5</span>
+        <span style="color: red;">6</span>
+        <span style="color: red;">7</span>
+        <span>(durante la operación)</span>
+    </div>
+                    </div>
+                    
+                    <div class="temperatura-ambiente">
+                        <div class="campo">
+                            <label for="tempAmbienteMax">Temperatura Ambiente Máx.</label>
+                            <input type="text" id="tempAmbienteMax" name="tempAmbienteMax">
+                            <span class="unidad">°C</span>
+                        </div>
+                        <div class="campo">
+                            <label for="tempAmbienteMin">Min.</label>
+                            <input type="text" id="tempAmbienteMin" name="tempAmbienteMin">
+                            <span class="unidad">°C</span>
+                        </div>
+                        <div class="campo">
+                            <label for="altura">Altura</label>
+                            <input type="text" id="altura" name="altura">
+                            <span class="unidad">metros</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Inspección del Motor -->
+                <div class="form-section">
+                    <h3>INSPECCIÓN DEL MOTOR (Después de Arrancar el Motor)</h3>
+                    <div class="table-section">
+                        <table id="inspeccionMotor">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2">Item</th>
+                                    <th rowspan="2">Condición</th>
+                                    <th rowspan="2">Unidad</th>
+                                    <th rowspan="2">Estándar</th>
+                                    <th rowspan="2">Permitido</th>
+                                    <th rowspan="2">Resultado</th>
+                                    <th colspan="2">S - U</th>
+                                </tr>
+                                <tr>
+                                    <th>S</th>
+                                    <th>U</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Velocidad del motor -->
+                                <tr>
+                                    <td rowspan="5">Velocidad del motor</td>
+                                    <td>Motor Bajo</td>
+                                    <td>rpm</td>
+                                    <td>650 – 700</td>
+                                    <td>650 – 700</td>
+                                    <td><input type="text" name="velocidad_motor_bajo" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_velocidad_motor_bajo"></td>
+                                    <td><input type="checkbox" name="u_velocidad_motor_bajo"></td>
+                                </tr>
+                                <tr>
+                                    <td>Motor Lleno</td>
+                                    <td>rpm</td>
+                                    <td>2170 – 2270</td>
+                                    <td>2170 – 2270</td>
+                                    <td><input type="text" name="velocidad_motor_lleno" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_velocidad_motor_lleno"></td>
+                                    <td><input type="checkbox" name="u_velocidad_motor_lleno"></td>
+                                </tr>
+                                <tr>
+                                    <td>Calado T/C</td>
+                                    <td>rpm</td>
+                                    <td>1990 – 2090</td>
+                                    <td>1940 – 2140</td>
+                                    <td><input type="text" name="velocidad_calado_tc" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_velocidad_calado_tc"></td>
+                                    <td><input type="checkbox" name="u_velocidad_calado_tc"></td>
+                                </tr>
+                                <tr>
+                                    <td>Calado Hidráulico</td>
+                                    <td>rpm</td>
+                                    <td>1980 – 2180</td>
+                                    <td>1880 – 2230</td>
+                                    <td><input type="text" name="velocidad_calado_refutado" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_velocidad_calado_refutado"></td>
+                                    <td><input type="checkbox" name="u_velocidad_calado_refutado"></td>
+                                </tr>
+                                <tr>
+                                    <td>Calado T/C + Hidráulico (Lleno)</td>
+                                    <td>rpm</td>
+                                    <td>1560 – 1760</td>
+                                    <td>1460 – 1860</td>
+                                    <td><input type="text" name="velocidad_calado_tc_hidraulico" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_velocidad_calado_tc_hidraulico"></td>
+                                    <td><input type="checkbox" name="u_velocidad_calado_tc_hidraulico"></td>
+                                </tr>
+                                
+                                <!-- Presión Paso de Gases -->
+                                <tr>
+                                    <td>Presión Paso de Gases</td>
+                                    <td>Calado T/C</td>
+                                    <td>mm H₂O</td>
+                                    <td>Máx. 150</td>
+                                    <td>Máx. 300</td>
+                                    <td><input type="text" name="presion_paso_gases" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_presion_paso_gases"></td>
+                                    <td><input type="checkbox" name="u_presion_paso_gases"></td>
+                                </tr>
+                                
+                                <!-- Presión Aceite Lubricación -->
+                                <tr>
+                                    <td rowspan="3">Presión Aceite Lubricación</td>
+                                    <td>Motor Lleno (15W40)</td>
+                                    <td rowspan="3">kg/cm²</td>
+                                    <td>2,5 – 4,0</td>
+                                    <td>Min. 1,8</td>
+                                    <td><input type="text" name="presion_aceite_lleno_15w40" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_presion_aceite_lleno_15w40"></td>
+                                    <td><input type="checkbox" name="u_presion_aceite_lleno_15w40"></td>
+                                </tr>
+                                <tr>
+                                    <td>Motor Bajo (15W40)</td>
+                                    <td>Min. 1,2</td>
+                                    <td>Min. 7</td>
+                                    <td><input type="text" name="presion_aceite_bajo_15w40" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_presion_aceite_bajo_15w40"></td>
+                                    <td><input type="checkbox" name="u_presion_aceite_bajo_15w40"></td>
+                                </tr>
+                                <tr>
+                                    <td>Motor Lleno (SAE 30)</td>
+                                    <td>----</td>
+                                    <td>----</td>
+                                    <td><input type="text" name="presion_aceite_lleno_sae30" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_presion_aceite_lleno_sae30"></td>
+                                    <td><input type="checkbox" name="u_presion_aceite_lleno_sae30"></td>
+                                </tr>
+                                <tr>
+                                    <td>Motor Bajo (SAE 30)</td>
+                                    <td>Estandar Min. 1.0</td>
+                                    <td>Permitido Min. 7</td>
+                                    <td>Min. 1.0</td>
+                                    <td>Min. 7</td>
+                                    <td><input type="text" name="presion_aceite_bajo_sae30" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_presion_aceite_bajo_sae30"></td>
+                                    <td><input type="checkbox" name="u_presion_aceite_bajo_sae30"></td>
+                                </tr>
+                                
+                                <!-- Presión de Retuerzo -->
+                                <tr>
+                                    <td>Presión de Retuerzo</td>
+                                    <td>Calado T/C</td>
+                                    <td>mmHg</td>
+                                    <td>Min. 1000</td>
+                                    <td>Min. 800</td>
+                                    <td><input type="text" name="presion_retuerzo" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_presion_retuerzo"></td>
+                                    <td><input type="checkbox" name="u_presion_retuerzo"></td>
+                                </tr>
+                                
+                                <!-- Temperatura de Escape -->
+                                <tr>
+                                    <td rowspan="2">Temperatura de Escape</td>
+                                    <td>Temp. Ambiente</td>
+                                    <td rowspan="2">°C</td>
+                                    <td>----</td>
+                                    <td>----</td>
+                                    <td><input type="text" name="temp_escape_ambiente" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_temp_escape_ambiente"></td>
+                                    <td><input type="checkbox" name="u_temp_escape_ambiente"></td>
+                                </tr>
+                                <tr>
+                                    <td>Calado T/C</td>
+                                    <td>Máx. 650</td>
+                                    <td>Máx. 700</td>
+                                    <td><input type="text" name="temp_escape_calado_tc" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_temp_escape_calado_tc"></td>
+                                    <td><input type="checkbox" name="u_temp_escape_calado_tc"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Inspección del Convertidor de Torque -->
+                <div class="form-section">
+                    <h3>INSPECCIÓN DEL CONVERTIDOR DE TORQUE</h3>
+                    <div class="table-section">
+                        <table id="inspeccionConvertidor">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Condición</th>
+                                    <th>Unidad</th>
+                                    <th>Estándar</th>
+                                    <th>Permitido</th>
+                                    <th>Resultado</th>
+                                    <th>S</th>
+                                    <th>U</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Presión de Entrada</td>
+                                    <td>Motor Lleno T/m en N</td>
+                                    <td>kg/cm³</td>
+                                    <td>6 – 8</td>
+                                    <td>4 – 6</td>
+                                    <td><input type="text" name="presion_entrada_convertidor" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_presion_entrada_convertidor"></td>
+                                    <td><input type="checkbox" name="u_presion_entrada_convertidor"></td>
+                                </tr>
+                                <tr>
+                                    <td>Presión de Salida</td>
+                                    <td>Motor Lleno T/m en N</td>
+                                    <td>kg/cm³</td>
+                                    <td>4 - 6</td>
+                                    <td>4 - 6</td>
+                                    <td><input type="text" name="presion_salida_convertidor" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_presion_salida_convertidor"></td>
+                                    <td><input type="checkbox" name="u_presion_salida_convertidor"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Inspección de la Transmisión -->
+                <div class="form-section">
+                    <h3>INSPECCIÓN DE LA TRANSMISIÓN (Ponga T/M en rango de velocidad, aplique completamente los frenos)</h3>
+                    <div class="table-section">
+                        <table id="inspeccionTransmision">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Condición</th>
+                                    <th>Unidad</th>
+                                    <th>Estándar</th>
+                                    <th>Permitido</th>
+                                    <th>Resultado</th>
+                                    <th>S</th>
+                                    <th>U</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Presión Alivio Principal</td>
+                                    <td>T/M en N</td>
+                                    <td>kg/cm²</td>
+                                    <td>28 – 31</td>
+                                    <td>28 – 31</td>
+                                    <td><input type="text" name="presion_alivio_principal" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_presion_alivio_principal"></td>
+                                    <td><input type="checkbox" name="u_presion_alivio_principal"></td>
+                                </tr>
+                                <tr>
+                                    <td>Presión Reductora Piloto</td>
+                                    <td>T/m en N</td>
+                                    <td>kg/cm²</td>
+                                    <td>9,5 – 11,5</td>
+                                    <td>9,5 – 11,5</td>
+                                    <td><input type="text" name="presion_reductora_piloto" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_presion_reductora_piloto"></td>
+                                    <td><input type="checkbox" name="u_presion_reductora_piloto"></td>
+                                </tr>
+                                <tr>
+                                    <td>Presión de Lubricación</td>
+                                    <td>T/m en N</td>
+                                    <td>kg/cm²</td>
+                                    <td>8 – 2</td>
+                                    <td>8 – 2</td>
+                                    <td><input type="text" name="presion_lubricacion" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_presion_lubricacion"></td>
+                                    <td><input type="checkbox" name="u_presion_lubricacion"></td>
+                                </tr>
+                                <tr>
+                                    <td>Presión Mod. 1</td>
+                                    <td>2 – 1</td>
+                                    <td>kg/cm²</td>
+                                    <td>25 – 28</td>
+                                    <td>25 – 28</td>
+                                    <td><input type="text" name="presion_mod_1" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_presion_mod_1"></td>
+                                    <td><input type="checkbox" name="u_presion_mod_1"></td>
+                                </tr>
+                                <tr>
+                                    <td>Tiempo Mod.</td>
+                                    <td>2 – 1</td>
+                                    <td>Seg.</td>
+                                    <td>–––</td>
+                                    <td>–––</td>
+                                    <td><input type="text" name="tiempo_mod_1" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_tiempo_mod_1"></td>
+                                    <td><input type="checkbox" name="u_tiempo_mod_1"></td>
+                                </tr>
+                                <tr>
+                                    <td>Presión Mod. 2</td>
+                                    <td>1 – 2</td>
+                                    <td>kg/cm²</td>
+                                    <td>25 – 28</td>
+                                    <td>25 – 28</td>
+                                    <td><input type="text" name="presion_mod_2" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_presion_mod_2"></td>
+                                    <td><input type="checkbox" name="u_presion_mod_2"></td>
+                                </tr>
+                                <tr>
+                                    <td>Tiempo Mod.</td>
+                                    <td>1 – 2</td>
+                                    <td>Seg.</td>
+                                    <td>–––</td>
+                                    <td>–––</td>
+                                    <td><input type="text" name="tiempo_mod_2" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_tiempo_mod_2"></td>
+                                    <td><input type="checkbox" name="u_tiempo_mod_2"></td>
+                                </tr>
+                                <tr>
+                                    <td>Presión Mod. 3</td>
+                                    <td>2 – 3</td>
+                                    <td>kg/cm³</td>
+                                    <td>19 – 21</td>
+                                    <td>19 – 21</td>
+                                    <td><input type="text" name="presion_mod_3" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_presion_mod_3"></td>
+                                    <td><input type="checkbox" name="u_presion_mod_3"></td>
+                                </tr>
+                                <tr>
+                                    <td>Tiempo Mod.</td>
+                                    <td>2 – 3</td>
+                                    <td>Seg.</td>
+                                    <td>–––</td>
+                                    <td>–––</td>
+                                    <td><input type="text" name="tiempo_mod_3" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_tiempo_mod_3"></td>
+                                    <td><input type="checkbox" name="u_tiempo_mod_3"></td>
+                                </tr>
+                                <tr>
+                                    <td>Presión Mod. 4</td>
+                                    <td>3 – 4</td>
+                                    <td>kg/cm³</td>
+                                    <td>25 – 28</td>
+                                    <td>25 – 28</td>
+                                    <td><input type="text" name="presion_mod_4" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_presion_mod_4"></td>
+                                    <td><input type="checkbox" name="u_presion_mod_4"></td>
+                                </tr>
+                                <tr>
+                                    <td>Tiempo Mod.</td>
+                                    <td>3 – 4</td>
+                                    <td>Seg.</td>
+                                    <td>–––</td>
+                                    <td>–––</td>
+                                    <td><input type="text" name="tiempo_mod_4" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_tiempo_mod_4"></td>
+                                    <td><input type="checkbox" name="u_tiempo_mod_4"></td>
+                                </tr>
+                                <tr>
+                                    <td>Tiempo Mod. F</td>
+                                    <td>N – F</td>
+                                    <td>Seg.</td>
+                                    <td>–––</td>
+                                    <td>–––</td>
+                                    <td><input type="text" name="tiempo_mod_f" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_tiempo_mod_f"></td>
+                                    <td><input type="checkbox" name="u_tiempo_mod_f"></td>
+                                </tr>
+                                <tr>
+                                    <td>Tiempo Mod. R</td>
+                                    <td>N – R</td>
+                                    <td>Seg.</td>
+                                    <td>–––</td>
+                                    <td>–––</td>
+                                    <td><input type="text" name="tiempo_mod_r" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_tiempo_mod_r"></td>
+                                    <td><input type="checkbox" name="u_tiempo_mod_r"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Inspección de la Dirección -->
+                <div class="form-section">
+                    <h3>INSPECCIÓN DE LA DIRECCIÓN</h3>
+                    <div class="small-title">PONER LA BARRA DE SEGURIDAD PARA BLOQUEAR LA DIRECCIÓN</div>
+                    <div class="table-section">
+                        <table id="inspeccionDireccion">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Condición</th>
+                                    <th>Unidad</th>
+                                    <th>Estándar</th>
+                                    <th>Permitido</th>
+                                    <th>Resultado</th>
+                                    <th>S</th>
+                                    <th>U</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td rowspan="2">Giro | Bloqueo <p></p> Giro | Extremo Bloqueo</td>
+                                    <td>Motor Bajo</td>
+                                    <td>Seg.</td>
+                                    <td>Máx. 6.8</td>
+                                    <td>Máx. 6.8</td>
+                                    <td><input type="text" name="giro_bloqueo_bajo" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_giro_bloqueo_bajo"></td>
+                                    <td><input type="checkbox" name="u_giro_bloqueo_bajo"></td>
+                                </tr>
+                                <tr>
+                                    <td>Motor Lleno</td>
+                                    <td>Seg.</td>
+                                    <td>Máx. 5.0</td>
+                                    <td>Máx. 5.0</td>
+                                    <td><input type="text" name="giro_extremo_lleno" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_giro_extremo_lleno"></td>
+                                    <td><input type="checkbox" name="u_giro_extremo_lleno"></td>
+                                </tr>
+                                <tr>
+                                    <td>Presión de Alivio de Giro</td>
+                                    <td>Motor Lleno</td>
+                                    <td>kg/cm²</td>
+                                    <td>316 - 325</td>
+                                    <td>312 - 330</td>
+                                    <td><input type="text" name="presion_alivio_giro" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_presion_alivio_giro"></td>
+                                    <td><input type="checkbox" name="u_presion_alivio_giro"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Inspección de los Frenos -->
+                <div class="form-section">
+                    <h3>INSPECCIÓN DE LOS FRENOS</h3>
+                    <div class="table-section">
+                        <table id="inspeccionFrenos">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Condición</th>
+                                    <th> </th>
+                                    <th>Unidad</th>
+                                    <th>Estándar</th>
+                                    <th>Permitido</th>
+                                    <th>Resultado</th>
+                                    <th>S</th>
+                                    <th>U</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Freno de Estacionamiento</td>
+                                    <td>Motor Lleno, T/M en F2 <p></p>Espesor del Atenuador (incluye metal de respaldo)<p></p>Espacio Libre del Atenuador</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>Sin movimiento <p></p>0.88-1.24</td>
+                                    <td>Sin movimiento <p></p>Máx 2.10</td>
+                                    <td><input type="text" name="freno_estacionamiento" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_freno_estacionamiento"></td>
+                                    <td><input type="checkbox" name="u_freno_estacionamiento"></td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="4">Freno de Rueda</td>
+                                    <td></td>
+                                    <td>Delantero <p></p> Derecho</td>
+                                    <td>mm</td>
+                                    <td>39,3-42.1</td>
+                                    <td>Máx. 1.5</td>
+                                    <td><input type="text" name="desgaste_delantero_derecho" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_desgaste_delantero_derecho"></td>
+                                    <td><input type="checkbox" name="u_desgaste_delantero_derecho"></td>
+                                </tr>
+                                <tr>
+                                    <td>Desgaste del Disco de Freno <p></p> </td>
+                                    <td>Delantero <p></p> Izquierdo</td>
+                                    <td>mm</td>
+                                    <td>39,3-42.1</td>
+                                    <td>Máx. 1.5</td>
+                                    <td><input type="text" name="desgaste_delantero_izquierdo" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_desgaste_delantero_izquierdo"></td>
+                                    <td><input type="checkbox" name="u_desgaste_delantero_izquierdo"></td>
+                                </tr>
+                                <tr>
+                                    <td>(Medir recorrido pistón) <p></p> </td>
+                                    <td>Trasero <p></p> Derecho</td>
+                                    <td>mm</td>
+                                    <td>39,3-42.1</td>
+                                    <td>Máx. 1.5</td>
+                                    <td><input type="text" name="desgaste_trasero_derecho" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_desgaste_trasero_derecho"></td>
+                                    <td><input type="checkbox" name="u_desgaste_trasero_derecho"></td>
+                                </tr>
+                                <tr>
+                                    <td> <p></p> </td>
+                                    <td>Trasero <p></p> Izquierdo</td>
+                                    <td>mm</td>
+                                    <td>39,3-42.1</td>
+                                    <td>Máx. 45.3</td>
+                                    <td><input type="text" name="desgaste_trasero_izquierdo" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_desgaste_trasero_izquierdo"></td>
+                                    <td><input type="checkbox" name="u_desgaste_trasero_izquierdo"></td>
+                                </tr>
+                                <tr>
+                                    <td>Presion de Carga del Acumulador</td>
+                                    <td style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+    <div style="border-bottom: 1px solid #000; padding: 2px;">Presión Cut In de Carga</div>
+    <div style="padding: 2px;">Presión Cut Out de Carga</div>
+                                    <td>Temperatura Aceite Motor/Freno <p></p>Bajo: 45-55°C</td>
+                                    <td>kg/cm²</td>
+                                    <td>60-65 <P></P>100-110</td>
+                                    <td>55-70 <p></p>95-115</td>
+                                    <td><input type="text" name="freno_rueda" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_freno_rueda"></td>
+                                    <td><input type="checkbox" name="u_freno_rueda"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Inspección Hidráulica -->
+                <div class="form-section">
+                    <h3>INSPECCIÓN HIDRÁULICA</h3>
+                    <div class="table-section">
+                        <table id="inspeccionHidraulica">
+                            <thead>
+                                <tr>
+                                    <th>Temperatura Aceite Hidráulico</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th>°C</th>
+                                    <th>Estándar</th>
+                                    <th>Permitido</th>
+                                    <th>Resultado</th>
+                                    <th>S</th>
+                                    <th>U</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Presión Alivio Válvula de Control Principal</td>
+                                    <td>Motor Lleno <p></p>Temp. Aceite: 45 – 55°C </td>
+                                    <td></td>
+                                    <td>kg/cm²</td>
+                                    <td>317–330</td>
+                                    <td>307–330</td>
+                                    <td><input type="text" name="presion_alivio_control_principal" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_presion_alivio_control_principal"></td>
+                                    <td><input type="checkbox" name="u_presion_alivio_control_principal"></td>
+                                </tr>
+                                <tr>
+                                    <td>Presión Fuente Valvula PPC</td>
+                                    <td>Motor Lleno <p></p>Temp. Aceite: 45 – 55°C </td>
+                                    <td></td>
+                                    <td>317 – 330</td>
+                                    <td>307 – 330</td>
+                                    <td></td>
+                                    <td><input type="text" name="presion_alivio_control_principal" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_presion_alivio_control_principal"></td>
+                                    <td><input type="checkbox" name="u_presion_alivio_control_principal"></td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="1">Presión de Salida Válvula PPC</td>
+                                    <td>Subir Hoja<p></p>Flotar, Pich <p></p>Hoja, <p></p>Inclinar <p></p>____________________<p></p>Bajar Hoja</td>
+                                    <td>Motor Lleno <p></p> Temp. <p></p>Aceite. 45-55°C</td>
+                                    <td rowspan="1">kg/cm²</td>
+                                    <td>32 – 36</td>
+                                    <td>32 – 36</td>
+                                    
+                                    <td><input type="text" name="presion_subir_hoja" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_presion_subir_hoja"></td>
+                                    <td><input type="checkbox" name="u_presion_subir_hoja"></td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="6">Velocidad de la Hoja</td>
+                                    <td>Subir</td>
+                                    <td rowspan="5">Motor Lleno <p></p>Temp.<p></p>Aceite: 45-55C,<p></p> Sin Carga, <p></p>Recorrido Completo<p></p></td>
+                                    <td>Seg.</td>
+                                    <td>2.2 – 2.8</td>
+                                    <td>Máx. 3.2</td>
+                                    <td><input type="text" name="presion_subir_hoja" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_presion_subir_hoja"></td>
+                                    <td><input type="checkbox" name="u_presion_subir_hoja"></td>
+                                    <tr>
+                                    <td>Bajar</td>
+                                    <td>Seg.</td>
+                                    <td>4.0 – 5.0</td>
+                                    <td>Máx. 6.0</td>
+                                    <td><input type="text" name="presion_pitch_hoja" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_presion_pitch_hoja"></td>
+                                    <td><input type="checkbox" name="u_presion_pitch_hoja"></td>
+                                </tr>
+                                <tr>
+                                    <td>Pitch-FT</td>
+                                    <td>Seg.</td>
+                                    <td>3.1-3.7</td>
+                                    <td>Máx. 4.4</td>
+                                    <td><input type="text" name="presion_inclinar" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_presion_inclinar"></td>
+                                    <td><input type="checkbox" name="u_presion_inclinar"></td>
+                                </tr>
+                                <tr>
+                                    <td>Pitch-Atras</td>
+                                    <td>Seg.</td>
+                                    <td>2.1 – 2.7</td>
+                                    <td>Máx. 3.1</td>
+                                    <td><input type="text" name="presion_inclinar" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_presion_inclinar"></td>
+                                    <td><input type="checkbox" name="u_presion_inclinar"></td>
+                                </tr>
+                                <tr>
+                                    <td>Inclinar-Rl</td>
+                                    <td>Seg.</td>
+                                    <td>1.6 – 2.2</td>
+                                    <td>Máx. 2.5</td>
+                                    <td><input type="text" name="presion_inclinar" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_presion_inclinar"></td>
+                                    <td><input type="checkbox" name="u_presion_inclinar"></td>
+                                </tr>
+                                <tr>
+                                    <td>Inclinar-Ll</td>
+                                    <td></td>
+                                    <td>Seg.</td>
+                                    <td>1.4-2.0</td>
+                                    <td>Máx. 2.2</td>
+                                    <td><input type="text" name="presion_inclinar" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_presion_inclinar"></td>
+                                    <td><input type="checkbox" name="u_presion_inclinar"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Velocidad de la Hoja -->
+                <div class="form-section">
+                    <h3></h3>
+                    <div class="small-title">AJUSTAR HOJA LUEGO DETENER EL MOTOR</div>
+                    <div class="table-section">
+                        <table id="velocidadHoja">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Condición</th>
+                                    <th>Condición</th>
+                                    <th>Unidad</th>
+                                    <th>Estándar</th>
+                                    <th>Permitido</th>
+                                    <th>Resultado</th>
+                                    <th>S</th>
+                                    <th>U</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Deriva Hidráulica</td>
+                                    <td>Posición Subir Hoja,<p></p>Detener Motor. Dejar <p></p>5 minutos. Luego <p></p>medir por los próximos 15 minutos.</td>
+                                    <td>Hoja</td>
+                                    <td>mm/15 min</td>
+                                    <td>Máx. 120</td>
+                                    <td>Máx. 120</td>
+                                    <td><input type="text" name="deriva_hidraulica" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_deriva_hidraulica"></td>
+                                    <td><input type="checkbox" name="u_deriva_hidraulica"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Inspección del Eje -->
+                <div class="form-section">
+                    <h3>INSPECCIÓN DEL EJE</h3>
+                    <div class="table-section">
+                        <table id="inspeccionEje">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Condición</th>
+                                    <th>Estándar</th>
+                                    <th>Permitido</th>
+                                    <th>Resultado</th>
+                                    <th>S</th>
+                                    <th>U</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Revisión Visual del Tapón de Drenaje del Diferencial</td>
+                                    <td>Eje Delantero <p>_______</p>Eje Trasero</td>
+                                    <td>-</td>
+                                    <td>No debe haber polvo metalico en exceso</td>
+                                    <td><input type="text" name="revision_tapon_drenaje" style="width: 100%; border: none; text-align: center;"></td>
+                                    <td><input type="checkbox" name="s_revision_tapon_drenaje"></td>
+                                    <td><input type="checkbox" name="u_revision_tapon_drenaje"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="form-group">
+                        <label for="comentariosEje">Comentarios</label>
+                        <textarea id="comentariosEje" name="comentariosEje" rows="3"></textarea>
+                    </div>
+                </div>
+                
+                <!-- Notas de Ajustes o Cambios Realizados -->
+                <div class="form-section">
+                    <h3>SI ALGUNA DE LAS MEDIDAS DEL RECUADRO ANTERIOR ESTA FUERA DE RANGO, INDIQUE AJUSTE O CORRECIÓN REALIZADA</h3>
+                    <div class="form-group">
+                        <textarea id="notasAjustes" name="notasAjustes" rows="5"></textarea>
+                    </div>
+                </div>
+                
+                <div class="notes-section">
+                    <p>De acuerdo al ajuste o corrección, indique si existe back-log generado.</p>
+                </div>
+                
+                <!-- Problemas Detectados -->
+                <div class="form-section">
+                    <h3>PROBLEMAS DETECTADOS</h3>
+                    <div class="table-section">
+                        <table id="problemasDetectados">
+                            <thead>
+                                <tr>
+                                    <th>Problema detectado</th>
+                                    <th>Repuesto solicitado</th>
+                                    <th>N° de parte</th>
+                                    <th>Cantidad</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" name="problema_1" style="width: 100%; border: none;"></td>
+                                    <td><input type="text" name="repuesto_1" style="width: 100%; border: none;"></td>
+                                    <td><input type="text" name="numero_parte_1" style="width: 100%; border: none;"></td>
+                                    <td><input type="number" name="cantidad_1" style="width: 100%; border: none;"></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" name="problema_2" style="width: 100%; border: none;"></td>
+                                    <td><input type="text" name="repuesto_2" style="width: 100%; border: none;"></td>
+                                    <td><input type="text" name="numero_parte_2" style="width: 100%; border: none;"></td>
+                                    <td><input type="number" name="cantidad_2" style="width: 100%; border: none;"></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" name="problema_3" style="width: 100%; border: none;"></td>
+                                    <td><input type="text" name="repuesto_3" style="width: 100%; border: none;"></td>
+                                    <td><input type="text" name="numero_parte_3" style="width: 100%; border: none;"></td>
+                                    <td><input type="number" name="cantidad_3" style="width: 100%; border: none;"></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" name="problema_4" style="width: 100%; border: none;"></td>
+                                    <td><input type="text" name="repuesto_4" style="width: 100%; border: none;"></td>
+                                    <td><input type="text" name="numero_parte_4" style="width: 100%; border: none;"></td>
+                                    <td><input type="number" name="cantidad_4" style="width: 100%; border: none;"></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" name="problema_5" style="width: 100%; border: none;"></td>
+                                    <td><input type="text" name="repuesto_5" style="width: 100%; border: none;"></td>
+                                    <td><input type="text" name="numero_parte_5" style="width: 100%; border: none;"></td>
+                                    <td><input type="number" name="cantidad_5" style="width: 100%; border: none;"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div id="message" class="hidden"></div>
+                
+                <!-- Botones de acción -->
+                <div class="form-actions">
+                <button type="button" class="btn btn-back" onclick="location.href='index.html'">Volver al Menú</button>
+                <button type="button" class="btn" onclick="submitPMClinicForm()">Enviar Formulario</button>
+                <button type="button" class="btn" onclick="clearForm()" style="background-color: #dc3545;">Limpiar Formulario</button>
+            </div>
+            </form>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script src="js/pm-clinic.js"></script>
+</body>
+</html>

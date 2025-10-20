@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inspección de GET - Komatsu</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        #message {
+            padding: 12px 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        #message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        #message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        #message.hidden {
+            display: none;
+        }
+        
+        .form-actions {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px 0;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            background-color: #0033A0;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0 10px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn:hover {
+            background-color: #002266;
+        }
+        
+        .btn-back {
+            background-color: #666;
+        }
+        
+        .btn-back:hover {
+            background-color: #555;
+        }
+
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <h1>KOMATSU</h1>
+                <p>Equipos Tecnología Repuestos</p>
+            </div>
+        </header>
+        
+        <div class="form-container">
+            <div class="form-header">
+                <h2>Liquidación de Baldes - Inspección de GET</h2>
+            </div>
+            
+            <form id="getInspectionForm">
+                <div class="form-section">
+                    <h3>Información General</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="equipo" class="required">Equipo</label>
+                            <input type="text" id="equipo" name="equipo" value="WD 900-3 DOZER" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="numeroInterno" class="required">Número Interno</label>
+                            <input type="text" id="numeroInterno" name="numeroInterno" value="" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cliente" class="required">Cliente</label>
+                            <input type="text" id="cliente" name="cliente" value="" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reportadoPor" class="required">Reportado Por</label>
+                            <input type="text" id="reportadoPor" name="reportadoPor" value="" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="modelo" class="required">Modelo</label>
+                            <input type="text" id="modelo" name="modelo" value="WD 900-3" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lugarTrabajo" class="required">Lugar de Trabajo</label>
+                            <input type="text" id="lugarTrabajo" name="lugarTrabajo" value="" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fecha" class="required">Fecha</label>
+                            <input type="date" id="fecha" name="fecha" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>Condiciones de Desgaste</h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th colspan="2">Condición Lado LH (N°1)</th>
+                                <th colspan="2">Condición Lado RH (N°2)</th>
+                                <th>Condición Base Deslizaderas (N°3)</th>
+                                <th>Condición Soportes Base Deslizaderas (N°4)</th>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <th>MS</th>
+                                <th>MB</th>
+                                <th>MS</th>
+                                <th>MB</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Dozer</td>
+                                <td><input type="text" name="lh_ms" value="B" style="width: 100%; border: none; text-align: center;"></td>
+                                <td><input type="text" name="lh_mb" value="B" style="width: 100%; border: none; text-align: center;"></td>
+                                <td><input type="text" name="rh_ms" value="B" style="width: 100%; border: none; text-align: center;"></td>
+                                <td><input type="text" name="rh_mb" value="B" style="width: 100%; border: none; text-align: center;"></td>
+                                <td><input type="text" name="base_deslizaderas" value="B" style="width: 100%; border: none; text-align: center;"></td>
+                                <td><input type="text" name="soportes_base" value="B" style="width: 100%; border: none; text-align: center;"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="form-section">
+                    <h3>Leyenda de Condiciones</h3>
+                    
+                    <div class="form-row">
+                        <img src="public\1.png" alt="Imagen Condiciones" style="display: block; margin: 15px auto; max-width: 600px; width: 100%;">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>B = Bueno</label>
+                        </div>
+                        <div class="form-group">
+                            <label>DL = Desgaste Leve</label>
+                        </div>
+                        <div class="form-group">
+                            <label>DM = Desgaste Moderado</label>
+                        </div>
+                        <div class="form-group">
+                            <label>DA = Desgaste Avanzado</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>Medidas de Desgaste</h3>
+
+                    <table class="table" id="medidasTable">
+                        <thead>
+                            <tr>
+                                <th>Identif. Fig N°1</th>
+                                <th>Medida desde Centro de Perno a Borde de Cuchilla Mínima (mm)</th>
+                                <th>Medida tomada Chequeo durante tomada</th>
+                                <th>Proyección de desgaste Estimado (mm)</th>
+                                <th>Proyección de desgaste estimado %</th>
+                                <th>Promedio de desgaste Real %</th>
+                                <th>Cabeza de Perno con Desgaste (Delante)</th>
+                                <th>Cuchilla desgastada Soporte de deslizadera</th>
+                                <th>Condición de Pernos y Tuercas (Atrás)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="form-row">
+                    <img src="public\2.png" alt="Imagen Medidas" style="display: block; margin: 15px auto; max-width: 160px; width: 100%;">
+                </div>
+                
+                <div class="form-section">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="promedioDesgaste">Promedio de desgaste</label>
+                            <input type="text" id="promedioDesgaste" name="promedioDesgaste" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="ultimoCambio">Último Cambio</label>
+                            <input type="date" id="ultimoCambio" name="ultimoCambio">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="proyeccionCambio">Proyección próximo cambio</label>
+                            <input type="date" id="proyeccionCambio" name="proyeccionCambio">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="observaciones">Observaciones</label>
+                        <textarea id="observaciones" name="observaciones" rows="4"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="horometro" class="required">Horómetro</label>
+                    <input type="text" id="horometro" name="horometro" value="" required>
+                </div>
+                
+
+                
+                <div id="message" class="hidden"></div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-back" onclick="location.href='index.html'">Volver al Menú</button>
+                    <button type="submit" class="btn">Enviar Formulario</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/get-inspection.js"></script>
+</body>
+</html>

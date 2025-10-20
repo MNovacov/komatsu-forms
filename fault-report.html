@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informe de Falla - Komatsu</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+        }
+        
+        .logo h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .form-container {
+            margin-top: 20px;
+        }
+        
+        .form-header {
+            background-color: #0033A0;
+            color: white;
+            padding: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+            border: 1px solid #ddd;
+            padding: 15px;
+        }
+        
+        .form-section h3 {
+            margin-top: 0;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+        
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        
+        .form-group {
+            flex: 1;
+            min-width: 200px;
+            margin-right: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+        }
+        
+        .table th, .table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        
+        .table th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+        
+        .table input[type="text"], .table input[type="number"] {
+            width: 100%;
+            border: none;
+            background: transparent;
+            padding: 0;
+        }
+        
+        .form-actions {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            background-color: #00257a;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0 10px;
+        }
+        
+        .btn:hover {
+            background-color: #555;
+        }
+        
+        .btn-back {
+            background-color: #666;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        #message {
+            padding: 12px 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        #message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        #message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .required:after {
+            content: " *";
+            color: red;
+        }
+        
+        .photo-section {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .photo-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .photo-placeholder {
+            width: 150px;
+            height: 150px;
+            border: 1px dashed #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f9f9f9;
+            cursor: pointer;
+        }
+        
+        .photo-placeholder:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <h1>KOMATSU</h1>
+            </div>
+        </header>
+        
+        <div class="form-container">
+            <div class="form-header">
+                <h2>INFORME DE FALLA</h2>
+            </div>
+            
+            <form id="faultReportForm">
+                <div class="form-section">
+                    <h3>Información General</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="osNumber">OS Nº</label>
+                            <input type="text" id="osNumber" name="osNumber">
+                        </div>
+                        <div class="form-group" style="visibility:hidden;">
+                            <label>Placeholder</label>
+                            <input type="text" disabled>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="reportNumber">N° INFORME</label>
+                            <input type="text" id="reportNumber" name="reportNumber">
+                        </div>
+                        <div class="form-group">
+                            <label for="client">CLIENTE / FAENA</label>
+                            <input type="text" id="client" name="client" value="">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="attentionTo">ATENCIÓN A</label>
+                            <input type="text" id="attentionTo" name="attentionTo" value="">
+                        </div>
+                        <div class="form-group">
+                            <label for="failureDate">FECHA DE FALLA</label>
+                            <input type="date" id="failureDate" name="failureDate">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="repairDate">FECHA REPARACIÓN</label>
+                            <input type="date" id="repairDate" name="repairDate">
+                        </div>
+                        <div class="form-group">
+                            <label for="visitDate">FECHA DE VISITA</label>
+                            <input type="date" id="visitDate" name="visitDate">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="deliveryDate">FECHA DE ENTREGA TECNICA</label>
+                            <input type="date" id="deliveryDate" name="deliveryDate">
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">ASUNTO</label>
+                            <input type="text" id="subject" name="subject">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="contact">CONTACTO</label>
+                            <input type="text" id="contact" name="contact">
+                        </div>
+                        <div class="form-group">
+                            <label for="technician">TECNICO KOMATSU</label>
+                            <input type="text" id="technician" name="technician">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="equipmentModel">MODELO EQUIPO</label>
+                            <input type="text" id="equipmentModel" name="equipmentModel">
+                        </div>
+                        <div class="form-group">
+                            <label for="equipmentSerial">SERIE DE EQUIPO</label>
+                            <input type="text" id="equipmentSerial" name="equipmentSerial">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="engineModel">MODELO MOTOR</label>
+                            <input type="text" id="engineModel" name="engineModel">
+                        </div>
+                        <div class="form-group">
+                            <label for="engineSerial">SERIE DE MOTOR</label>
+                            <input type="text" id="engineSerial" name="engineSerial">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="disassemblySerial">SERIE COMP.DESM.</label>
+                            <input type="text" id="disassemblySerial" name="disassemblySerial">
+                        </div>
+                        <div class="form-group">
+                            <label for="assemblySerial">SERIE COMP.MONT.</label>
+                            <input type="text" id="assemblySerial" name="assemblySerial">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="horometer">HOROMETRO</label>
+                            <input type="text" id="horometer" name="horometer">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>1. Descripción, problema planteado por el Cliente</h3>
+                    <div class="form-group">
+                        <textarea id="problemDescription" name="problemDescription"></textarea>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>1. Antecedentes</h3>
+                    <div class="form-group">
+                        <textarea id="background" name="background"></textarea>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>2. Objetivo</h3>
+                    <div class="form-group">
+                        <textarea id="objective" name="objective"></textarea>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>3. Procedimiento de Inspección</h3>
+                    <div class="form-group">
+                        <textarea id="inspectionProcedure" name="inspectionProcedure"></textarea>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>4. Hallazgos de la Inspección</h3>
+                    <div class="form-group">
+                        <textarea id="inspectionFindings" name="inspectionFindings"></textarea>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>5. Análisis de correlación entre aceite inadecuado y daños</h3>
+                    <div class="form-group">
+                        <textarea id="oilAnalysis" name="oilAnalysis"></textarea>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>6. Conclusiones</h3>
+                    <div class="form-group">
+                        <textarea id="conclusions" name="conclusions"></textarea>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>7. Plan de Acción</h3>
+                    <div class="form-group">
+                        <textarea id="actionPlan" name="actionPlan"></textarea>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>8. Próximos Pasos</h3>
+                    <div class="form-group">
+                        <textarea id="nextSteps" name="nextSteps"></textarea>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>Set Fotográfico</h3>
+                    <div class="photo-section">
+                        <div class="photo-container">
+                            <div class="photo-placeholder" onclick="document.getElementById('photoUpload').click()">
+                                <span>+ Agregar Foto</span>
+                            </div>
+                            <input type="file" id="photoUpload" accept="image/*" multiple style="display: none;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="equipmentField">Equipo:</label>
+                            <input type="text" id="equipmentField" name="equipmentField">
+                        </div>
+                        <div class="form-group">
+                            <label for="serialField">Serie:</label>
+                            <input type="text" id="serialField" name="serialField">
+                        </div>
+                        <div class="form-group">
+                            <label for="clientField">Cliente:</label>
+                            <input type="text" id="clientField" name="clientField">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Partes y Repuestos</h3>
+                    <table class="table" id="partsTable">
+                        <thead>
+                            <tr>
+                                <th>N° Parte</th>
+                                <th>Descripción</th>
+                                <th>Cambio de número</th>
+                                <th>Cantidad</th>
+                                <th>Disponibilidad</th>
+                                <th>Lista</th>
+                                <th>Precio Un.</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="7" style="text-align: right;"><strong>Total General:</strong></td>
+                                <td><span id="totalAmount">$ 0</span></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <button type="button" class="btn" onclick="addPartRow()">Agregar Parte</button>
+                </div>
+                
+                <div class="form-section">
+                    <h3>Firma del Técnico</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="technicianSignature">Técnico</label>
+                            <input type="text" id="technicianSignature" name="technicianSignature" placeholder="Nombre del Técnico">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="technicianRole">Cargo</label>
+                            <input type="text" id="technicianRole" name="technicianRole" value="">
+                        </div>
+                    </div>
+                </div>
+                
+
+                <div id="message" class="hidden"></div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-back" onclick="location.href='index.html'">Volver al Menú</button>
+                    <button type="submit" class="btn">Enviar Formulario</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script src="js/fault-report.js"></script>
+</body>
+</html>
