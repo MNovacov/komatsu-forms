@@ -3,6 +3,6 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "echo 'Static site - no build needed'"
+    "dev": "echo 'Static site'"
   }
 }
