@@ -1,24 +1,14 @@
 {
   "version": 2,
+  "cleanUrls": false,
+  "trailingSlash": false,
   "routes": [
     {
-      "src": "/css/(.*)",
-      "dest": "css/$1"
+      "src": "^/(?:\\.well-known(?:/.*)?|css/.*|js/.*|public/.*|.*\\.(?:[0-9a-f]{8}|css|js|json|html?|map|txt|xml|png|jpe?g|gif|svg|ico|webp|woff2?|eot|ttf|otf))$",
+      "dest": "/$1"
     },
     {
-      "src": "/js/(.*)",
-      "dest": "js/$1"
-    },
-    {
-      "src": "/public/(.*)", 
-      "dest": "public/$1"
-    },
-    {
-      "src": "/(.*\\.html)",
-      "dest": "$1"
-    },
-    {
-      "src": "/(.*)",
+      "src": "^(?!/?$)(/.*)?$",
       "dest": "/index.html"
     }
   ]
