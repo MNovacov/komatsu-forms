@@ -18,7 +18,7 @@ async function submitPMClinicForm() {
   showMessage("message", "📄 Generando PDF y enviando formulario...");
 
   try {
-    const element = document.body; // Captura todo, incluido el encabezado
+    const elemento = document.querySelector('.form-container');
 
     const opt = {
       margin: [0.3, 0.3, 0.3, 0.3],
