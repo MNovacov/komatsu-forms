@@ -93,10 +93,8 @@ async function submitFaultReportForm() {
       jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
     };
 
-    // 🧾 Generar PDF en blob
     const pdfBlob = await html2pdf().from(elemento).set(opt).outputPdf("blob");
 
-    // ☁️ Subir a Uploadcare
     const formData = new FormData();
     formData.append("UPLOADCARE_PUB_KEY", "dd2580a9c669d60b5d49");
     formData.append("file", pdfBlob, "Informe_Falla.pdf");
@@ -110,7 +108,6 @@ async function submitFaultReportForm() {
     const pdfUrl = `https://ucarecdn.com/${uploadData.file}/`;
     console.log("📎 PDF subido:", pdfUrl);
 
-    // 📬 Enviar email vía backend Resend
     const res = await fetch("https://komatsu-api.vercel.app/api/sendEmail", {
       method: "POST",
       headers: { "Content-Type": "application/json" },

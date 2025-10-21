@@ -1,471 +1,920 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PM Clinic 22 - Komatsu</title>
-  <style>
-    *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
-    body{background:#f5f5f5;color:#333;line-height:1.6}
-    .container{max-width:1200px;margin:0 auto;padding:20px}
-    header{text-align:center;margin-bottom:20px;padding-bottom:10px;border-bottom:2px solid #0033A0}
-    .logo h1{color:#0033A0;font-size:28px;margin-bottom:5px}
-    .logo p{color:#666;font-size:14px}
-    .form-container{background:#fff;border-radius:5px;box-shadow:0 0 10px rgba(0,0,0,.1);padding:20px}
-    .form-header{text-align:center;margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid #ddd}
-    .form-header h2{color:#0033A0;font-size:22px}
-    .form-section{margin-bottom:30px;padding:15px;border:1px solid #ddd;border-radius:5px}
-    .form-section h3{background:#f0f0f0;padding:8px 15px;margin:-15px -15px 15px -15px;border-bottom:1px solid #ddd;color:#0033A0;font-size:18px}
-    .form-row{display:flex;flex-wrap:wrap;gap:15px;margin-bottom:15px}
-    .form-group{flex:1;min-width:200px}
-    label{display:block;margin-bottom:6px;font-weight:bold;font-size:14px}
-    .required::after{content:" *";color:#d00}
-    input,select,textarea{width:100%;padding:8px 10px;border:1px solid #ddd;border-radius:4px;font-size:14px}
-    input:focus,select:focus,textarea:focus{border-color:#0033A0;outline:none}
-    .table-section{overflow-x:auto}
-    table{width:100%;border-collapse:collapse;margin-bottom:12px;font-size:12px}
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>PM Clinic HD785-7 – Página 1</title>
+<style>
+    *{box-sizing:border-box;font-family:Arial, sans-serif}
+    body{background:#f5f5f5;color:#333;margin:0}
+    .container{max-width:1200px;margin:20px auto;background:#fff;border-radius:6px;box-shadow:0 0 10px rgba(0,0,0,.1);padding:20px}
+    header{text-align:center;border-bottom:2px solid #0033A0;padding-bottom:10px;margin-bottom:20px}
+    header h1{color:#0033A0;margin:0}
+    header p{color:#666;font-size:13px;margin:5px 0 0}
+    h2{background:#0d2f8a;color:#fff;padding:10px 14px;border-radius:4px;font-size:18px;margin:0 0 15px}
+    .section{border:1px solid #ddd;border-radius:5px;margin-bottom:18px}
+    .section h3{background:#f0f0f0;color:#0033A0;border-bottom:1px solid #ddd;margin:0;padding:8px 12px;font-size:15px}
+    .pad{padding:12px}
+    table{width:100%;border-collapse:collapse;font-size:12px}
     th,td{border:1px solid #ddd;padding:6px 8px;text-align:center;vertical-align:middle}
-    th{background:#f0f0f0;font-weight:bold}
-    input[type="checkbox"]{width:auto}
-    .btn{padding:10px 18px;background:#0033A0;color:#fff;border:none;border-radius:4px;cursor:pointer;margin:0 6px;font-size:14px;font-weight:bold}
-    .btn:hover{background:#002266}
-    .btn-alt{background:#666}
-    .btn-alt:hover{background:#555}
-    .btn-danger{background:#dc3545}
-    .btn-danger:hover{background:#b52a35}
-    #message{padding:12px 15px;margin:15px 0;border-radius:5px;text-align:center;font-weight:bold;transition:all .3s ease}
-    #message.hidden{display:none}
-    #message.success{background:#d4edda;color:#155724;border:1px solid #c3e6cb}
-    #message.error{background:#f8d7da;color:#721c24;border:1px solid #f5c6cb}
-    .notes{padding:10px;background:#f9f9f9;border:1px solid #ddd;border-radius:5px;color:#333}
-    .photo-container{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
-    .photo-placeholder{width:140px;height:140px;border:1px dashed #ccc;display:flex;align-items:center;justify-content:center;background:#f9f9f9;cursor:pointer}
-    .photo-placeholder:hover{background:#f0f0f0}
-    @media(max-width:768px){
-      .form-row{flex-direction:column}
-      table{font-size:11px}
-      th,td{padding:4px 6px}
-    }
-  </style>
+    th{background:#f7f7f7;color:#0033A0}
+    .row{display:flex;gap:12px;flex-wrap:wrap}
+    .col{flex:1;min-width:200px}
+    label{display:block;font-weight:bold;margin-bottom:4px;font-size:12px}
+    input[type="text"],input[type="date"],textarea{width:100%;padding:6px 8px;border:1px solid #ccc;border-radius:4px;font-size:13px}
+    textarea{resize:vertical}
+    .muted{font-size:11px;color:#666;text-align:left}
+    .left{text-align:left}
+    .right{text-align:right}
+    .nowrap{white-space:nowrap}
+    .checkcell{width:36px}
+</style>
 </head>
 <body>
-  <div class="container">
+<div class="container">
     <header>
-      <div class="logo">
         <h1>KOMATSU</h1>
-        <p>Equipos Tecnología Repuestos</p>
-      </div>
+        <p>Equipos · Tecnología · Repuestos</p>
     </header>
 
-    <div class="form-container">
-      <div class="form-header">
-        <h2>PM CLINIC 22 — Inspección y Pruebas</h2>
-      </div>
+    <h2>HOJA DE CHEQUEO PM CLINIC – HD785-7</h2>
 
-      <form id="pmClinic22Form">
-        <div class="form-section">
-          <h3>Información General</h3>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="cliente" class="required">Cliente / Faena</label>
-              <input id="cliente" required/>
+    <!-- CUADRO 1 -->
+    <div class="section">
+        <h3>Información de la máquina</h3>
+        <div class="pad">
+            <div class="row">
+                <div class="col">
+                    <label>Modelo</label>
+                    <input type="text" value="HD785-7" />
+                </div>
+                <div class="col">
+                    <label>No. de máquina</label>
+                    <input type="text" />
+                </div>
+                <div class="col">
+                    <label>No. de motor</label>
+                    <input type="text" />
+                </div>
             </div>
-            <div class="form-group">
-              <label for="ubicacion" class="required">Ubicación</label>
-              <input id="ubicacion" required/>
-            </div>
-            <div class="form-group">
-              <label for="fechaInspeccion" class="required">Fecha de Inspección</label>
-              <input type="date" id="fechaInspeccion" required/>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="equipoModelo" class="required">Modelo Equipo</label>
-              <input id="equipoModelo" placeholder="Ej: HD785-7" required/>
-            </div>
-            <div class="form-group">
-              <label for="equipoSerie" class="required">Serie de Equipo</label>
-              <input id="equipoSerie" required/>
-            </div>
-            <div class="form-group">
-              <label for="medidorServicio">Medidor de Servicio</label>
-              <input id="medidorServicio"/>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="ordenTrabajo">N° Orden de Trabajo</label>
-              <input id="ordenTrabajo"/>
-            </div>
-            <div class="form-group">
-              <label for="tecnico" class="required">Técnico</label>
-              <input id="tecnico" required/>
-            </div>
-          </div>
         </div>
-
-        <div class="form-section">
-          <h3>Mediciones / Ajustes Generales</h3>
-          <div class="table-section">
-            <table id="tablaMediciones">
-              <thead>
-                <tr>
-                  <th>Sistema</th>
-                  <th>Ítem de medición</th>
-                  <th>Condición</th>
-                  <th>Unidad</th>
-                  <th>Estándar (nuevo)</th>
-                  <th>Límite de servicio</th>
-                  <th>Resultado</th>
-                  <th>Aceptado</th>
-                  <th>Rechazado</th>
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
-          </div>
-          <button type="button" class="btn" id="addFilaMedicion">Agregar fila</button>
-        </div>
-
-        <div class="form-section">
-          <h3>Dirección (Steering)</h3>
-          <div class="table-section">
-            <table id="tablaSteering">
-              <thead>
-                <tr>
-                  <th>Ítem</th>
-                  <th>Condición</th>
-                  <th>Unidad</th>
-                  <th>Estándar</th>
-                  <th>Permitido</th>
-                  <th>Resultado</th>
-                  <th>S</th>
-                  <th>U</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Tiempo de giro lock to lock</td>
-                  <td>Motor bajo</td>
-                  <td>seg</td>
-                  <td>—</td>
-                  <td>Máx. 6.8</td>
-                  <td><input/></td>
-                  <td><input type="checkbox"/></td>
-                  <td><input type="checkbox"/></td>
-                </tr>
-                <tr>
-                  <td>Tiempo de giro lock to lock</td>
-                  <td>Motor lleno</td>
-                  <td>seg</td>
-                  <td>—</td>
-                  <td>Máx. 5.0</td>
-                  <td><input/></td>
-                  <td><input type="checkbox"/></td>
-                  <td><input type="checkbox"/></td>
-                </tr>
-                <tr>
-                  <td>Presión de alivio de giro</td>
-                  <td>Motor lleno</td>
-                  <td>kg/cm²</td>
-                  <td>316 – 325</td>
-                  <td>312 – 330</td>
-                  <td><input/></td>
-                  <td><input type="checkbox"/></td>
-                  <td><input type="checkbox"/></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="form-section">
-          <h3>Presiones Convertidor / Carga</h3>
-          <div class="table-section">
-            <table id="tablaPresiones">
-              <thead>
-                <tr>
-                  <th>Ítem</th>
-                  <th>Condición</th>
-                  <th>Unidad</th>
-                  <th>Estándar</th>
-                  <th>Permitido</th>
-                  <th>Resultado</th>
-                  <th>S</th>
-                  <th>U</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Presión carga (cut-in)</td>
-                  <td>Motor pleno acelerador</td>
-                  <td>kg/cm²</td>
-                  <td>120 – 130</td>
-                  <td>120 – 130</td>
-                  <td><input/></td>
-                  <td><input type="checkbox"/></td>
-                  <td><input type="checkbox"/></td>
-                </tr>
-                <tr>
-                  <td>Presión carga (cut-out)</td>
-                  <td>—</td>
-                  <td>kg/cm²</td>
-                  <td>210 – 220</td>
-                  <td>210 – 220</td>
-                  <td><input/></td>
-                  <td><input type="checkbox"/></td>
-                  <td><input type="checkbox"/></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="form-section">
-          <h3>Frenos — Verificaciones</h3>
-          <div class="table-section">
-            <table id="tablaFrenos">
-              <thead>
-                <tr>
-                  <th>Tipo</th>
-                  <th>Condición</th>
-                  <th>Unidad</th>
-                  <th>Estándar</th>
-                  <th>Permitido</th>
-                  <th>Resultado</th>
-                  <th>S</th>
-                  <th>U</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Freno de estacionamiento</td>
-                  <td>F2, motor lleno — sin movimiento</td>
-                  <td>—</td>
-                  <td>Sin movimiento</td>
-                  <td>Sin movimiento</td>
-                  <td><input/></td>
-                  <td><input type="checkbox"/></td>
-                  <td><input type="checkbox"/></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div class="table-section" style="margin-top:10px">
-            <table id="tablaRPMFrenos">
-              <thead>
-                <tr>
-                  <th>Condición</th>
-                  <th>rpm (estándar)</th>
-                  <th>rpm (permitido)</th>
-                  <th>Medición</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Service brake (F2, incrementando rpm)</td>
-                  <td>1,760</td>
-                  <td>1,570</td>
-                  <td><input/></td>
-                </tr>
-                <tr>
-                  <td>Retarder brake</td>
-                  <td>1,340</td>
-                  <td>1,200</td>
-                  <td><input/></td>
-                </tr>
-                <tr>
-                  <td>Parking brake</td>
-                  <td>1,790</td>
-                  <td>1,610</td>
-                  <td><input/></td>
-                </tr>
-                <tr>
-                  <td>Emergency brake</td>
-                  <td>1,790</td>
-                  <td>1,610</td>
-                  <td><input/></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div class="table-section" style="margin-top:10px">
-            <table id="tablaDiscos">
-              <thead>
-                <tr>
-                  <th>Ubicación</th>
-                  <th>Gauge / Espesor</th>
-                  <th>Unidad</th>
-                  <th>Estándar</th>
-                  <th>Permitido</th>
-                  <th>Resultado</th>
-                  <th>Dentro de gauge</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Delantero Izquierdo</td>
-                  <td>Disc wear gauge</td>
-                  <td>mm</td>
-                  <td>39.3 – 42.1</td>
-                  <td>Máx. 45.3</td>
-                  <td><input/></td>
-                  <td><input type="checkbox"/></td>
-                </tr>
-                <tr>
-                  <td>Delantero Derecho</td>
-                  <td>Disc wear gauge</td>
-                  <td>mm</td>
-                  <td>39.3 – 42.1</td>
-                  <td>Máx. 45.3</td>
-                  <td><input/></td>
-                  <td><input type="checkbox"/></td>
-                </tr>
-                <tr>
-                  <td>Trasero Izquierdo</td>
-                  <td>Disc wear gauge</td>
-                  <td>mm</td>
-                  <td>39.3 – 42.1</td>
-                  <td>Máx. 45.3</td>
-                  <td><input/></td>
-                  <td><input type="checkbox"/></td>
-                </tr>
-                <tr>
-                  <td>Trasero Derecho</td>
-                  <td>Disc wear gauge</td>
-                  <td>mm</td>
-                  <td>39.3 – 42.1</td>
-                  <td>Máx. 45.3</td>
-                  <td><input/></td>
-                  <td><input type="checkbox"/></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="form-section">
-          <h3>Suspensión</h3>
-          <div class="table-section">
-            <table id="tablaSuspension">
-              <thead>
-                <tr>
-                  <th>Posición</th>
-                  <th>Ítem</th>
-                  <th>Unidad</th>
-                  <th>Estándar</th>
-                  <th>Permitido</th>
-                  <th>Resultado</th>
-                  <th>OK</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Delantera Izquierda</td>
-                  <td>Longitud cilindro</td>
-                  <td>mm</td>
-                  <td>237 – 257</td>
-                  <td>227 – 267</td>
-                  <td><input/></td>
-                  <td><input type="checkbox"/></td>
-                </tr>
-                <tr>
-                  <td>Delantera Derecha</td>
-                  <td>Longitud cilindro</td>
-                  <td>mm</td>
-                  <td>237 – 257</td>
-                  <td>227 – 267</td>
-                  <td><input/></td>
-                  <td><input type="checkbox"/></td>
-                </tr>
-                <tr>
-                  <td>Trasera Izquierda</td>
-                  <td>Longitud cilindro</td>
-                  <td>mm</td>
-                  <td>189 – 209</td>
-                  <td>179 – 219</td>
-                  <td><input/></td>
-                  <td><input type="checkbox"/></td>
-                </tr>
-                <tr>
-                  <td>Trasera Derecha</td>
-                  <td>Longitud cilindro</td>
-                  <td>mm</td>
-                  <td>189 – 209</td>
-                  <td>179 – 219</td>
-                  <td><input/></td>
-                  <td><input type="checkbox"/></td>
-                </tr>
-                <tr>
-                  <td>Fugas aceite/gas</td>
-                  <td>Visual</td>
-                  <td>—</td>
-                  <td>No fugas</td>
-                  <td>No fugas</td>
-                  <td><input/></td>
-                  <td><input type="checkbox"/></td>
-                </tr>
-                <tr>
-                  <td>Tope suspensión trasera</td>
-                  <td>Contacto (izq./der.)</td>
-                  <td>—</td>
-                  <td>Sin contacto</td>
-                  <td>Sin contacto</td>
-                  <td><input/></td>
-                  <td><input type="checkbox"/></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="form-section">
-          <h3>Registro de Códigos de Falla</h3>
-          <div class="table-section">
-            <table id="tablaFailureCodes">
-              <thead>
-                <tr>
-                  <th>Hora</th>
-                  <th>Código / Contenido</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr><td><input/></td><td><input/></td></tr>
-                <tr><td><input/></td><td><input/></td></tr>
-                <tr><td><input/></td><td><input/></td></tr>
-                <tr><td><input/></td><td><input/></td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="notes">
-            <strong>MEMO:</strong> Anote cualquier dato o fenómeno observado durante la inspección.
-            <textarea id="memo" rows="4" style="margin-top:8px"></textarea>
-          </div>
-        </div>
-
-        <div class="form-section">
-          <h3>Set Fotográfico</h3>
-          <div class="photo-container">
-            <div class="photo-placeholder" id="addPhotoBtn">+ Agregar Foto</div>
-            <input type="file" id="photoUpload" accept="image/*" multiple style="display:none"/>
-          </div>
-        </div>
-
-        <div id="message" class="hidden"></div>
-
-        <div class="form-actions" style="text-align:center;margin-top:20px">
-          <button type="button" class="btn btn-alt" onclick="location.href='index.html'">Volver al Menú</button>
-          <button type="submit" class="btn">Enviar Formulario</button>
-          <button type="button" class="btn btn-danger" id="limpiarBtn">Limpiar Formulario</button>
-        </div>
-      </form>
     </div>
-  </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-  <script src="js/pm-clinic22.js"></script>
+    <!-- CUADRO 2 -->
+    <div class="section">
+        <table>
+            <tr>
+                <th>N° de Trabajo</th>
+                <th>Fecha</th>
+                <th>Medidor de Servicio</th>
+                <th>Inspector</th>
+            </tr>
+            <tr>
+                <td><input type="text" /></td>
+                <td><input type="date" /></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+            </tr>
+            <tr>
+                <td colspan="4" class="left">
+                    <span class="muted"></span>
+                    <span class="right muted" style="float:right"></span>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- CUADRO 3 -->
+    <div class="section">
+        <h3>Preguntas al operador e inspección alrededor de la máquina</h3>
+        <table>
+            <tr>
+                <th class="left">¿Hubo alguna anormalidad antes de iniciar la inspección?</th>
+                <th>Temperatura ambiente</th>
+            </tr>
+            <tr>
+                <td class="left"><textarea rows="3"></textarea></td>
+                <td class="left">
+                    <div class="row">
+                        <div class="col">
+                            <div class="left">Máx. <span class="nowrap">°C(°F)</span></div>
+                            <input type="text" />
+                        </div>
+                        <div class="col">
+                            <div class="left">Mín. <span class="nowrap">°C(°F)</span></div>
+                            <input type="text" />
+                        </div>
+                        <div class="col">
+                            <div class="left">Altitud (m)</div>
+                            <input type="text" />
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th class="left">¿El nivel máximo de temperatura del refrigerante es normal?<br><span class="muted">(Durante la operación)</span></th>
+                <th class="left">¿El nivel máximo de temperatura del aceite del convertidor de torque es normal?<br><span class="muted">(Durante la operación)</span></th>
+            </tr>
+            <tr>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+            </tr>
+            <tr>
+                <th class="left">¿El nivel máximo de temperatura del aceite del retardador es normal?<br><span class="muted">(Durante la operación)</span></th>
+                <td><input type="text" /></td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- CUADRO 4 -->
+    <div class="section">
+        <h3>★ Después de arrancar el motor</h3>
+        <table>
+            <tr>
+                <th rowspan="2">Ítem de medición</th>
+                <th rowspan="2">Condición de medición</th>
+                <th rowspan="2">Unidad</th>
+                <th colspan="2">Estándar</th>
+                <th rowspan="2">Resultado</th>
+                <th rowspan="2" class="checkcell">OK</th>
+                <th rowspan="2" class="checkcell">NG</th>
+            </tr>
+            <tr>
+                <th>Máquina nueva</th>
+                <th>Límite de servicio</th>
+            </tr>
+            <tr>
+                <td rowspan="5"><b>Motor</b><br>Velocidad del motor</td>
+                <td>Velocidad de bloqueo del convertidor de torque – <b>Modo A</b></td>
+                <td>rpm</td>
+                <td>1,700 – 1,900</td>
+                <td>1,700 – 1,900</td>
+                <td><input type="text" /></td>
+                <td><input type="checkbox" /></td>
+                <td><input type="checkbox" /></td>
+            </tr>
+            <tr>
+                <td>Velocidad de bloqueo del convertidor de torque – <b>Modo B</b></td>
+                <td>rpm</td>
+                <td>1,635 – 1,835</td>
+                <td>1,635 – 1,835</td>
+                <td><input type="text" /></td>
+                <td><input type="checkbox" /></td>
+                <td><input type="checkbox" /></td>
+            </tr>
+            <tr>
+                <td>Velocidad de bloqueo del convertidor de torque – <b>Modo C</b></td>
+                <td>rpm</td>
+                <td>1,585 – 1,785</td>
+                <td>1,585 – 1,785</td>
+                <td><input type="text" /></td>
+                <td><input type="checkbox" /></td>
+                <td><input type="checkbox" /></td>
+            </tr>
+            <tr>
+                <td>Velocidad de bloqueo del convertidor de torque – <b>Modo D</b></td>
+                <td>rpm</td>
+                <td>1,535 – 1,735</td>
+                <td>1,535 – 1,735</td>
+                <td><input type="text" /></td>
+                <td><input type="checkbox" /></td>
+                <td><input type="checkbox" /></td>
+            </tr>
+        </table>
+
+        <div class="pad">
+            <div class="muted left">*: Detalle de cada modo (El ajuste cambia según la selección de los modos A – D)</div>
+                        <table style="margin-top:8px">
+                <tr>
+                    <th>Modo</th>
+                    <th>Condición (＊)</th>
+                    <th>Potencia nominal</th>
+                    <th>Velocidad máxima sin carga</th>
+                </tr>
+                <tr>
+                    <td>Modo A</td>
+                    <td>Modo Potencia – Alta carga (con carga)</td>
+                    <td>895 kW (1.200 HP) / 1.900 rpm</td>
+                    <td>2.250 rpm</td>
+                </tr>
+                <tr>
+                    <td>Modo B</td>
+                    <td>Modo Potencia – Baja carga (sin carga)</td>
+                    <td>809 kW (1.080 HP) / 1.900 rpm</td>
+                    <td>2.250 rpm</td>
+                </tr>
+                <tr>
+                    <td>Modo C</td>
+                    <td>Modo Economía – Alta carga (con carga)</td>
+                    <td>750 kW (1.010 HP) / 1.900 rpm</td>
+                    <td>2.250 rpm</td>
+                </tr>
+                <tr>
+                    <td>Modo D</td>
+                    <td>Modo Economía – Baja carga (sin carga)</td>
+                    <td>699 kW (937 HP) / 1.900 rpm</td>
+                    <td>2.100 rpm</td>
+                </tr>
+            </table>
+
+            <div class="muted left" style="margin-top:8px">
+                *: Observaciones<br>
+                • <b>Alta carga (con carga):</b> El camión se considera en alta carga cuando la presión del gas de la suspensión trasera es igual o superior a <b>10.8 MPa (110 kg/cm²)</b>.<br>
+                • <b>Baja carga (sin carga):</b> El camión se considera en baja carga cuando la presión del gas de la suspensión trasera es inferior a <b>10.8 MPa (110 kg/cm²)</b>.
+            </div>
+        </div>
+    </div>
+
+    <!-- CUADRO 5 -->
+    <div class="section">
+        <h3>Mediciones del motor</h3>
+        <table>
+            <tr>
+                <th rowspan="2">Ítem de medición</th>
+                <th rowspan="2">Condición de medición</th>
+                <th rowspan="2">Unidad</th>
+                <th colspan="2">Estándar</th>
+                <th rowspan="2">Resultado</th>
+                <th rowspan="2" class="checkcell">OK</th>
+                <th rowspan="2" class="checkcell">NG</th>
+            </tr>
+            <tr>
+                <th>Máquina nueva</th>
+                <th>Límite de servicio</th>
+            </tr>
+
+            <!-- Presión de blow-by -->
+            <tr>
+                <td rowspan="4"><b>Motor</b><br>Presión de blow-by</td>
+                <td class="left">Velocidad del motor: 1.900 rpm (Velocidad nominal)</td>
+                <td>kPa<br><span class="muted">(mmH₂O)</span></td>
+                <td>Máx. 2,94<br><span class="muted">(Máx. 300)</span></td>
+                <td>5,88<br><span class="muted">(600)</span></td>
+                <td><input type="text" /></td>
+                <td><input type="checkbox" /></td>
+                <td><input type="checkbox" /></td>
+            </tr>
+
+            <!-- Presión del aceite lubricante -->
+            <tr>
+                <td class="left">
+                    <div>SAE0W30EOS / SAE5W40EOS / SAE10W30DH / SAE15W40DH / SAE30DH</div>
+                    <div>Velocidad del motor: 1.900 rpm (Velocidad nominal)</div>
+                </td>
+                <td>MPa<br><span class="muted">(kg/cm²)</span></td>
+                <td>0,29 – 0,44<br><span class="muted">(3,0 – 4,5)</span></td>
+                <td>0,20<br><span class="muted">(2,0)</span></td>
+                <td><input type="text" /></td>
+                <td><input type="checkbox" /></td>
+                <td><input type="checkbox" /></td>
+            </tr>
+            <tr>
+                <td class="left">Ralentí bajo</td>
+                <td>MPa<br><span class="muted">(kg/cm²)</span></td>
+                <td>Mín. 0,08<br><span class="muted">(Mín. 0,8)</span></td>
+                <td>0,07<br><span class="muted">(0,7)</span></td>
+                <td><input type="text" /></td>
+                <td><input type="checkbox" /></td>
+                <td><input type="checkbox" /></td>
+            </tr>
+
+            <!-- Presión de sobrealimentación -->
+            <tr>
+                <td class="left">Presión de sobrealimentación – Velocidad del motor: 1.900 rpm (Velocidad nominal)</td>
+                <td>kPa<br><span class="muted">(mmHg)</span></td>
+                <td>Mín. 165,4<br><span class="muted">(Mín. 1.250)</span></td>
+                <td>Mín. 165,4<br><span class="muted">(Mín. 1.250)</span></td>
+                <td><input type="text" /></td>
+                <td><input type="checkbox" /></td>
+                <td><input type="checkbox" /></td>
+            </tr>
+
+            <!-- Temperatura de escape -->
+            <tr>
+                <td>Temperatura de escape</td>
+                <td class="left">Temperatura ambiente / Todo el rango de velocidad</td>
+                <td>°C</td>
+                <td>22<p></p>Max. 700</td>
+                <td>---<p></p>750<br><span class="muted"></span></td>
+                <td><input type="text" /></td>
+                <td><input type="checkbox" /></td>
+                <td><input type="checkbox" /></td>
+            </tr>
+        </table>
+    </div>
+    <!-- =========================
+     PM CLINIC HD785-7 – PÁG. 2 (PARTE 1)
+     Secciones: Transmisión, Dirección, Frenos
+     ========================= -->
+<style>
+  /* Reutiliza el mismo look & feel de tus formularios */
+  .section{border:1px solid #ddd;border-radius:5px;margin:18px 0;background:#fff}
+  .section h3{background:#f0f0f0;color:#0033A0;border-bottom:1px solid #ddd;margin:0;padding:8px 12px;font-size:15px}
+  .pad{padding:12px}
+  table{width:100%;border-collapse:collapse;font-size:12px}
+  th,td{border:1px solid #ddd;padding:6px 8px;text-align:center;vertical-align:middle}
+  th{background:#f7f7f7;color:#0033A0}
+  .left{text-align:left}
+  .muted{font-size:11px;color:#666}
+  input[type="text"]{width:100%;padding:6px 8px;border:1px solid #ccc;border-radius:4px;font-size:12px}
+  .checkcell{width:38px}
+</style>
+
+<!-- TRANSMISIÓN -->
+<div class="section">
+  <h3>CONVERTIDOR DE TORQUE</h3>
+  <table>
+    <tr>
+      <th rowspan="2">Elemento de medición</th>
+      <th rowspan="2">Condición de medición</th>
+      <th rowspan="2">Unidad</th>
+      <th colspan="2">Estándar</th>
+      <th rowspan="2">Resultado</th>
+      <th rowspan="2" class="checkcell">Aprob.</th>
+      <th rowspan="2" class="checkcell">Rech.</th>
+    </tr>
+    <tr>
+      <th>Máquina nueva</th>
+      <th>Límite de servicio</th>
+    </tr>
+
+    <!-- Temperatura de aceite del convertidor -->
+    <tr>
+      <td class="left"><b>Temperatura del aceite del convertidor de torque</b></td>
+      <td class="left">75 – 85 °C</td>
+      <td>—</td>
+      <td>—</td>
+      <td>—</td>
+      <td><input type="text" name="torque_oil_temp" /></td>
+      <td><input type="checkbox" name="ok_torque_oil_temp" /></td>
+      <td><input type="checkbox" name="ng_torque_oil_temp" /></td>
+    </tr>
+
+    <!-- Presión de entrada -->
+    <tr>
+      <td class="left">Presión de aceite de entrada</td>
+      <td class="left">Velocidad del motor: 1.900 rpm (velocidad nominal)</td>
+      <td>Mpa<br><span class="muted">{kg/cm²}</span></td>
+      <td>Máx. 0,85 <br><span class="muted">{Máx. 8,67}</span></td>
+      <td>Máx. 0,85 <br><span class="muted">{Máx. 8,67}</span></td>
+      <td><input type="text" name="torque_inlet" /></td>
+      <td><input type="checkbox" name="ok_torque_inlet" /></td>
+      <td><input type="checkbox" name="ng_torque_inlet" /></td>
+    </tr>
+
+    <!-- Presión de salida (freno ON) -->
+    <tr>
+      <td class="left">Presión de aceite de salida</td>
+      <td class="left">Con freno activado (ON)</td>
+      <td>Mpa<br><span class="muted">{kg/cm²}</span></td>
+      <td>0,45 – 0,53 <br><span class="muted">{4,59 – 5,41}</span></td>
+      <td>0,45 – 0,53 <br><span class="muted">{4,59 – 5,41}</span></td>
+      <td><input type="text" name="torque_out_brake_on" /></td>
+      <td><input type="checkbox" name="ok_torque_out_brake_on" /></td>
+      <td><input type="checkbox" name="ng_torque_out_brake_on" /></td>
+    </tr>
+
+    <!-- Presión de salida (freno OFF) -->
+    <tr>
+      <td class="left">Presión de aceite de salida</td>
+      <td class="left">Con freno desactivado (OFF)</td>
+      <td>Mpa<br><span class="muted">{kg/cm²}</span></td>
+      <td>0,45 – 0,59 <br><span class="muted">{4,59 – 6,01}</span></td>
+      <td>0,45 – 0,59 <br><span class="muted">{4,59 – 6,01}</span></td>
+      <td><input type="text" name="torque_out_brake_off" /></td>
+      <td><input type="checkbox" name="ok_torque_out_brake_off" /></td>
+      <td><input type="checkbox" name="ng_torque_out_brake_off" /></td>
+    </tr>
+
+    <!-- Presión de operación del lockup -->
+    <tr>
+      <td class="left">Presión de operación del embrague lock-up</td>
+      <td class="left">Durante activación del lock-up</td>
+      <td>Mpa<br><span class="muted">{kg/cm²}</span></td>
+      <td>1,32 – 1,72 <br><span class="muted">{13,5 – 17,5}</span></td>
+      <td>1,32 – 1,72 <br><span class="muted">{13,5 – 17,5}</span></td>
+      <td><input type="text" name="torque_lockup" /></td>
+      <td><input type="checkbox" name="ok_torque_lockup" /></td>
+      <td><input type="checkbox" name="ng_torque_lockup" /></td>
+    </tr>
+
+    <!-- Presión principal de alivio (N, F1–F3) -->
+    <tr>
+      <td class="left">Presión principal de alivio</td>
+      <td class="left">N, F1 – F3</td>
+      <td>Mpa<br><span class="muted">{kg/cm²}</span></td>
+      <td>3,33 – 3,73 <br><span class="muted">{34,0 – 38,0}</span></td>
+      <td>3,33 – 3,73 <br><span class="muted">{34,0 – 38,0}</span></td>
+      <td><input type="text" name="torque_relief_nf1f3" /></td>
+      <td><input type="checkbox" name="ok_torque_relief_nf1f3" /></td>
+      <td><input type="checkbox" name="ng_torque_relief_nf1f3" /></td>
+    </tr>
+
+    <!-- Presión principal de alivio (F4–F7) -->
+    <tr>
+      <td class="left">Presión principal de alivio</td>
+      <td class="left">F4 – F7</td>
+      <td>Mpa<br><span class="muted">{kg/cm²}</span></td>
+      <td>1,96 – 2,36 <br><span class="muted">{20,0 – 24,0}</span></td>
+      <td>1,96 – 2,36 <br><span class="muted">{20,0 – 24,0}</span></td>
+      <td><input type="text" name="torque_relief_f4f7" /></td>
+      <td><input type="checkbox" name="ok_torque_relief_f4f7" /></td>
+      <td><input type="checkbox" name="ng_torque_relief_f4f7" /></td>
+    </tr>
+
+    <!-- Presión de lubricación de transmisión -->
+    <tr>
+      <td class="left">Presión de aceite de lubricación de transmisión</td>
+      <td class="left">Durante operación normal</td>
+      <td>Mpa<br><span class="muted">{kg/cm²}</span></td>
+      <td>0,12 – 0,22 <br><span class="muted">{1,2 – 2,2}</span></td>
+      <td>0,12 – 0,22 <br><span class="muted">{1,2 – 2,2}</span></td>
+      <td><input type="text" name="torque_trans_lube" /></td>
+      <td><input type="checkbox" name="ok_torque_trans_lube" /></td>
+      <td><input type="checkbox" name="ng_torque_trans_lube" /></td>
+    </tr>
+  </table>
+</div>
+
+<div class="section">
+  <h3>TRANSMISIÓN</h3>
+  <table>
+    <tr>
+      <th>Elemento de medición</th>
+      <th>Condición de medición</th>
+      <th>Unidad</th>
+      <th>Máquina nueva</th>
+      <th>Límite de servicio</th>
+      <th>Resultado</th>
+      <th>Aprob.</th>
+      <th>Rech.</th>
+    </tr>
+    <tr>
+      <td class="left">Inspección visual del colador de la transmisión</td>
+      <td class="left">—</td>
+      <td>—</td>
+      <td colspan="2">No debe haber exceso de polvo metálico o negro</td>
+      <td><input type="text" name="trans_filter_visual" /></td>
+      <td><input type="checkbox" name="ok_trans_filter_visual" /></td>
+      <td><input type="checkbox" name="ng_trans_filter_visual" /></td>
+    </tr>
+  </table>
+</div>
+
+<div class="section">
+  <h3>DIRECCIÓN</h3>
+  <table>
+    <tr>
+      <th>Elemento de medición</th>
+      <th>Condición de medición</th>
+      <th>Unidad</th>
+      <th>Máquina nueva</th>
+      <th>Límite de servicio</th>
+      <th>Resultado</th>
+      <th>Aprob.</th>
+      <th>Rech.</th>
+    </tr>
+
+    <tr>
+      <td class="left">Tiempo de dirección (bloqueo a bloqueo)</td>
+      <td class="left">—</td>
+      <td>seg.</td>
+      <td>Máx. 4</td>
+      <td>Máx. 5</td>
+      <td><input type="text" name="steer_time" /></td>
+      <td><input type="checkbox" name="ok_steer_time" /></td>
+      <td><input type="checkbox" name="ng_steer_time" /></td>
+    </tr>
+
+    <tr>
+      <td class="left">Presión de alivio</td>
+      <td class="left">Velocidad nominal (1.900 rpm)</td>
+      <td>Mpa<br><span class="muted">{kg/cm²}</span></td>
+      <td>20,2 – 21,1<br><span class="muted">{206 – 215}</span></td>
+      <td>20,2 – 21,1<br><span class="muted">{206 – 215}</span></td>
+      <td><input type="text" name="steer_relief" /></td>
+      <td><input type="checkbox" name="ok_steer_relief" /></td>
+      <td><input type="checkbox" name="ng_steer_relief" /></td>
+    </tr>
+
+    <tr>
+      <td class="left">Presión de alivio<br><span class="muted">(ralentí bajo, 650 rpm)</span></td>
+      <td class="left">[Valor de referencia]</td>
+      <td>Mpa<br><span class="muted">{kg/cm²}</span></td>
+      <td>18,1 – 19,1<br><span class="muted">{185 – 195}</span></td>
+      <td>18,1 – 19,1<br><span class="muted">{185 – 195}</span></td>
+      <td><input type="text" name="steer_relief_idle" /></td>
+      <td><input type="checkbox" name="ok_steer_relief_idle" /></td>
+      <td><input type="checkbox" name="ng_steer_relief_idle" /></td>
+    </tr>
+  </table>
+</div>
+
+<div class="section">
+  <h3>FRENOS</h3>
+  <table>
+    <tr>
+      <th>Elemento de medición</th>
+      <th>Condición de medición</th>
+      <th>Unidad</th>
+      <th>Máquina nueva</th>
+      <th>Límite de servicio</th>
+      <th>Resultado</th>
+      <th>Aprob.</th>
+      <th>Rech.</th>
+    </tr>
+
+    <tr>
+      <td class="left">Presión del aceite de freno<br>1ª operación del freno de servicio (tras carga del acumulador)</td>
+      <td class="left">—</td>
+      <td>Mpa<br><span class="muted">{kg/cm²}</span></td>
+      <td>9,11 – 10,49<br><span class="muted">{93 – 107}</span></td>
+      <td>9,11 – 10,49<br><span class="muted">{93 – 107}</span></td>
+      <td><input type="text" name="brake_service" /></td>
+      <td><input type="checkbox" name="ok_brake_service" /></td>
+      <td><input type="checkbox" name="ng_brake_service" /></td>
+    </tr>
+
+    <tr>
+      <td class="left">Presión del aceite del retardador</td>
+      <td class="left">—</td>
+      <td>Mpa<br><span class="muted">{kg/cm²}</span></td>
+      <td>5,81 – 7,09<br><span class="muted">{59 – 72}</span></td>
+      <td>5,81 – 7,09<br><span class="muted">{59 – 72}</span></td>
+      <td><input type="text" name="brake_retarder" /></td>
+      <td><input type="checkbox" name="ok_brake_retarder" /></td>
+      <td><input type="checkbox" name="ng_brake_retarder" /></td>
+    </tr>
+
+    <tr>
+      <td class="left">Presión de ajuste de la válvula de carga (Cut-in)</td>
+      <td class="left">Acelerador a fondo</td>
+      <td>Mpa<br><span class="muted">{kg/cm²}</span></td>
+      <td>11,8 – 12,78<br><span class="muted">{120 – 130}</span></td>
+      <td>11,8 – 12,78<br><span class="muted">{120 – 130}</span></td>
+      <td><input type="text" name="brake_cut_in" /></td>
+      <td><input type="checkbox" name="ok_brake_cut_in" /></td>
+      <td><input type="checkbox" name="ng_brake_cut_in" /></td>
+    </tr>
+
+    <tr>
+      <td class="left">Presión de ajuste de la válvula de carga (Cut-out)</td>
+      <td class="left">—</td>
+      <td>Mpa<br><span class="muted">{kg/cm²}</span></td>
+      <td>20,6 – 21,58<br><span class="muted">{210 – 220}</span></td>
+      <td>20,6 – 21,58<br><span class="muted">{210 – 220}</span></td>
+      <td><input type="text" name="brake_cut_out" /></td>
+      <td><input type="checkbox" name="ok_brake_cut_out" /></td>
+      <td><input type="checkbox" name="ng_brake_cut_out" /></td>
+    </tr>
+  </table>
+
+  <div class="pad muted left">
+    <b>Verificación de arranque por marcha:</b><br>
+    Cuando se aplica el freno y se aumenta gradualmente la velocidad del motor en F2, la máquina no debe moverse a las velocidades mostradas:<br>
+    • Freno de servicio: 1.760 rpm (límite: 1.570 rpm)<br>
+    • Retardador: 1.340 rpm (límite: 1.200 rpm)<br>
+    • Freno de estacionamiento: 1.790 rpm (límite: 1.610 rpm)<br>
+    • Freno de emergencia: 1.790 rpm (límite: 1.610 rpm)
+  </div>
+</div>
+
+<div class="section">
+  <h3>SISTEMA HIDRÁULICO</h3>
+  <table>
+    <tr>
+      <th>Elemento de medición</th>
+      <th>Condición de medición</th>
+      <th>Unidad</th>
+      <th>Máquina nueva</th>
+      <th>Límite de servicio</th>
+      <th>Resultado</th>
+      <th>Aprob.</th>
+      <th>Rech.</th>
+    </tr>
+
+    <tr>
+      <td class="left">Presión de alivio de la válvula de levante</td>
+      <td class="left">Velocidad nominal (1.900 rpm)</td>
+      <td>Mpa<br><span class="muted">{kg/cm²}</span></td>
+      <td>20,2 – 21,1<br><span class="muted">{206 – 215}</span></td>
+      <td>20,2 – 21,1<br><span class="muted">{206 – 215}</span></td>
+      <td><input type="text" name="hyd_relief_high" /></td>
+      <td><input type="checkbox" name="ok_hyd_relief_high" /></td>
+      <td><input type="checkbox" name="ng_hyd_relief_high" /></td>
+    </tr>
+
+    <tr>
+      <td class="left">Presión de alivio de la válvula de levante<br><span class="muted">(ralentí bajo, 650 rpm)</span></td>
+      <td class="left">[Valor de referencia]</td>
+      <td>Mpa<br><span class="muted">{kg/cm²}</span></td>
+      <td>18,1 – 19,1<br><span class="muted">{185 – 195}</span></td>
+      <td>18,1 – 19,1<br><span class="muted">{185 – 195}</span></td>
+      <td><input type="text" name="hyd_relief_low" /></td>
+      <td><input type="checkbox" name="ok_hyd_relief_low" /></td>
+      <td><input type="checkbox" name="ng_hyd_relief_low" /></td>
+    </tr>
+
+    <tr>
+      <td class="left">Presión básica de la válvula EPC de descarga</td>
+      <td class="left">Alta velocidad (2.250 rpm)</td>
+      <td>Mpa<br><span class="muted">{kg/cm²}</span></td>
+      <td>2,91 – 3,89<br><span class="muted">{30 – 40}</span></td>
+      <td>2,91 – 3,89<br><span class="muted">{30 – 40}</span></td>
+      <td><input type="text" name="epc_high" /></td>
+      <td><input type="checkbox" name="ok_epc_high" /></td>
+      <td><input type="checkbox" name="ng_epc_high" /></td>
+    </tr>
+
+    <tr>
+      <td class="left">Presión básica de la válvula EPC de descarga<br><span class="muted">(ralentí bajo, 650 rpm)</span></td>
+      <td class="left">[Valor de referencia]</td>
+      <td>Mpa<br><span class="muted">{kg/cm²}</span></td>
+      <td>2,11 – 3,09<br><span class="muted">{22 – 32}</span></td>
+      <td>2,11 – 3,09<br><span class="muted">{22 – 32}</span></td>
+      <td><input type="text" name="epc_low" /></td>
+      <td><input type="checkbox" name="ok_epc_low" /></td>
+      <td><input type="checkbox" name="ng_epc_low" /></td>
+    </tr>
+
+    <tr>
+      <td class="left">Tiempo de elevación del volcado</td>
+      <td class="left">Velocidad nominal (1.900 rpm)</td>
+      <td>seg.</td>
+      <td>11,5 – 14,5</td>
+      <td>11,5 – 14,5</td>
+      <td><input type="text" name="dump_raise_time" /></td>
+      <td><input type="checkbox" name="ok_dump_raise" /></td>
+      <td><input type="checkbox" name="ng_dump_raise" /></td>
+    </tr>
+
+    <tr>
+      <td class="left">Tiempo de bajada del volcado</td>
+      <td class="left">Ralentí bajo (650 rpm), palanca en posición “Float”</td>
+      <td>seg.</td>
+      <td>12,5 – 15,5</td>
+      <td>12,5 – 15,5</td>
+      <td><input type="text" name="dump_lower_time" /></td>
+      <td><input type="checkbox" name="ok_dump_lower" /></td>
+      <td><input type="checkbox" name="ng_dump_lower" /></td>
+    </tr>
+  </table>
+
+</div>
+
+
+<div class="section">
+  <h3>DERIVA HIDRÁULICA</h3>
+  <table>
+    <tr>
+      <th>Elemento</th>
+      <th>Condición</th>
+      <th>Unidad</th>
+      <th>Máx. estándar</th>
+      <th>Límite</th>
+      <th>Resultado</th>
+      <th>Aprob.</th>
+      <th>Rech.</th>
+    </tr>
+    <tr>
+      <td class="left">Deriva del cilindro de levante</td>
+      <td class="left">Temperatura del aceite hidraulico: 50-80°C<p></p>Posición extendida 20 mm del cilindro N°2</td>
+      <td>mm / 15 min</td>
+      <td>85</td>
+      <td>170</td>
+      <td><input type="text" name="hyd_drift" /></td>
+      <td><input type="checkbox" name="ok_hyd_drift" /></td>
+      <td><input type="checkbox" name="ng_hyd_drift" /></td>
+    </tr>
+  </table>
+<div class="pad muted left">
+    <b>★ Detener el motor con el cuerpo del volcado elevado.</b>
+  </div>
+  
+</div>
+
+<div class="section">
+  <h3>EJE</h3>
+  <table>
+    <tr>
+      <th>Elemento</th>
+      <th>Condición</th>
+      <th>Unidad</th>
+      <th>Resultado</th>
+      <th>Aprob.</th>
+      <th>Rech.</th>
+    </tr>
+    <tr>
+      <td class="left">Revisión visual del tapón del diferencial</td>
+      <td class="left">Motor detenido</td>
+      <td>—</td>
+      <td>No hay exceso de polvo metálico</td>
+      <td><input type="checkbox" name="ok_axle_diff" /></td>
+      <td><input type="checkbox" name="ng_axle_diff" /></td>
+    </tr>
+    <tr>
+      <td class="left">Revisión visual del tapón de los reductores finales</td>
+      <td class="left">Lado izquierdo / derecho</td>
+      <td>—</td>
+      <td>No hay exceso de polvo metálico</td>
+      <td><input type="checkbox" name="ok_axle_final" /></td>
+      <td><input type="checkbox" name="ng_axle_final" /></td>
+    </tr>
+  </table>
+  <div class="pad muted left">
+    ★ Reemplace el tapón de drenaje por el tapón de repuesto.
+  </div>
+</div>
+
+<!-- TESTING & ADJUSTING -->
+<div class="section">
+  <h3>PRUEBAS Y AJUSTES – CADA 1000 HORAS DE SERVICIO</h3>
+
+  <!-- FRENOS -->
+  <table>
+    <tr>
+      <th colspan="6">FRENO</th>
+    </tr>
+    <tr>
+      <th>Ubicación</th>
+      <th>Elemento</th>
+      <th>Unidad</th>
+      <th>Estándar</th>
+      <th>Resultado</th>
+      <th>Aprob.</th>
+    </tr>
+    <tr>
+      <td rowspan="2">Freno delantero<br>(Indicador de desgaste del disco)</td>
+      <td class="left">Lado izquierdo</td>
+      <td>—</td>
+      <td>Dentro del rango del indicador de desgaste</td>
+      <td><input type="text" name="front_brake_left" /></td>
+      <td><input type="checkbox" name="ok_front_brake_left" /></td>
+    </tr>
+    <tr>
+      <td class="left">Lado derecho</td>
+      <td>—</td>
+      <td>Dentro del rango del indicador de desgaste</td>
+      <td><input type="text" name="front_brake_right" /></td>
+      <td><input type="checkbox" name="ok_front_brake_right" /></td>
+    </tr>
+
+    <tr>
+      <td rowspan="2">Freno trasero<br>(Indicador de desgaste del disco)</td>
+      <td class="left">Lado izquierdo</td>
+      <td>—</td>
+      <td>Dentro del rango del indicador de desgaste</td>
+      <td><input type="text" name="rear_brake_left" /></td>
+      <td><input type="checkbox" name="ok_rear_brake_left" /></td>
+    </tr>
+    <tr>
+      <td class="left">Lado derecho</td>
+      <td>—</td>
+      <td>Dentro del rango del indicador de desgaste</td>
+      <td><input type="text" name="rear_brake_right" /></td>
+      <td><input type="checkbox" name="ok_rear_brake_right" /></td>
+    </tr>
+  </table>
+
+  <!-- SUSPENSIÓN -->
+  <h3 style="margin-top:20px;">SUSPENSIÓN</h3>
+  <table>
+    <tr>
+      <th>Ubicación</th>
+      <th>Elemento</th>
+      <th>Unidad</th>
+      <th>Estándar</th>
+      <th>Límite</th>
+      <th>Resultado</th>
+      <th>Aprob.</th>
+    </tr>
+    <tr>
+      <td>Delantera Izquierda</td>
+      <td>Longitud del cilindro de suspensión</td>
+      <td>mm</td>
+      <td>237 – 257</td>
+      <td>227 – 267</td>
+      <td><input type="text" name="susp_fl_len" /></td>
+      <td><input type="checkbox" name="ok_susp_fl_len" /></td>
+    </tr>
+    <tr>
+      <td>Delantera Izquierda</td>
+      <td>Fuga de aceite/gas</td>
+      <td>—</td>
+      <td>Sin fugas</td>
+      <td>—</td>
+      <td><input type="text" name="susp_fl_leak" /></td>
+      <td><input type="checkbox" name="ok_susp_fl_leak" /></td>
+    </tr>
+    <tr>
+      <td>Delantera Derecha</td>
+      <td>Longitud del cilindro de suspensión</td>
+      <td>mm</td>
+      <td>237 – 257</td>
+      <td>227 – 267</td>
+      <td><input type="text" name="susp_fr_len" /></td>
+      <td><input type="checkbox" name="ok_susp_fr_len" /></td>
+    </tr>
+    <tr>
+      <td>Delantera Derecha</td>
+      <td>Fuga de aceite/gas</td>
+      <td>—</td>
+      <td>Sin fugas</td>
+      <td>—</td>
+      <td><input type="text" name="susp_fr_leak" /></td>
+      <td><input type="checkbox" name="ok_susp_fr_leak" /></td>
+    </tr>
+
+    <tr>
+      <td>Trasera Izquierda</td>
+      <td>Longitud del cilindro de suspensión</td>
+      <td>mm</td>
+      <td>189 – 209</td>
+      <td>179 – 219</td>
+      <td><input type="text" name="susp_rl_len" /></td>
+      <td><input type="checkbox" name="ok_susp_rl_len" /></td>
+    </tr>
+    <tr>
+      <td>Trasera Izquierda</td>
+      <td>Fuga de aceite/gas</td>
+      <td>—</td>
+      <td>Sin fugas</td>
+      <td>—</td>
+      <td><input type="text" name="susp_rl_leak" /></td>
+      <td><input type="checkbox" name="ok_susp_rl_leak" /></td>
+    </tr>
+
+    <tr>
+      <td>Trasera Derecha</td>
+      <td>Longitud del cilindro de suspensión</td>
+      <td>mm</td>
+      <td>189 – 209</td>
+      <td>179 – 219</td>
+      <td><input type="text" name="susp_rr_len" /></td>
+      <td><input type="checkbox" name="ok_susp_rr_len" /></td>
+    </tr>
+    <tr>
+      <td>Trasera Derecha</td>
+      <td>Fuga de aceite/gas</td>
+      <td>—</td>
+      <td>Sin fugas</td>
+      <td>—</td>
+      <td><input type="text" name="susp_rr_leak" /></td>
+      <td><input type="checkbox" name="ok_susp_rr_leak" /></td>
+    </tr>
+
+    <tr>
+      <td colspan="2" class="left">Contacto del tope de suspensión trasera</td>
+      <td>—</td>
+      <td>No hay contacto</td>
+      <td>—</td>
+      <td><input type="text" name="rear_stop_contact" /></td>
+      <td><input type="checkbox" name="ok_rear_stop_contact" /></td>
+    </tr>
+  </table>
+</div>
+
+<!-- REGISTRO DE CÓDIGOS DE FALLA -->
+<div class="section">
+  <h3>REGISTRO DE CÓDIGOS DE FALLA</h3>
+  <table>
+    <tr>
+      <th>Hora</th>
+      <th>Contenido</th>
+      <th>Hora</th>
+      <th>Contenido</th>
+    </tr>
+    <tr>
+      <td><input type="text" /></td>
+      <td><input type="text" /></td>
+      <td><input type="text" /></td>
+      <td><input type="text" /></td>
+    </tr>
+    <tr>
+      <td><input type="text" /></td>
+      <td><input type="text" /></td>
+      <td><input type="text" /></td>
+      <td><input type="text" /></td>
+    </tr>
+    <tr>
+      <td><input type="text" /></td>
+      <td><input type="text" /></td>
+      <td><input type="text" /></td>
+      <td><input type="text" /></td>
+    </tr>
+  </table>
+</div>
+
+<!-- MEMO -->
+<div class="section">
+  <h3>MEMO</h3>
+  <div class="pad">
+    <textarea rows="4" placeholder="Anotar cualquier dato o fenómeno notado durante la inspección de hoy."></textarea>
+  </div>
+</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="pm-clinic22.js"></script>
+
 </body>
 </html>
