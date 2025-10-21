@@ -1,58 +1,58 @@
-document.addEventListener("DOMContentLoaded", () => {
-  // Establecer fecha actual en el primer input tipo fecha
-  const today = new Date().toISOString().split("T")[0];
+document.addEventListener("DOMContentLoaded", function () {
+  // Fecha automática
   const dateInputs = document.querySelectorAll('input[type="date"]');
-  if (dateInputs.length) dateInputs[0].value = today;
+  if (dateInputs.length) dateInputs[0].value = new Date().toISOString().split("T")[0];
 
-  const formContainer = document.querySelector(".container");
-
-  // Crear botón principal
+  // Botón de envío
   const submitButton = document.createElement("button");
   submitButton.textContent = "Generar y Enviar Reporte";
   submitButton.className = "btn";
   submitButton.style.marginTop = "20px";
+
+  // Contenedor del formulario
+  const formContainer = document.querySelector(".container");
   formContainer.appendChild(submitButton);
 
-  // Crear caja de mensajes
+  // Caja de mensajes
   const messageBox = document.createElement("div");
-  messageBox.id = "messageBox";
+  messageBox.id = "message";
   messageBox.style.cssText =
     "margin-top:12px;font-size:14px;font-weight:bold;text-align:center;";
   formContainer.appendChild(messageBox);
 
-  // Evento para generar y enviar el PDF
+  // Evento de click
   submitButton.addEventListener("click", async () => {
-    await generateAndSendPDF();
+    await submitPMClinicForm();
   });
 });
 
-// Mostrar mensajes al usuario
-function showMessage(msg, success = true) {
-  const box = document.getElementById("messageBox");
-  box.textContent = msg;
-  box.style.color = success ? "#007b00" : "#c00";
+function showMessage(elementId, message, isError = false) {
+  const el = document.getElementById(elementId);
+  if (!el) return;
+  el.textContent = message;
+  el.style.color = isError ? "#c00" : "#007b00";
 }
 
-// Generar PDF y subirlo
-async function generateAndSendPDF() {
-  try {
-    showMessage("📄 Generando PDF... Por favor espera.");
+async function submitPMClinicForm() {
+  showMessage("message", "📄 Generando PDF y enviando reporte...");
 
-    const element = document.querySelector(".container > .form-container") || document.querySelector(".container");
+  try {
+    // Capturar solo el formulario
+    const elemento = document.querySelector(".container");
 
     const opt = {
-  margin: [0.1, 0.2, 0.2, 0.2],
-  filename: `PM_Clinic_HD785-7_${new Date().toISOString().split("T")[0]}.pdf`,
-  image: { type: "jpeg", quality: 1 },
-  html2canvas: { scale: 3, useCORS: true },
-  jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
-  pagebreak: { mode: ["avoid-all", "css", "legacy"] }
-};
+      margin: [0.3, 0.3, 0.3, 0.3],
+      filename: `PM_Clinic_HD785-7_${Date.now()}.pdf`,
+      image: { type: "jpeg", quality: 1 },
+      html2canvas: { scale: 3, useCORS: true },
+      jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+      pagebreak: { mode: ["avoid-all", "css", "legacy"] }
+    };
 
-    // Convertir el formulario en PDF
-    const pdfBlob = await html2pdf().from(element).set(opt).outputPdf("blob");
+    // Generar PDF
+    const pdfBlob = await html2pdf().from(elemento).set(opt).outputPdf("blob");
 
-    // Subir PDF a Uploadcare
+    // Subir a Uploadcare
     const formData = new FormData();
     formData.append("UPLOADCARE_PUB_KEY", "dd2580a9c669d60b5d49");
     formData.append("file", pdfBlob, "PM_Clinic_HD785-7.pdf");
@@ -63,20 +63,17 @@ async function generateAndSendPDF() {
     });
 
     const uploadData = await uploadRes.json();
-    if (!uploadData.file) throw new Error("Error al subir el PDF.");
-
     const pdfUrl = `https://ucarecdn.com/${uploadData.file}/`;
     console.log("📎 PDF subido:", pdfUrl);
 
-    showMessage("📨 Enviando correo...");
+    // Enviar email
     await sendReportEmail(pdfUrl);
   } catch (err) {
-    console.error("❌ Error general:", err);
-    showMessage("❌ Error al generar o subir el PDF.", false);
+    console.error(err);
+    showMessage("message", "❌ Error al generar o subir el PDF.", true);
   }
 }
 
-// Enviar correo con enlace al PDF
 async function sendReportEmail(pdfUrl) {
   try {
     const today = new Date();
@@ -107,23 +104,22 @@ async function sendReportEmail(pdfUrl) {
     const res = await fetch("https://komatsu-api.vercel.app/api/sendEmail", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ subject, html: htmlContent })
+      body: JSON.stringify({
+        subject,
+        html: htmlContent
+      })
     });
 
     const data = await res.json();
-
     if (data.success) {
-      console.log("✅ Email enviado correctamente:", data);
-      showMessage("✅ Reporte generado y enviado correctamente.");
+      showMessage("message", "✅ Reporte enviado correctamente.");
+      console.log("✅ Email enviado:", data);
     } else {
+      showMessage("message", "❌ Error al enviar el correo.", true);
       console.error("❌ Error al enviar email:", data);
-      showMessage("❌ Error al enviar el correo.", false);
     }
   } catch (error) {
-    console.error("❌ Error en el envío de correo:", error);
-    showMessage("❌ Error inesperado al enviar el reporte.", false);
+    console.error("❌ Error en envío:", error);
+    showMessage("message", "❌ Error inesperado al enviar el reporte.", true);
   }
-}
-function submitPMClinicForm() {
-  generateAndSendPDF();
 }
