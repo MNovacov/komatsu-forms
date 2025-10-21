@@ -115,9 +115,8 @@ async function submitGetInspectionForm() {
     const pdfUrl = `https://ucarecdn.com/${uploadData.file}/`;
     console.log('📎 PDF subido:', pdfUrl);
 
-    const to = ["alaskaheim@gmail.com"]; 
-    const cc = [];                      
-    const bcc = [
+    const recipients = [
+      "alaskaheim@gmail.com",
       "mariaignaciar@live.cl",
       "mnovacov@hotmail.com",
       "novakovfilms@gmail.com",
@@ -129,10 +128,8 @@ async function submitGetInspectionForm() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        to,
-        cc,
-        bcc,
-        subject: 'Reporte de Inspección GET - Komatsu',
+        recipients,
+        subject: "Reporte de Inspección GET - Komatsu",
         html: `
           <p>Hola equipo,</p>
           <p>Adjunto el reporte de inspección generado automáticamente.</p>
