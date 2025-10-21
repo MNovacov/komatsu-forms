@@ -1,2005 +1,471 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tabla de Valores Estándar HD785-7</title>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
-        
-        body {
-            background-color: #f5f5f5;
-            color: #333;
-            line-height: 1.6;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        header {
-            text-align: center;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #0033A0;
-        }
-        
-        .logo h1 {
-            color: #0033A0;
-            font-size: 28px;
-            margin-bottom: 5px;
-        }
-        
-        .logo p {
-            color: #666;
-            font-size: 14px;
-        }
-        
-        .form-container {
-            background-color: white;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            padding: 20px;
-        }
-        
-        .form-header {
-            text-align: center;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #ddd;
-        }
-        
-        .form-header h2 {
-            color: #0033A0;
-            font-size: 22px;
-        }
-        
-        .form-section {
-            margin-bottom: 30px;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        
-        .form-section h3 {
-            background-color: #f0f0f0;
-            padding: 8px 15px;
-            margin: -15px -15px 15px -15px;
-            border-bottom: 1px solid #ddd;
-            color: #0033A0;
-            font-size: 18px;
-        }
-        
-        .form-row {
-            display: flex;
-            flex-wrap: wrap;
-            margin-bottom: 15px;
-        }
-        
-        .form-group {
-            flex: 1;
-            min-width: 200px;
-            margin-right: 15px;
-            margin-bottom: 10px;
-        }
-        
-        .form-group:last-child {
-            margin-right: 0;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        
-        .required::after {
-            content: " *";
-            color: red;
-        }
-        
-        input, select, textarea {
-            width: 100%;
-            padding: 8px 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-        
-        input:focus, select:focus, textarea:focus {
-            border-color: #0033A0;
-            outline: none;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 15px;
-            font-size: 11px;
-        }
-        
-        th, td {
-            border: 1px solid #ddd;
-            padding: 6px 8px;
-            text-align: left;
-            vertical-align: top;
-        }
-        
-        th {
-            background-color: #f0f0f0;
-            font-weight: bold;
-            text-align: center;
-        }
-        
-        .table-section {
-            overflow-x: auto;
-        }
-        
-        .form-actions {
-            text-align: center;
-            margin-top: 30px;
-            padding: 20px 0;
-        }
-        
-        .btn {
-            padding: 12px 25px;
-            background-color: #0033A0;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin: 0 10px;
-            font-size: 16px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-        
-        .btn:hover {
-            background-color: #002266;
-        }
-        
-        .category-header {
-            background-color: #e8e8e8;
-            font-weight: bold;
-            text-align: center;
-        }
-        
-        .centered {
-            text-align: center;
-        }
-        
-        .standard-value, .permissible-value {
-            text-align: center;
-        }
-        
-        .result-column input {
-            width: 100%;
-            border: 1px solid #ccc;
-            padding: 3px;
-            font-size: 10px;
-            text-align: center;
-        }
-        
-        .page-break {
-            page-break-before: always;
-        }
-        
-        @media print {
-            body {
-                background-color: white;
-                padding: 0;
-            }
-            
-            .container {
-                box-shadow: none;
-                padding: 10px;
-            }
-            
-            .btn {
-                display: none;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .form-row {
-                flex-direction: column;
-            }
-            
-            .form-group {
-                margin-right: 0;
-            }
-            
-            table {
-                font-size: 9px;
-            }
-            
-            th, td {
-                padding: 4px 6px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PM Clinic 22 - Komatsu</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+    body{background:#f5f5f5;color:#333;line-height:1.6}
+    .container{max-width:1200px;margin:0 auto;padding:20px}
+    header{text-align:center;margin-bottom:20px;padding-bottom:10px;border-bottom:2px solid #0033A0}
+    .logo h1{color:#0033A0;font-size:28px;margin-bottom:5px}
+    .logo p{color:#666;font-size:14px}
+    .form-container{background:#fff;border-radius:5px;box-shadow:0 0 10px rgba(0,0,0,.1);padding:20px}
+    .form-header{text-align:center;margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid #ddd}
+    .form-header h2{color:#0033A0;font-size:22px}
+    .form-section{margin-bottom:30px;padding:15px;border:1px solid #ddd;border-radius:5px}
+    .form-section h3{background:#f0f0f0;padding:8px 15px;margin:-15px -15px 15px -15px;border-bottom:1px solid #ddd;color:#0033A0;font-size:18px}
+    .form-row{display:flex;flex-wrap:wrap;gap:15px;margin-bottom:15px}
+    .form-group{flex:1;min-width:200px}
+    label{display:block;margin-bottom:6px;font-weight:bold;font-size:14px}
+    .required::after{content:" *";color:#d00}
+    input,select,textarea{width:100%;padding:8px 10px;border:1px solid #ddd;border-radius:4px;font-size:14px}
+    input:focus,select:focus,textarea:focus{border-color:#0033A0;outline:none}
+    .table-section{overflow-x:auto}
+    table{width:100%;border-collapse:collapse;margin-bottom:12px;font-size:12px}
+    th,td{border:1px solid #ddd;padding:6px 8px;text-align:center;vertical-align:middle}
+    th{background:#f0f0f0;font-weight:bold}
+    input[type="checkbox"]{width:auto}
+    .btn{padding:10px 18px;background:#0033A0;color:#fff;border:none;border-radius:4px;cursor:pointer;margin:0 6px;font-size:14px;font-weight:bold}
+    .btn:hover{background:#002266}
+    .btn-alt{background:#666}
+    .btn-alt:hover{background:#555}
+    .btn-danger{background:#dc3545}
+    .btn-danger:hover{background:#b52a35}
+    #message{padding:12px 15px;margin:15px 0;border-radius:5px;text-align:center;font-weight:bold;transition:all .3s ease}
+    #message.hidden{display:none}
+    #message.success{background:#d4edda;color:#155724;border:1px solid #c3e6cb}
+    #message.error{background:#f8d7da;color:#721c24;border:1px solid #f5c6cb}
+    .notes{padding:10px;background:#f9f9f9;border:1px solid #ddd;border-radius:5px;color:#333}
+    .photo-container{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+    .photo-placeholder{width:140px;height:140px;border:1px dashed #ccc;display:flex;align-items:center;justify-content:center;background:#f9f9f9;cursor:pointer}
+    .photo-placeholder:hover{background:#f0f0f0}
+    @media(max-width:768px){
+      .form-row{flex-direction:column}
+      table{font-size:11px}
+      th,td{padding:4px 6px}
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="logo">
-                <h1>HD785-7 - TABLA DE VALORES ESTÁNDAR</h1>
-                <p>Motor: SAA12V140E-3</p>
+  <div class="container">
+    <header>
+      <div class="logo">
+        <h1>KOMATSU</h1>
+        <p>Equipos Tecnología Repuestos</p>
+      </div>
+    </header>
+
+    <div class="form-container">
+      <div class="form-header">
+        <h2>PM CLINIC 22 — Inspección y Pruebas</h2>
+      </div>
+
+      <form id="pmClinic22Form">
+        <div class="form-section">
+          <h3>Información General</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="cliente" class="required">Cliente / Faena</label>
+              <input id="cliente" required/>
             </div>
-        </header>
-        
-        <div class="form-container">
-            <div class="form-header">
-                <h2>FORMULARIO DE INSPECCIÓN TÉCNICA</h2>
+            <div class="form-group">
+              <label for="ubicacion" class="required">Ubicación</label>
+              <input id="ubicacion" required/>
             </div>
-            
-            <form id="valoresEstandarForm">
-                <!-- Información de la Máquina -->
-                <div class="form-section informacion-maquina">
-                    <h3>INFORMACIÓN DE LA MÁQUINA</h3>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="modeloMaquina" class="required">Modelo de máquina</label>
-                            <input type="text" id="modeloMaquina" name="modeloMaquina" value="HD785-7" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="numeroSerie" class="required">Número de serie</label>
-                            <input type="text" id="numeroSerie" name="numeroSerie" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="fechaInspeccion" class="required">Fecha de inspección</label>
-                            <input type="date" id="fechaInspeccion" name="fechaInspeccion" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="inspector" class="required">Inspector</label>
-                            <input type="text" id="inspector" name="inspector" required>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- TABLA DE VALORES ESTÁNDAR PARA EL MOTOR -->
-                <div class="form-section tabla-motor">
-                    <h3>TABLA DE VALORES ESTÁNDAR PARA EL MOTOR</h3>
-                    <div class="table-section">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th style="width: 14%">Itemes a comprobar</th>
-                                    <th style="width: 14%">Condiciones de medición</th>
-                                    <th style="width: 8%">Unidad</th>
-                                    <th style="width: 18%">Valor estándar para máquina nueva</th>
-                                    <th style="width: 18%">Valor permisible</th>
-                                    <th style="width: 11%">Resultado</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Velocidad del motor -->
-                                <tr>
-                                    <td rowspan="18"><strong>Velocidad del motor</strong></td>
-                                    <td rowspan="18">
-                                        • Refrigerante temperatura:<br>
-                                        Dentro del rango de operación
-                                    </td>
-                                    <td rowspan="18" class="centered">rpm</td>
-                                    <td class="category-header" colspan="2">Alta velocidad sin carga</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>Modo de potencia (Carga alta / Carga baja)</td>
-                                    <td class="permissible-value">2,250/2,250 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td>Modo Economía (Carga alta/ Carga baja)</td>
-                                    <td class="permissible-value">2,250/2,100 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td>Reversa (RH) (Carga alta/ Carga baja)</td>
-                                    <td class="permissible-value">2,050/2,050 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td>Retroceso (TRASERA IZQUIERDA) Modo de potencia (Carga alta/ Carga baja)</td>
-                                    <td class="permissible-value">2,250/2,250 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td>Retroceso (TRASERA IZQUIERDA) Modo Economía (Carga alta/ Carga baja)</td>
-                                    <td class="permissible-value">2,250/2,100 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="category-header" colspan="2">Baja velocidad sin carga</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>Lado alto</td>
-                                    <td class="permissible-value">945 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td>Lado bajo</td>
-                                    <td class="permissible-value">650 ± 25</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="category-header" colspan="2">Velocidad nominal</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>Modo de potencia (Carga alta/ Carga baja)</td>
-                                    <td class="permissible-value">1,900/1,900 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td>Modo Economía (Carga alta/ Carga baja)</td>
-                                    <td class="permissible-value">1,900/1,800 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                
-                                <!-- Presión de admisión de aire -->
-                                <tr>
-                                    <td><strong>Presión de admisión de aire (Presión de refuerzo)</strong></td>
-                                    <td>
-                                        • Temperatura del refrigerante del motor: Dentro del rango de operación<br>
-                                        • Temperatura del aceite del tren de potencia: Dentro del rango de operación<br>
-                                        • A la velocidad de régimen
-                                    </td>
-                                    <td class="centered">kPa {mmHg}</td>
-                                    <td class="standard-value">Mín. 165,40 {Mín. 1.250}</td>
-                                    <td class="permissible-value">Mín. 165,40 {Mín. 1.250}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                
-                                <!-- Temperatura del escape -->
-                                <tr>
-                                    <td><strong>Temperatura del escape</strong></td>
-                                    <td>• Todo rango de velocidad (Temperatura de ambiente:20°C)</td>
-                                    <td class="centered">°C</td>
-                                    <td class="standard-value">Máx. 700</td>
-                                    <td class="permissible-value">750</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                
-                                <!-- Color de los gases de escape -->
-                                <tr>
-                                    <td rowspan="6"><strong>Color de los gases de escape</strong></td>
-                                    <td rowspan="6">• Temperatura del refrigerante del motor: Dentro del rango de operación</td>
-                                    <td rowspan="6" class="centered">Índice Bosch</td>
-                                    <td class="category-header" colspan="2">En aceleración súbita (Baja o Alta)</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Máx. 4,5</td>
-                                    <td class="permissible-value">5.5</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="category-header" colspan="2">A salida nominal</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Máx. 1,0</td>
-                                    <td class="permissible-value">2.0</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="category-header" colspan="2">A alta velocidad sin carga</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Máx. 1,0</td>
-                                    <td class="permissible-value">2.0</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                
-                                <!-- Holgura de las válvulas -->
-                                <tr>
-                                    <td rowspan="4"><strong>Holgura de las válvulas</strong></td>
-                                    <td rowspan="4">• Temperatura normal</td>
-                                    <td rowspan="4" class="centered">mm</td>
-                                    <td class="category-header" colspan="2">Válvula de admisión</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">0.35 ± 0.02</td>
-                                    <td class="permissible-value">—</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="category-header" colspan="2">Válvula de escape</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">0.57 ± 0.02</td>
-                                    <td class="permissible-value">—</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                
-                                <!-- Compresión presión -->
-                                <tr>
-                                    <td><strong>Compresión presión</strong></td>
-                                    <td>
-                                        • Temperatura del aceite del motor: 40 – 60 °C<br>
-                                        • Velocidad del motor: 210 – 250 rpm
-                                    </td>
-                                    <td class="centered">MPa {kg/cm²}</td>
-                                    <td class="standard-value">Mín. 4,1 {Mín. 42}</td>
-                                    <td class="permissible-value">2.8 {29}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                
-                                <!-- Presión de los gases del cárter -->
-                                <tr>
-                                    <td><strong>Presión de los gases del cárter</strong></td>
-                                    <td>
-                                        • Temperatura del refrigerante del motor: Min. 70 °C<br>
-                                        • A salida nominal
-                                    </td>
-                                    <td class="centered">kPa {mmH2O}</td>
-                                    <td class="standard-value">Máx. 2,94 {Máx. 300}</td>
-                                    <td class="permissible-value">5.88 {600}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                                <!-- PRESIÓN DE ACEITE DEL MOTOR -->
-                <div class="form-section presion-aceite page-break">
-                    <h3>PRESIÓN DE ACEITE DEL MOTOR</h3>
-                    <div class="table-section">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th style="width: 20%">Itemes a comprobar</th>
-                                    <th style="width: 25%">Condiciones de medición</th>
-                                    <th style="width: 8%">Unidad</th>
-                                    <th style="width: 18%">Valor estándar para máquina nueva</th>
-                                    <th style="width: 18%">Valor permisible</th>
-                                    <th style="width: 11%">Resultado</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td rowspan="2"><strong>Presión de aceite del motor</strong></td>
-                                    <td>Al calar el convertidor de torsión</td>
-                                    <td class="centered">MPa (kg/cm²)</td>
-                                    <td class="standard-value">0.29 – 0.44 (3.0 – 4.5)</td>
-                                    <td class="permissible-value">0.2 (2.0)</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td>En baja velocidad sin carga</td>
-                                    <td class="centered">MPa (kg/cm²)</td>
-                                    <td class="standard-value">Min. 0,08 (Min. 0,8)</td>
-                                    <td class="permissible-value">0.07 (0.7)</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Temperatura del aceite del motor</strong></td>
-                                    <td>
-                                        Aceite SAEDW20EGS, SAESW40EGS, SAE10W30DH, SAE15W40DH, SAE30DH<br>
-                                        Temperatura del aceite del motor: Min. 80 °C<br>
-                                        A rango máximo de velocidad (Adentro del cárter)
-                                    </td>
-                                    <td class="centered">°C</td>
-                                    <td class="standard-value">80 – 110</td>
-                                    <td class="permissible-value">120</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Tensión de la correa del ventilador</strong></td>
-                                    <td>Revisar polea del ventilador y polea tensora</td>
-                                    <td class="centered">mm</td>
-                                    <td class="standard-value">(Ajuste automático)</td>
-                                    <td class="permissible-value">—</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Correa del alternador tensión</strong></td>
-                                    <td>
-                                        Entre la polea del alternador – polea motriz<br>
-                                        Deflexión bajo presión de dedos de 58,8 N (6 kg)
-                                    </td>
-                                    <td class="centered">mm</td>
-                                    <td class="standard-value">Aprox. 20</td>
-                                    <td class="permissible-value">—</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Tensión de la correa del compresor del acondicionador de aire</strong></td>
-                                    <td>
-                                        Entre la polea del compresor - polea motriz<br>
-                                        Deflexión bajo presión de dedos de 59 N (6 kg)
-                                    </td>
-                                    <td class="centered">mm</td>
-                                    <td class="standard-value">Aprox. 10</td>
-                                    <td class="permissible-value">—</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- VELOCIDAD DE TRASLADO -->
-                <div class="form-section velocidad-traslado page-break">
-                    <h3>VELOCIDAD DE TRASLADO</h3>
-                    <div class="table-section">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th style="width: 20%">Itemes a comprobar</th>
-                                    <th style="width: 25%">Condiciones de medición</th>
-                                    <th style="width: 8%">Unidad</th>
-                                    <th style="width: 18%">Valor estándar para máquina nueva</th>
-                                    <th style="width: 18%">Valor permisible</th>
-                                    <th style="width: 11%">Resultado</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td rowspan="10"><strong>Velocidad máxima en cada marcha</strong></td>
-                                    <td rowspan="10">
-                                        • Sobre superficie plana y seca<br>
-                                        • Temperatura del refrigerante del motor: Dentro del rango de operación<br>
-                                        • Temperatura del aceite de la transmisión: 60 – 80 °C<br>
-                                        • Modo: Modo de potencia (Modo económico)<br>
-                                        • Cuerpo: When unloaded<br>
-                                        • Resistencia de traslado 3.3 %<br>
-                                        • Neumático estándar
-                                    </td>
-                                    <td rowspan="10" class="centered">km/h</td>
-                                    <td class="standard-value">F1</td>
-                                    <td class="permissible-value">10.9 ± 5 % (9.8 ± 5 %)</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F2</td>
-                                    <td class="permissible-value">15.2 ± 5 % (13.9 ± 5 %)</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F3</td>
-                                    <td class="permissible-value">20.4 ± 5 % (18.7 ± 5 %)</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F4</td>
-                                    <td class="permissible-value">27.2 ± 5 % (25.1 ± 5 %)</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F5</td>
-                                    <td class="permissible-value">36.2 ± 5 % (33.8 ± 5 %)</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F6</td>
-                                    <td class="permissible-value">48.7 ± 10 % (46.2 ± 10 %)</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F7</td>
-                                    <td class="permissible-value">65.0 ± 10 % (60.6 ± 10 %)</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">RL</td>
-                                    <td class="permissible-value">9.7 ± 5 % (8.8 ± 5 %)</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">RH</td>
-                                    <td class="permissible-value">11.7 ± 5 % (11.7 ± 5 %)</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- CONTROL DE CAMBIO AUTOMÁTICO - MÁQUINA VACÍA -->
-                <div class="form-section cambio-automatico-vacio page-break">
-                    <h3>CONTROL DE CAMBIO AUTOMÁTICO - MODO DE POTENCIA (CUANDO LA MÁQUINA ESTÁ VACÍA)</h3>
-                    <div class="table-section">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th style="width: 20%">Itemes a comprobar</th>
-                                    <th style="width: 25%">Condiciones de medición</th>
-                                    <th style="width: 8%">Unidad</th>
-                                    <th style="width: 18%">Valor estándar para máquina nueva</th>
-                                    <th style="width: 18%">Valor permisible</th>
-                                    <th style="width: 11%">Resultado</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td rowspan="20"><strong>Velocidad del motor</strong></td>
-                                    <td rowspan="20">
-                                        • Temperatura del refrigerante del motor: Dentro del rango de operación<br>
-                                        • Temperatura del aceite de la transmisión: 60 – 80 °C<br>
-                                        • Temperatura del aceite hidráulico: 45 – 55 °C<br>
-                                        • ( ): En alta aceleración
-                                    </td>
-                                    <td rowspan="20" class="centered">rpm</td>
-                                    <td class="category-header" colspan="2">Acelerador total - Cambio hacia arriba</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F1 → F2</td>
-                                    <td class="permissible-value">2,050 ± 50 (1,950 ± 50)</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F2 → F3, F3 → F4, F4 → F5, F5 → F6, F6 → F7</td>
-                                    <td class="permissible-value">2,020 ± 50 (1,900 ± 50)</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="category-header" colspan="2">Acelerador total - Reducción</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F7 → F6, F6 → F5, F5 → F4, F4 → F3, F3 → F2, F2 → F1</td>
-                                    <td class="permissible-value">1,350 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="category-header" colspan="2">Acelerador parcial - Cambio hacia arriba</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F1 → F2</td>
-                                    <td class="permissible-value">2,000 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F2 → F3</td>
-                                    <td class="permissible-value">1,800 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F3 → F4, F4 → F5, F5 → F6, F6 → F7</td>
-                                    <td class="permissible-value">1,725 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="category-header" colspan="2">Acelerador parcial - Reducción</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F7 → F6, F6 → F5, F5 → F4, F4 → F3</td>
-                                    <td class="permissible-value">1,200 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F3 → F2, F2 → F1</td>
-                                    <td class="permissible-value">1,250 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="category-header" colspan="2">Acelerador OFF (Traslado en rueda libre) - Cambio hacia arriba</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F1 → F2, F2 → F3, F3 → F4, F4 → F5, F5 → F6, F6 → F7</td>
-                                    <td class="permissible-value">2,450 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="category-header" colspan="2">Acelerador OFF (Traslado en rueda libre) - Reducción</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F7 → F6, F6 → F5, F5 → F4, F4 → F3</td>
-                                    <td class="permissible-value">1,200 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F3 → F2, F2 → F1</td>
-                                    <td class="permissible-value">1,250 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                                <!-- CONTROL DE CAMBIO AUTOMÁTICO - MÁQUINA CARGADA -->
-                <div class="form-section cambio-automatico-cargado page-break">
-                    <h3>CONTROL DE CAMBIO AUTOMÁTICO - MODO DE POTENCIA (CUANDO LA MÁQUINA VA CARGADA)</h3>
-                    <div class="table-section">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th style="width: 20%">Itemes a comprobar</th>
-                                    <th style="width: 25%">Condiciones de medición</th>
-                                    <th style="width: 8%">Unidad</th>
-                                    <th style="width: 18%">Valor estándar para máquina nueva</th>
-                                    <th style="width: 18%">Valor permisible</th>
-                                    <th style="width: 11%">Resultado</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td rowspan="20"><strong>Velocidad del motor</strong></td>
-                                    <td rowspan="20">
-                                        • Temperatura del refrigerante del motor: Dentro del rango de operación<br>
-                                        • Temperatura del aceite de la transmisión: 60 – 80 °C<br>
-                                        • Temperatura del aceite hidráulico: 45 – 55 °C<br>
-                                        • ( ): En alta aceleración
-                                    </td>
-                                    <td rowspan="20" class="centered">rpm</td>
-                                    <td class="category-header" colspan="2">Acelerador total - Cambio hacia arriba</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F1 → F2</td>
-                                    <td class="permissible-value">2,080 ± 50 (1,950 ± 50)</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F2 → F3, F3 → F4, F4 → F5, F5 → F6, F6 → F7</td>
-                                    <td class="permissible-value">2,030 ± 50 (1,950 ± 50)</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="category-header" colspan="2">Acelerador total - Reducción</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F7 → F6, F6 → F5, F5 → F4, F4 → F3, F3 → F2</td>
-                                    <td class="permissible-value">1,350 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="category-header" colspan="2">Acelerador parcial - Cambio hacia arriba</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F1 → F2</td>
-                                    <td class="permissible-value">2,000 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F2 → F3</td>
-                                    <td class="permissible-value">1,800 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F3 → F4, F4 → F5, F5 → F6, F6 → F7</td>
-                                    <td class="permissible-value">1,725 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="category-header" colspan="2">Acelerador parcial - Reducción</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F7 → F6, F6 → F5, F5 → F4, F4 → F3</td>
-                                    <td class="permissible-value">1,200 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F3 → F2, F2 → F1</td>
-                                    <td class="permissible-value">1,250 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="category-header" colspan="2">Acelerador OFF (Traslado en rueda libre) - Cambio hacia arriba</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F1 → F2, F2 → F3, F3 → F4, F4 → F5, F5 → F6, F6 → F7</td>
-                                    <td class="permissible-value">2,450 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="category-header" colspan="2">Acelerador OFF (Traslado en rueda libre) - Reducción</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F7 → F6, F6 → F5, F5 → F4, F4 → F3</td>
-                                    <td class="permissible-value">1,200 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F3 → F2, F2 → F1</td>
-                                    <td class="permissible-value">1,250 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- CONTROL DE CAMBIO AUTOMÁTICO - MODO ECONOMÍA -->
-                <div class="form-section modo-economia-vacio page-break">
-                    <h3>CONTROL DE CAMBIO AUTOMÁTICO - MODO ECONOMÍA (CUANDO LA MÁQUINA ESTÁ VACÍA)</h3>
-                    <div class="table-section">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th style="width: 20%">Itemes a comprobar</th>
-                                    <th style="width: 25%">Condiciones de medición</th>
-                                    <th style="width: 8%">Unidad</th>
-                                    <th style="width: 18%">Valor estándar para máquina nueva</th>
-                                    <th style="width: 18%">Valor permisible</th>
-                                    <th style="width: 11%">Resultado</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td rowspan="20"><strong>Velocidad del motor</strong></td>
-                                    <td rowspan="20">
-                                        • Temperatura del refrigerante del motor: Dentro del rango de operación<br>
-                                        • Temperatura del aceite de la transmisión: 60 – 80 °C<br>
-                                        • Temperatura del aceite hidráulico: 45 – 55 °C<br>
-                                        • ( ): En alta aceleración
-                                    </td>
-                                    <td rowspan="20" class="centered">rpm</td>
-                                    <td class="category-header" colspan="2">Acelerador total - Cambio hacia arriba</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F1 → F2</td>
-                                    <td class="permissible-value">1,950 ± 50 (1,800 ± 50)</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F2 → F3, F3 → F4, F4 → F5, F5 → F6, F6 → F7</td>
-                                    <td class="permissible-value">1,900 ± 50 (1,750 ± 50)</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="category-header" colspan="2">Acelerador total - Reducción</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F7 → F6, F6 → F5, F5 → F4, F3 → F2, F2 → F1</td>
-                                    <td class="permissible-value">1,250 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F4 → F3</td>
-                                    <td class="permissible-value">1,280 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="category-header" colspan="2">Acelerador parcial - Cambio hacia arriba</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F1 → F2</td>
-                                    <td class="permissible-value">2,000 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F2 → F3</td>
-                                    <td class="permissible-value">1,800 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F3 → F4, F4 → F5, F5 → F6, F6 → F7</td>
-                                    <td class="permissible-value">1,725 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="category-header" colspan="2">Acelerador parcial - Reducción</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F7 → F6, F6 → F5, F5 → F4, F4 → F3</td>
-                                    <td class="permissible-value">1,200 ± 35</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F3 → F2, F2 → F1</td>
-                                    <td class="permissible-value">1,250 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="category-header" colspan="2">Acelerador OFF (Traslado en rueda libre) - Cambio hacia arriba</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F1 → F2, F2 → F3, F3 → F4, F4 → F5, F5 → F6, F6 → F7</td>
-                                    <td class="permissible-value">2,450 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="category-header" colspan="2">Acelerador OFF (Traslado en rueda libre) - Reducción</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F7 → F6, F6 → F5, F5 → F4, F4 → F3</td>
-                                    <td class="permissible-value">1,200 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F3 → F2, F2 → F1</td>
-                                    <td class="permissible-value">1,250 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                                <!-- CONTROL DE CAMBIO AUTOMÁTICO - MODO ECONOMÍA (CUANDO LA MÁQUINA VA CARGADA) -->
-                <div class="form-section modo-economia-cargado page-break">
-                    <h3>CONTROL DE CAMBIO AUTOMÁTICO - MODO ECONOMÍA (CUANDO LA MÁQUINA VA CARGADA)</h3>
-                    <div class="table-section">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th style="width: 20%">Itemes a comprobar</th>
-                                    <th style="width: 25%">Condiciones de medición</th>
-                                    <th style="width: 8%">Unidad</th>
-                                    <th style="width: 18%">Valor estándar para máquina nueva</th>
-                                    <th style="width: 18%">Valor permisible</th>
-                                    <th style="width: 11%">Resultado</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td rowspan="20"><strong>Velocidad del motor</strong></td>
-                                    <td rowspan="20">
-                                        • Temperatura del refrigerante del motor: Dentro del rango de operación<br>
-                                        • Temperatura del aceite de la transmisión: 60 – 80 °C<br>
-                                        • Temperatura del aceite hidráulico: 45 – 55 °C<br>
-                                        • ( ): En alta aceleración
-                                    </td>
-                                    <td rowspan="20" class="centered">rpm</td>
-                                    <td class="category-header" colspan="2">Acelerador total - Cambio hacia arriba</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F1 → F2</td>
-                                    <td class="permissible-value">2,050 ± 50 (1,850 ± 50)</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F2 → F3, F3 → F4, F4 → F5, F5 → F6, F6 → F7</td>
-                                    <td class="permissible-value">2,000 ± 50 (1,800 ± 50)</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="category-header" colspan="2">Acelerador total - Reducción</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F7 → F6, F6 → F5, F5 → F4, F4 → F3, F3 → F2, F2 → F1</td>
-                                    <td class="permissible-value">1,300 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="category-header" colspan="2">Acelerador parcial - Cambio hacia arriba</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F1 → F2</td>
-                                    <td class="permissible-value">2,000 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F2 → F3</td>
-                                    <td class="permissible-value">1,800 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F3 → F4, F4 → F5, F5 → F6, F6 → F7</td>
-                                    <td class="permissible-value">1,725 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="category-header" colspan="2">Acelerador parcial - Reducción</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F7 → F6, F6 → F5, F5 → F4, F4 → F3</td>
-                                    <td class="permissible-value">1,200 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F3 → F2, F2 → F1</td>
-                                    <td class="permissible-value">1,250 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="category-header" colspan="2">Acelerador OFF (Traslado en rueda libre) - Cambio hacia arriba</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F1 → F2, F2 → F3, F3 → F4, F4 → F5, F5 → F6, F6 → F7</td>
-                                    <td class="permissible-value">2,450 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="category-header" colspan="2">Acelerador OFF (Traslado en rueda libre) - Reducción</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F7 → F6, F6 → F5, F5 → F4, F4 → F3</td>
-                                    <td class="permissible-value">1,250 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F3 → F2, F2 → F1</td>
-                                    <td class="permissible-value">1,250 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="category-header" colspan="2">Modo de Freno</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Cambio hacia arriba</td>
-                                    <td class="permissible-value">2,450 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Reducción</td>
-                                    <td class="permissible-value">1,680 ± 50</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- VELOCIDAD DEL MOTOR - CONTROL DE CAMBIO AUTOMÁTICO -->
-                <div class="form-section control-cambio page-break">
-                    <h3>VELOCIDAD DEL MOTOR - CONTROL DE CAMBIO AUTOMÁTICO</h3>
-                    <div class="table-section">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th style="width: 20%">Itemes a comprobar</th>
-                                    <th style="width: 25%">Condiciones de medición</th>
-                                    <th style="width: 8%">Unidad</th>
-                                    <th style="width: 18%">Valor estándar para máquina nueva</th>
-                                    <th style="width: 18%">Valor permisible</th>
-                                    <th style="width: 11%">Resultado</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td rowspan="12"><strong>Velocidad del motor</strong></td>
-                                    <td rowspan="12">
-                                        • Temperatura del refrigerante del motor: Dentro del rango de operación<br>
-                                        • Temperatura del aceite de la transmisión: 60 – 80 °C<br>
-                                        • Temperatura del aceite hidráulico: 45 – 55 °C
-                                    </td>
-                                    <td rowspan="12" class="centered">rpm</td>
-                                    <td class="category-header" colspan="2">Establecido</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F1 – F7</td>
-                                    <td class="permissible-value">1,250 – 1,475</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">RL, RH</td>
-                                    <td class="permissible-value">1,475</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="category-header" colspan="2">Restablecido</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F1, F2</td>
-                                    <td class="permissible-value">—</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F3 – F7</td>
-                                    <td class="permissible-value">—</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">RL, RH</td>
-                                    <td class="permissible-value">1,100</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="category-header" colspan="2">Establecido</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F1 – F7, RL</td>
-                                    <td class="permissible-value">2,600 ± 10</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">RH</td>
-                                    <td class="permissible-value">2,150 ± 10</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="category-header" colspan="2">Restablecido</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">F1 – F7, RL</td>
-                                    <td class="permissible-value">2,350 ± 10</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Inhibidor de cambio abajo</strong></td>
-                                    <td>Igual que cambio abajo en "Control de cambio automático"</td>
-                                    <td class="centered">—</td>
-                                    <td class="standard-value">Igual que cambio abajo en "Control de cambio automático"</td>
-                                    <td class="permissible-value">Igual que cambio abajo en "Control de cambio automático"</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td rowspan="6"><strong>Velocidad del motor</strong></td>
-                                    <td rowspan="6">
-                                        • Temperatura del refrigerante del motor: Dentro del rango de operación<br>
-                                        • Temperatura del aceite de la transmisión: 85 – 110 °C<br>
-                                        • Temperatura del aceite hidráulico: 45 – 55 °C
-                                    </td>
-                                    <td rowspan="6" class="centered">rpm</td>
-                                    <td class="category-header" colspan="2">Modo de potencia</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Carga baja</td>
-                                    <td class="permissible-value">1,780 ± 100</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Carga alta</td>
-                                    <td class="permissible-value">1,845 ± 100</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="category-header" colspan="2">Modo Economía</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Carga baja</td>
-                                    <td class="permissible-value">1,695 ± 100</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Carga alta</td>
-                                    <td class="permissible-value">1,730 ± 100</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td rowspan="5"><strong>Velocidad de calado del convertidor de torsión</strong></td>
-                                    <td rowspan="5">
-                                        En inspección con función de reparación en el modo del motor situado por el montio de la máquina.<br>
-                                        • Temperatura del refrigerante del motor: Dentro del rango de operación<br>
-                                        • Temperatura del aceite de la transmisión: 85 – 110 °C<br>
-                                        • Temperatura del aceite hidráulico: 45 – 55 °C<br>
-                                        Para detalles, vea Pruebas y ajustes "Funciones especiales del monitor de la máquina (EMMS)".
-                                    </td>
-                                    <td rowspan="5" class="centered">rpm</td>
-                                    <td class="category-header" colspan="2">Modo A</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">1,845 ± 100</td>
-                                    <td class="permissible-value">1,845 ± 100</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="category-header" colspan="2">Modo B</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">1,780 ± 100</td>
-                                    <td class="permissible-value">1,780 ± 100</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="category-header" colspan="2">Modo C</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">1,730 ± 100</td>
-                                    <td class="permissible-value">1,730 ± 100</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="category-header" colspan="2">Modo D</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">1,695 ± 100</td>
-                                    <td class="permissible-value">1,695 ± 100</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                                <!-- FUERZA DE OPERACIÓN Y RECORRIDO -->
-                <div class="form-section fuerza-operacion page-break">
-                    <h3>FUERZA DE OPERACIÓN Y RECORRIDO</h3>
-                    <div class="table-section">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th style="width: 20%">Itemes a comprobar</th>
-                                    <th style="width: 25%">Condiciones de medición</th>
-                                    <th style="width: 8%">Unidad</th>
-                                    <th style="width: 18%">Valor estándar para máquina nueva</th>
-                                    <th style="width: 18%">Valor permisible</th>
-                                    <th style="width: 11%">Resultado</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td rowspan="4"><strong>Pedal del acelerador</strong></td>
-                                    <td rowspan="4">Mida a 150 mm. desde el punto de apoyo del pedal</td>
-                                    <td rowspan="4" class="centered">N (kg)</td>
-                                    <td class="category-header" colspan="2">Comenzando a oprimir</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">29.3 (+13.0/0) (3.0 (+1.4/0))</td>
-                                    <td class="permissible-value">29.3 (+13.0/0) (3.0 (+1.4/0))</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="category-header" colspan="2">Lleno</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">58.7 (0/-13.3) (6.0 (0/-1.4))</td>
-                                    <td class="permissible-value">58.7 (0/-13.3) (6.0 (0/-1.4))</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td rowspan="3"><strong>Palanca de cambios</strong></td>
-                                    <td rowspan="3">Al centro de la empuñadura</td>
-                                    <td rowspan="3" class="centered">N (kg)</td>
-                                    <td class="category-header" colspan="2">Operating farce</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">24.5 ± 1</td>
-                                    <td class="permissible-value">24.5 ± 2</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="category-header" colspan="2">Carrera</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">45 ± 5</td>
-                                    <td class="permissible-value">45 ± 5</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- PRESIÓN DEL ACEITE - CONVERTIDOR DE TORSIÓN -->
-                <div class="form-section presion-convertidor page-break">
-                    <h3>PRESIÓN DEL ACEITE - CONVERTIDOR DE TORSIÓN</h3>
-                    <div class="table-section">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th style="width: 20%">Itemes a comprobar</th>
-                                    <th style="width: 25%">Condiciones de medición</th>
-                                    <th style="width: 8%">Unidad</th>
-                                    <th style="width: 18%">Valor estándar para máquina nueva</th>
-                                    <th style="width: 18%">Valor permisible</th>
-                                    <th style="width: 11%">Resultado</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td rowspan="6"><strong>Convertidor de torsión</strong></td>
-                                    <td>
-                                        • Temperatura del aceite: 80 °C<br>
-                                        • Freno: DESACTIVADO (OFF)<br>
-                                        • (Cuando el aceite deja a un lado el freno y el enfriador a través de BCV)<br>
-                                        • Velocidad del motor: 1,900 rpm (Velocidad de norma)
-                                    </td>
-                                    <td rowspan="6" class="centered">MPa {kg/cm²}</td>
-                                    <td class="standard-value">Presión del ingreso de aceite</td>
-                                    <td class="permissible-value">Máx. 0.85 {Máx. 8.67}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        • Temperatura del aceite: 80 °C<br>
-                                        • Freno: DESACTIVADO (OFF)<br>
-                                        • (Cuando el aceite deja a un lado el freno y el enfriador a través de BCV)<br>
-                                        • Velocidad del motor: 1,900 rpm (Velocidad de norma)
-                                    </td>
-                                    <td class="standard-value">Presión de salida del aceite</td>
-                                    <td class="permissible-value">0.49 ± 0.04 {5.0 ± 0.41}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        • Temperatura del aceite: 80 °C<br>
-                                        • Freno: ACTIVADO (ON)<br>
-                                        • (Cuando el aceite no deja a un lado el ni el enfriador a través de BCV)<br>
-                                        • Velocidad del motor: 1,900 rpm (Velocidad de norma)
-                                    </td>
-                                    <td class="standard-value">Presión de salida del aceite</td>
-                                    <td class="permissible-value">0.52 ± 0.07 {5.3 ± 0.71}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        • Temperatura del aceite: 80 °C<br>
-                                        • Velocidad del motor: 1,900 rpm (Velocidad de norma)
-                                    </td>
-                                    <td class="standard-value">Presión de aceite de traba</td>
-                                    <td class="permissible-value">1.52 ± 0.2 {15.5 ± 2.0}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        • Temperatura del aceite: 80 °C<br>
-                                        • Velocidad del motor: 1,900 rpm (Velocidad de norma)
-                                    </td>
-                                    <td class="standard-value">Presión de alivio principal de aceite (N, F1 – F3, RL, RH)</td>
-                                    <td class="permissible-value">3.53 ± 0.2 {36.0 ± 2.0}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        • Temperatura del aceite: 80 °C<br>
-                                        • Velocidad del motor: 1,900 rpm (Velocidad de norma)
-                                    </td>
-                                    <td class="standard-value">Presión de alivio principal de aceite (F4 – F7)</td>
-                                    <td class="permissible-value">2.16 ± 0.2 {22.0 ± 2.0}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td rowspan="5"><strong>Transmisión</strong></td>
-                                    <td rowspan="5">
-                                        • Temperatura del aceite: 80 °C<br>
-                                        • Velocidad del motor: 1,900 rpm (Velocidad de norma)
-                                    </td>
-                                    <td rowspan="5" class="centered">MPa {kg/cm²}</td>
-                                    <td class="standard-value">4to Embrague Alto, Bajo</td>
-                                    <td class="permissible-value">1.61 ± 0.2 {16.5 ± 2.0}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Embrague 3ra</td>
-                                    <td class="permissible-value">2.01 ± 0.2 {20.5 ± 2.0}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Embrague 2da</td>
-                                    <td class="permissible-value">3.29 ± 0.25 {33.5 ± 2.5}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">embrague 1ra</td>
-                                    <td class="permissible-value">3.43 ± 0.2 {35.0 ± 2.0}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Presión de la válvula de lubricación establecida</td>
-                                    <td class="permissible-value">0.17 ± 0.05 {1.7 ± 0.5}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td rowspan="2"><strong>Presión de aire - Neumático</strong></td>
-                                    <td rowspan="2">• Máquina descargada</td>
-                                    <td rowspan="2" class="centered">MPa {kg/cm²}</td>
-                                    <td class="standard-value">Neumático estándar 27.00-R49 (Delantero, rueda trasera)</td>
-                                    <td class="permissible-value">0.69 {7.0}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">If equipped tire 31/90-R49 (Rueda trasera delantera)</td>
-                                    <td class="permissible-value">0.69 {7.0}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                                <!-- SISTEMA DE FRENOS Y SUSPENSIÓN -->
-                <div class="form-section frenos-suspension page-break">
-                    <h3>SISTEMA DE FRENOS Y SUSPENSIÓN</h3>
-                    <div class="table-section">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th style="width: 20%">Itemes a comprobar</th>
-                                    <th style="width: 25%">Condiciones de medición</th>
-                                    <th style="width: 8%">Unidad</th>
-                                    <th style="width: 18%">Valor estándar para máquina nueva</th>
-                                    <th style="width: 18%">Valor permisible</th>
-                                    <th style="width: 11%">Resultado</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>Freno de parqueo - Capacidad del freno</strong></td>
-                                    <td>
-                                        • Con carga útil 91 t<br>
-                                        • La máquina puede detenerse a un valor estándar
-                                    </td>
-                                    <td class="centered">%</td>
-                                    <td class="standard-value">Mín. 20</td>
-                                    <td class="permissible-value">Mín. 20</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Prueba de arranque</strong></td>
-                                    <td>
-                                        • F2<br>
-                                        • Calado del convertidor de torsión<br>
-                                        • La máquina puede detenerse a un valor estándar
-                                    </td>
-                                    <td class="centered">rpm</td>
-                                    <td class="standard-value">Mín. 1,335</td>
-                                    <td class="permissible-value">Mín. 1,335</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Liberando presión</strong></td>
-                                    <td>(Vea "Freno")</td>
-                                    <td class="centered">MPa {kg/cm²}</td>
-                                    <td class="standard-value">(Vea "Freno")</td>
-                                    <td class="permissible-value">(Vea "Freno")</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td rowspan="4"><strong>Cilindro de suspensión - Largo instalado</strong></td>
-                                    <td rowspan="4">
-                                        • Sobre una superficie de carga llana y seca<br>
-                                        • Al descargar<br>
-                                        • Dimensión ver Fig. 1 en "A" y "B"
-                                    </td>
-                                    <td rowspan="4" class="centered">mm</td>
-                                    <td class="standard-value">Delantero</td>
-                                    <td class="permissible-value">247 ± 10</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Delantero (Permisible)</td>
-                                    <td class="permissible-value">247 ± 20</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Trasero</td>
-                                    <td class="permissible-value">199 ± 10</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Trasero (Permisible)</td>
-                                    <td class="permissible-value">199 ± 20</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td rowspan="4"><strong>Cilindro de suspensión - Presión</strong></td>
-                                    <td rowspan="4">
-                                        • Sobre una superficie de carga llana y seca<br>
-                                        • Al descargar
-                                    </td>
-                                    <td rowspan="4" class="centered">MPa {kg/cm²}</td>
-                                    <td class="standard-value">Delantero</td>
-                                    <td class="permissible-value">3.56 ± 0.36 {36.4 ± 3.6}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Delantero (Permisible)</td>
-                                    <td class="permissible-value">3.56 ± 0.36 {36.4 ± 3.6}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Trasero</td>
-                                    <td class="permissible-value">2.98 ± 0.3 {30.4 ± 3.0}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Trasero (Permisible)</td>
-                                    <td class="permissible-value">2.98 ± 0.3 {30.4 ± 3.0}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Volante de la dirección - Esfuerzo estacionario de dirección</strong></td>
-                                    <td>
-                                        • Sobre una superficie de carga llana y seca<br>
-                                        • Velocidad del volante de dirección: 30 rpm<br>
-                                        • Motor en ralentí<br>
-                                        (Si resulta imposible la dirección estacionaria, mida el esfuerzo de dirección en baja velocidad)
-                                    </td>
-                                    <td class="centered">N {kg}</td>
-                                    <td class="standard-value">14.7 – 29.4 {1.5 – 3.0}</td>
-                                    <td class="permissible-value">Máx. 35,3 {Máx. 3,6}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Juego del volante</strong></td>
-                                    <td>
-                                        • Motor: Detenido<br>
-                                        • Dimensión en la periferia de la empuñadura<br>
-                                        • Hasta que la rueda delantera comience a moverse
-                                    </td>
-                                    <td class="centered">mm</td>
-                                    <td class="standard-value">Máx. 150</td>
-                                    <td class="permissible-value">Máx. 150</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Régimen de rotación</strong></td>
-                                    <td>• Traba o Traba</td>
-                                    <td class="centered">Número de rotación</td>
-                                    <td class="standard-value">3.4</td>
-                                    <td class="permissible-value">3.4 ± 0.34</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Tiempo de giro</strong></td>
-                                    <td>
-                                        • Traba o Traba<br>
-                                        • Velocidad del motor: Todo el régimen
-                                    </td>
-                                    <td class="centered">seg.</td>
-                                    <td class="standard-value">Máx. 4</td>
-                                    <td class="permissible-value">Máx. 5</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- SISTEMA DE FRENOS Y CONTROLES -->
-                <div class="form-section frenos-controles page-break">
-                    <h3>SISTEMA DE FRENOS Y CONTROLES</h3>
-                    <div class="table-section">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th style="width: 20%">Itemes a comprobar</th>
-                                    <th style="width: 25%">Condiciones de medición</th>
-                                    <th style="width: 8%">Unidad</th>
-                                    <th style="width: 18%">Valor estándar para máquina nueva</th>
-                                    <th style="width: 18%">Valor permisible</th>
-                                    <th style="width: 11%">Resultado</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td rowspan="3"><strong>Dirección válvula - Presión del aceite de alivio</strong></td>
-                                    <td rowspan="3">• Temperatura del aceite: 50 – 80 °C</td>
-                                    <td rowspan="3" class="centered">MPa {kg/cm²}</td>
-                                    <td class="standard-value">A la velocidad de régimen (1,900 rpm)</td>
-                                    <td class="permissible-value">20.2 – 21.1 {206 – 215}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">En ralentí bajo (650 rpm) [Valor de referencia]</td>
-                                    <td class="permissible-value">18.1 – 19.1 {185 – 195}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">En ralentí bajo (650 rpm) [Valor de referencia] (Permisible)</td>
-                                    <td class="permissible-value">18.1 – 19.1 {185 – 195}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td rowspan="2"><strong>Pedal de freno - Fuerza de operación</strong></td>
-                                    <td rowspan="2">• Punto de medición: Mida a 150 mm. desde el punto de apoyo del pedal</td>
-                                    <td rowspan="2" class="centered">N {kg}</td>
-                                    <td class="standard-value">Fuerza de operación</td>
-                                    <td class="permissible-value">234 ± 29.4 {23.8 ± 3.0}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Carrera</td>
-                                    <td class="permissible-value">40 ± 5</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Retardador palanca de control - Fuerza de operación</strong></td>
-                                    <td>• Punto de medición: Punto a 10 mm del extremo de la palanca</td>
-                                    <td class="centered">N {kg}</td>
-                                    <td class="standard-value">5.9 – 9.8 {0.6 – 1.0}</td>
-                                    <td class="permissible-value">3.0 – 14.7 {0.3 – 1.5}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Hoja Angulable - Recorrido</strong></td>
-                                    <td>En rango de operación</td>
-                                    <td class="centered">° (grado)</td>
-                                    <td class="standard-value">0 – 78 (0/-2)</td>
-                                    <td class="permissible-value">0 – 78 (0/-4)</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Emergencia pedal de freno - Fuerza de operación</strong></td>
-                                    <td>• Punto de medición: Mida a 150 mm. desde el punto de apoyo del pedal</td>
-                                    <td class="centered">N {kg}</td>
-                                    <td class="standard-value">294 ± 29.4 {30 ± 3.0}</td>
-                                    <td class="permissible-value">294 ± 29.4 {30 ± 3.0}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td rowspan="2"><strong>Acumulador - Gas nitrógeno presión</strong></td>
-                                    <td rowspan="2">• Temperatura del gas (temperatura del atmósfera): 20 ± 5 °C</td>
-                                    <td rowspan="2" class="centered">MPa {kg/cm²}</td>
-                                    <td class="standard-value">Del frente • lado trasero freno de servicio</td>
-                                    <td class="permissible-value">6.2 ± 0.20 {63 ± 2.0}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Para el freno de estacionamiento</td>
-                                    <td class="permissible-value">6.2 ± 0.20 {63 ± 2.0}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td rowspan="2"><strong>Acumulador válvula de carga</strong></td>
-                                    <td rowspan="2">
-                                        • Temperatura del aceite: 45 – 55 °C<br>
-                                        • Alta velocidad sin carga
-                                    </td>
-                                    <td rowspan="2" class="centered">MPa {kg/cm²}</td>
-                                    <td class="standard-value">Presión de conexión</td>
-                                    <td class="permissible-value">11.8 (+0.98/0) {120 (+10/0)}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Presión de desconexión</td>
-                                    <td class="permissible-value">20.6 (+0.98/0) {210 (+10/0)}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                                <!-- SISTEMA DE FRENOS - DISTANCIAS DE PARADA -->
-                <div class="form-section distancias-parada page-break">
-                    <h3>SISTEMA DE FRENOS - DISTANCIAS DE PARADA</h3>
-                    <div class="table-section">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th style="width: 20%">Itemes a comprobar</th>
-                                    <th style="width: 25%">Condiciones de medición</th>
-                                    <th style="width: 8%">Unidad</th>
-                                    <th style="width: 18%">Valor estándar para máquina nueva</th>
-                                    <th style="width: 18%">Valor permisible</th>
-                                    <th style="width: 11%">Resultado</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>Anchura de la distancia de parada (Valor de referencia)</strong></td>
-                                    <td>
-                                        • Camino llano y seco en la máxima presión de operación del freno<br>
-                                        Delantero: 9.8 MPa (100 kg/cm²)<br>
-                                        Atrás: 9.8 MPa (100 kg/cm²)<br>
-                                        • Procedente de la comprobación de la señal de parada<br>
-                                        • Velocidad inicial: 32 km/h<br>
-                                        Al descargar
-                                    </td>
-                                    <td class="centered">m</td>
-                                    <td class="standard-value">Máx. 16.5</td>
-                                    <td class="permissible-value">17.5</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td rowspan="5"><strong>Presión del aceite</strong></td>
-                                    <td rowspan="5">• En recorrido total</td>
-                                    <td rowspan="5" class="centered">MPa (kg/cm²)</td>
-                                    <td class="standard-value">Delantero • Trasero (Freno de servicio)</td>
-                                    <td class="permissible-value">9.8 ± 0.69 (100 ± 7)</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Delantero • Trasero (Retardador)</td>
-                                    <td class="permissible-value">6.4 (+0.69/-0.59) (65 (+7/-6))</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Presión liberadora del freno de estacionamiento</td>
-                                    <td class="permissible-value">9.85 (+0.98/-0.49) (100.4 (+10/-5))</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Presión del aceite de frenos (Retardador)</td>
-                                    <td class="permissible-value">9.8 ± 0.69 (100 ± 7)</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Delantero • Trasero (Freno de servicio)</td>
-                                    <td class="permissible-value">6.4 (+0.69/-0.59) (65 (+7/-6))</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Distancia de parada cuando el freno secundario es aplicado [Valor de referencia]</strong></td>
-                                    <td>
-                                        • Camino llano y seco<br>
-                                        Desde el comienzo del frenado hasta parar<br>
-                                        • Velocidad inicial: 25 km/h<br>
-                                        Con carga útil 91 t
-                                    </td>
-                                    <td class="centered">m</td>
-                                    <td class="standard-value">Máx. 60.9</td>
-                                    <td class="permissible-value">Máx. 60.9</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td rowspan="6"><strong>Presión de servicio</strong></td>
-                                    <td rowspan="6">
-                                        • Máquina vacía<br>
-                                        Carretera de concreto (municipio), cemento<br>
-                                        En la máxima presión de operación del freno<br>
-                                        Velocidad de traslado: F2<br>
-                                        La máquina no debe comenzar en calado con velocidad estándar
-                                    </td>
-                                    <td rowspan="6" class="centered">rpm</td>
-                                    <td class="standard-value">Freno de servicio</td>
-                                    <td class="permissible-value">1,760</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Freno de servicio (Permisible)</td>
-                                    <td class="permissible-value">Máx. 1.570</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Freno retardador</td>
-                                    <td class="permissible-value">1,345</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Freno retardador (Permisible)</td>
-                                    <td class="permissible-value">Máx. 1.200</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Freno de parqueo</td>
-                                    <td class="permissible-value">1,610</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Freno de parqueo (Permisible)</td>
-                                    <td class="permissible-value">Máx. 1.440</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Freno de emergencia</strong></td>
-                                    <td></td>
-                                    <td class="centered">rpm</td>
-                                    <td class="standard-value">1,640</td>
-                                    <td class="permissible-value">Máx. 1.440</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td rowspan="2"><strong>Desgaste de frenos</strong></td>
-                                    <td rowspan="2">
-                                        • Comprobar con calibrador de desgaste de disco (instalado en la máquina)<br>
-                                        • Delantero desgaste: Trasero
-                                    </td>
-                                    <td rowspan="2" class="centered">—</td>
-                                    <td class="standard-value">Debe estar en régimen normal del calibrador de desgaste</td>
-                                    <td class="permissible-value">Debe estar en régimen normal del calibrador de desgaste</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Delantero desgaste: Trasero</td>
-                                    <td class="permissible-value">Debe estar en régimen normal del calibrador de desgaste</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- SISTEMA DE DESCARGA Y LEVANTE -->
-                <div class="form-section descarga-levante page-break">
-                    <h3>SISTEMA DE DESCARGA Y LEVANTE</h3>
-                    <div class="table-section">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th style="width: 20%">Itemes a comprobar</th>
-                                    <th style="width: 25%">Condiciones de medición</th>
-                                    <th style="width: 8%">Unidad</th>
-                                    <th style="width: 18%">Valor estándar para máquina nueva</th>
-                                    <th style="width: 18%">Valor permisible</th>
-                                    <th style="width: 11%">Resultado</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td rowspan="7"><strong>Palanca de descarga - Fuerza de operación</strong></td>
-                                    <td rowspan="7">
-                                        • Motor: Detenido<br>
-                                        • Punto de medición: Centro de la empuñadura
-                                    </td>
-                                    <td rowspan="7" class="centered">N {kg}</td>
-                                    <td class="standard-value">Retener → Elevar</td>
-                                    <td class="permissible-value">Máx. 29.4 {Máx. 3.0}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Elevar → Sostener</td>
-                                    <td class="permissible-value">Debe retornar suavemente cuando el motor está funcionando en alta velocidad sin carga.</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Sostener → Flotar</td>
-                                    <td class="permissible-value">Máx. 29.4 {Máx. 3.0}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Flotar → Retener</td>
-                                    <td class="permissible-value">Máx. 29.4 {Máx. 3.0}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Flotar → Inferior</td>
-                                    <td class="permissible-value">Máx. 29.4 {Máx. 3.0}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Bajar → Flotador</td>
-                                    <td class="permissible-value">Debe regresar suavemente cuando la velocidad del motor esté en 1,900 rpm (velocidad de norma)</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Sostener → Inferior</td>
-                                    <td class="permissible-value">Máx. 35.3 {Máx. 3.6}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td rowspan="2"><strong>Palanca de descarga - Carrera</strong></td>
-                                    <td rowspan="2">
-                                        • Motor: Detenido<br>
-                                        • Punto de medición: Centro de la empuñadura
-                                    </td>
-                                    <td rowspan="2" class="centered">mm</td>
-                                    <td class="standard-value">Elevar → Sostener</td>
-                                    <td class="permissible-value">44.8 ± 1.9</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Sostener → Inferior</td>
-                                    <td class="permissible-value">44.8 ± 1.9</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td rowspan="4"><strong>Válvula de levante - Alivio presión</strong></td>
-                                    <td rowspan="4">• Temperatura del aceite: 50 – 80 °C</td>
-                                    <td rowspan="4" class="centered">MPa {kg/cm²}</td>
-                                    <td class="standard-value">A la velocidad de régimen (1,900 rpm)</td>
-                                    <td class="permissible-value">20.2 – 21.1 {206 – 215}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">A la velocidad de régimen (1,900 rpm) (Permisible)</td>
-                                    <td class="permissible-value">20.2 – 21.1 {206 – 215}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">En ralentí bajo (650 rpm) [Valor de referencia]</td>
-                                    <td class="permissible-value">18.1 – 19.1 {185 – 195}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">En ralentí bajo (650 rpm) [Valor de referencia] (Permisible)</td>
-                                    <td class="permissible-value">18.1 – 19.1 {185 – 195}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td rowspan="4"><strong>Válvula EPC de descarga - Presión de alivio (presión raíz)</strong></td>
-                                    <td rowspan="4"></td>
-                                    <td rowspan="4" class="centered">MPa {kg/cm²}</td>
-                                    <td class="standard-value">A alta velocidad sin carga (2,250 rpm)</td>
-                                    <td class="permissible-value">3.4 ± 0.49 {35 ± 5}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">A alta velocidad sin carga (2,250 rpm) (Permisible)</td>
-                                    <td class="permissible-value">3.4 ± 0.49 {35 ± 5}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">En ralentí bajo (650 rpm) [Valor de referencia]</td>
-                                    <td class="permissible-value">2.6 ± 0.49 {27 ± 5}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">En ralentí bajo (650 rpm) [Valor de referencia] (Permisible)</td>
-                                    <td class="permissible-value">2.6 ± 0.49 {27 ± 5}</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td rowspan="2"><strong>Cuerpo - Velocidad de levante</strong></td>
-                                    <td rowspan="2">
-                                        • Temperatura del aceite: 50 – 80 °C<br>
-                                        • Velocidad del motor: 1,900 rpm (Velocidad de norma)
-                                    </td>
-                                    <td rowspan="2" class="centered">seg.</td>
-                                    <td class="standard-value">Velocidad de levante</td>
-                                    <td class="permissible-value">13 ± 1.5</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td class="standard-value">Velocidad de levante (Permisible)</td>
-                                    <td class="permissible-value">13 ± 1.5</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Cuerpo - Velocidad de bajada</strong></td>
-                                    <td>
-                                        • Temperatura del aceite: 50 – 80 °C<br>
-                                        • Velocidad del motor: 650 rpm<br>
-                                        • Palanca de descarga: "Flotador"
-                                    </td>
-                                    <td class="centered">seg.</td>
-                                    <td class="standard-value">14 ± 1.5</td>
-                                    <td class="permissible-value">14 ± 1.5</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Desplazamiento hidráulico</strong></td>
-                                    <td>
-                                        • Temperatura del aceite: 50 – 80 °C<br>
-                                        • Desde la extensión de 20 mm del cilindro de 2da<br>
-                                        • Horas transcurridas: 5 minutos
-                                    </td>
-                                    <td class="centered">mm</td>
-                                    <td class="standard-value">Máx. 85</td>
-                                    <td class="permissible-value">Máx. 170</td>
-                                    <td><input type="text"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- IMAGEN FINAL -->
-                <div class="form-section" style="text-align: center; margin-top: 20px;">
-                    <img src="public\3.png" alt="Imagen final" style="width: auto; max-width: 800px; height: auto;">
-                </div>
-                <div class="form-actions">
-                    <button type="button" class="btn" onclick="window.print()">Imprimir</button>
-                    <button type="submit" class="btn" id="submitBtn">Enviar Formulario a Email</button>
-                </div>
-            </form>
+            <div class="form-group">
+              <label for="fechaInspeccion" class="required">Fecha de Inspección</label>
+              <input type="date" id="fechaInspeccion" required/>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="equipoModelo" class="required">Modelo Equipo</label>
+              <input id="equipoModelo" placeholder="Ej: HD785-7" required/>
+            </div>
+            <div class="form-group">
+              <label for="equipoSerie" class="required">Serie de Equipo</label>
+              <input id="equipoSerie" required/>
+            </div>
+            <div class="form-group">
+              <label for="medidorServicio">Medidor de Servicio</label>
+              <input id="medidorServicio"/>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="ordenTrabajo">N° Orden de Trabajo</label>
+              <input id="ordenTrabajo"/>
+            </div>
+            <div class="form-group">
+              <label for="tecnico" class="required">Técnico</label>
+              <input id="tecnico" required/>
+            </div>
+          </div>
         </div>
+
+        <div class="form-section">
+          <h3>Mediciones / Ajustes Generales</h3>
+          <div class="table-section">
+            <table id="tablaMediciones">
+              <thead>
+                <tr>
+                  <th>Sistema</th>
+                  <th>Ítem de medición</th>
+                  <th>Condición</th>
+                  <th>Unidad</th>
+                  <th>Estándar (nuevo)</th>
+                  <th>Límite de servicio</th>
+                  <th>Resultado</th>
+                  <th>Aceptado</th>
+                  <th>Rechazado</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <button type="button" class="btn" id="addFilaMedicion">Agregar fila</button>
+        </div>
+
+        <div class="form-section">
+          <h3>Dirección (Steering)</h3>
+          <div class="table-section">
+            <table id="tablaSteering">
+              <thead>
+                <tr>
+                  <th>Ítem</th>
+                  <th>Condición</th>
+                  <th>Unidad</th>
+                  <th>Estándar</th>
+                  <th>Permitido</th>
+                  <th>Resultado</th>
+                  <th>S</th>
+                  <th>U</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Tiempo de giro lock to lock</td>
+                  <td>Motor bajo</td>
+                  <td>seg</td>
+                  <td>—</td>
+                  <td>Máx. 6.8</td>
+                  <td><input/></td>
+                  <td><input type="checkbox"/></td>
+                  <td><input type="checkbox"/></td>
+                </tr>
+                <tr>
+                  <td>Tiempo de giro lock to lock</td>
+                  <td>Motor lleno</td>
+                  <td>seg</td>
+                  <td>—</td>
+                  <td>Máx. 5.0</td>
+                  <td><input/></td>
+                  <td><input type="checkbox"/></td>
+                  <td><input type="checkbox"/></td>
+                </tr>
+                <tr>
+                  <td>Presión de alivio de giro</td>
+                  <td>Motor lleno</td>
+                  <td>kg/cm²</td>
+                  <td>316 – 325</td>
+                  <td>312 – 330</td>
+                  <td><input/></td>
+                  <td><input type="checkbox"/></td>
+                  <td><input type="checkbox"/></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3>Presiones Convertidor / Carga</h3>
+          <div class="table-section">
+            <table id="tablaPresiones">
+              <thead>
+                <tr>
+                  <th>Ítem</th>
+                  <th>Condición</th>
+                  <th>Unidad</th>
+                  <th>Estándar</th>
+                  <th>Permitido</th>
+                  <th>Resultado</th>
+                  <th>S</th>
+                  <th>U</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Presión carga (cut-in)</td>
+                  <td>Motor pleno acelerador</td>
+                  <td>kg/cm²</td>
+                  <td>120 – 130</td>
+                  <td>120 – 130</td>
+                  <td><input/></td>
+                  <td><input type="checkbox"/></td>
+                  <td><input type="checkbox"/></td>
+                </tr>
+                <tr>
+                  <td>Presión carga (cut-out)</td>
+                  <td>—</td>
+                  <td>kg/cm²</td>
+                  <td>210 – 220</td>
+                  <td>210 – 220</td>
+                  <td><input/></td>
+                  <td><input type="checkbox"/></td>
+                  <td><input type="checkbox"/></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3>Frenos — Verificaciones</h3>
+          <div class="table-section">
+            <table id="tablaFrenos">
+              <thead>
+                <tr>
+                  <th>Tipo</th>
+                  <th>Condición</th>
+                  <th>Unidad</th>
+                  <th>Estándar</th>
+                  <th>Permitido</th>
+                  <th>Resultado</th>
+                  <th>S</th>
+                  <th>U</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Freno de estacionamiento</td>
+                  <td>F2, motor lleno — sin movimiento</td>
+                  <td>—</td>
+                  <td>Sin movimiento</td>
+                  <td>Sin movimiento</td>
+                  <td><input/></td>
+                  <td><input type="checkbox"/></td>
+                  <td><input type="checkbox"/></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="table-section" style="margin-top:10px">
+            <table id="tablaRPMFrenos">
+              <thead>
+                <tr>
+                  <th>Condición</th>
+                  <th>rpm (estándar)</th>
+                  <th>rpm (permitido)</th>
+                  <th>Medición</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Service brake (F2, incrementando rpm)</td>
+                  <td>1,760</td>
+                  <td>1,570</td>
+                  <td><input/></td>
+                </tr>
+                <tr>
+                  <td>Retarder brake</td>
+                  <td>1,340</td>
+                  <td>1,200</td>
+                  <td><input/></td>
+                </tr>
+                <tr>
+                  <td>Parking brake</td>
+                  <td>1,790</td>
+                  <td>1,610</td>
+                  <td><input/></td>
+                </tr>
+                <tr>
+                  <td>Emergency brake</td>
+                  <td>1,790</td>
+                  <td>1,610</td>
+                  <td><input/></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="table-section" style="margin-top:10px">
+            <table id="tablaDiscos">
+              <thead>
+                <tr>
+                  <th>Ubicación</th>
+                  <th>Gauge / Espesor</th>
+                  <th>Unidad</th>
+                  <th>Estándar</th>
+                  <th>Permitido</th>
+                  <th>Resultado</th>
+                  <th>Dentro de gauge</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Delantero Izquierdo</td>
+                  <td>Disc wear gauge</td>
+                  <td>mm</td>
+                  <td>39.3 – 42.1</td>
+                  <td>Máx. 45.3</td>
+                  <td><input/></td>
+                  <td><input type="checkbox"/></td>
+                </tr>
+                <tr>
+                  <td>Delantero Derecho</td>
+                  <td>Disc wear gauge</td>
+                  <td>mm</td>
+                  <td>39.3 – 42.1</td>
+                  <td>Máx. 45.3</td>
+                  <td><input/></td>
+                  <td><input type="checkbox"/></td>
+                </tr>
+                <tr>
+                  <td>Trasero Izquierdo</td>
+                  <td>Disc wear gauge</td>
+                  <td>mm</td>
+                  <td>39.3 – 42.1</td>
+                  <td>Máx. 45.3</td>
+                  <td><input/></td>
+                  <td><input type="checkbox"/></td>
+                </tr>
+                <tr>
+                  <td>Trasero Derecho</td>
+                  <td>Disc wear gauge</td>
+                  <td>mm</td>
+                  <td>39.3 – 42.1</td>
+                  <td>Máx. 45.3</td>
+                  <td><input/></td>
+                  <td><input type="checkbox"/></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3>Suspensión</h3>
+          <div class="table-section">
+            <table id="tablaSuspension">
+              <thead>
+                <tr>
+                  <th>Posición</th>
+                  <th>Ítem</th>
+                  <th>Unidad</th>
+                  <th>Estándar</th>
+                  <th>Permitido</th>
+                  <th>Resultado</th>
+                  <th>OK</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Delantera Izquierda</td>
+                  <td>Longitud cilindro</td>
+                  <td>mm</td>
+                  <td>237 – 257</td>
+                  <td>227 – 267</td>
+                  <td><input/></td>
+                  <td><input type="checkbox"/></td>
+                </tr>
+                <tr>
+                  <td>Delantera Derecha</td>
+                  <td>Longitud cilindro</td>
+                  <td>mm</td>
+                  <td>237 – 257</td>
+                  <td>227 – 267</td>
+                  <td><input/></td>
+                  <td><input type="checkbox"/></td>
+                </tr>
+                <tr>
+                  <td>Trasera Izquierda</td>
+                  <td>Longitud cilindro</td>
+                  <td>mm</td>
+                  <td>189 – 209</td>
+                  <td>179 – 219</td>
+                  <td><input/></td>
+                  <td><input type="checkbox"/></td>
+                </tr>
+                <tr>
+                  <td>Trasera Derecha</td>
+                  <td>Longitud cilindro</td>
+                  <td>mm</td>
+                  <td>189 – 209</td>
+                  <td>179 – 219</td>
+                  <td><input/></td>
+                  <td><input type="checkbox"/></td>
+                </tr>
+                <tr>
+                  <td>Fugas aceite/gas</td>
+                  <td>Visual</td>
+                  <td>—</td>
+                  <td>No fugas</td>
+                  <td>No fugas</td>
+                  <td><input/></td>
+                  <td><input type="checkbox"/></td>
+                </tr>
+                <tr>
+                  <td>Tope suspensión trasera</td>
+                  <td>Contacto (izq./der.)</td>
+                  <td>—</td>
+                  <td>Sin contacto</td>
+                  <td>Sin contacto</td>
+                  <td><input/></td>
+                  <td><input type="checkbox"/></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3>Registro de Códigos de Falla</h3>
+          <div class="table-section">
+            <table id="tablaFailureCodes">
+              <thead>
+                <tr>
+                  <th>Hora</th>
+                  <th>Código / Contenido</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><input/></td><td><input/></td></tr>
+                <tr><td><input/></td><td><input/></td></tr>
+                <tr><td><input/></td><td><input/></td></tr>
+                <tr><td><input/></td><td><input/></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="notes">
+            <strong>MEMO:</strong> Anote cualquier dato o fenómeno observado durante la inspección.
+            <textarea id="memo" rows="4" style="margin-top:8px"></textarea>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3>Set Fotográfico</h3>
+          <div class="photo-container">
+            <div class="photo-placeholder" id="addPhotoBtn">+ Agregar Foto</div>
+            <input type="file" id="photoUpload" accept="image/*" multiple style="display:none"/>
+          </div>
+        </div>
+
+        <div id="message" class="hidden"></div>
+
+        <div class="form-actions" style="text-align:center;margin-top:20px">
+          <button type="button" class="btn btn-alt" onclick="location.href='index.html'">Volver al Menú</button>
+          <button type="submit" class="btn">Enviar Formulario</button>
+          <button type="button" class="btn btn-danger" id="limpiarBtn">Limpiar Formulario</button>
+        </div>
+      </form>
     </div>
-                    
-    <script>
-        document.getElementById('fechaInspeccion').valueAsDate = new Date();
-        
-    </script>
+  </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-    <script src="js/pm-clinic2.js"></script>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="js/pm-clinic22.js"></script>
 </body>
 </html>
