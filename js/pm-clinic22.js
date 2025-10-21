@@ -38,16 +38,16 @@ async function generateAndSendPDF() {
   try {
     showMessage("📄 Generando PDF... Por favor espera.");
 
-    const element = document.querySelector(".container");
+    const element = document.querySelector(".container > .form-container") || document.querySelector(".container");
 
     const opt = {
-      margin: [0.4, 0.4, 0.4, 0.4],
-      filename: `PM_Clinic_HD785-7_${new Date().toISOString().split("T")[0]}.pdf`,
-      image: { type: "jpeg", quality: 1 },
-      html2canvas: { scale: 3, useCORS: true },
-      jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
-      pagebreak: { mode: ["avoid-all", "css", "legacy"] }
-    };
+  margin: [0.1, 0.2, 0.2, 0.2],
+  filename: `PM_Clinic_HD785-7_${new Date().toISOString().split("T")[0]}.pdf`,
+  image: { type: "jpeg", quality: 1 },
+  html2canvas: { scale: 3, useCORS: true },
+  jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+  pagebreak: { mode: ["avoid-all", "css", "legacy"] }
+};
 
     // Convertir el formulario en PDF
     const pdfBlob = await html2pdf().from(element).set(opt).outputPdf("blob");

@@ -153,18 +153,37 @@ async function submitPMClinicForm() {
     const pdfUrl = `https://ucarecdn.com/${uploadData.file}/`;
     console.log("📎 PDF subido:", pdfUrl);
 
+    const today = new Date();
+    const fechaFormateada = today.toLocaleDateString("es-CL", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+
+    const subject = `Reporte PM Clinic WD900-3 – ${formData.ws || formData.ns} – ${formData.ub}`;
+
+    const htmlContent = `
+      <div style="font-family:Arial,sans-serif;color:#333;">
+        <h2 style="color:#0033A0;">Reporte PM Clinic – WD900-3</h2>
+        <p>Hola equipo,</p>
+        <p>Se ha generado automáticamente un nuevo reporte de inspección PM Clinic (WD900-3).</p>
+        <p><b>Fecha de generación:</b> ${fechaFormateada}</p>
+        <p>Pueden visualizar o descargar el PDF desde el siguiente enlace:</p>
+        <p><a href="${pdfUrl}" style="color:#0033A0;font-weight:bold;" target="_blank">📄 Ver Reporte PM Clinic</a></p>
+        <hr style="margin:20px 0;border:0;border-top:1px solid #ccc;">
+        <p style="font-size:12px;color:#777;">
+          Este correo fue enviado automáticamente por el sistema de reportes Komatsu.<br>
+          No responda a este mensaje.
+        </p>
+      </div>
+    `;
+
     const res = await fetch("https://komatsu-api.vercel.app/api/sendEmail", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        subject: `PM Clinic WD900-3 - ${formData.ws || formData.ns} - ${formData.ub}`,
-        html: `
-          <p>Hola equipo,</p>
-          <p>Se ha generado automáticamente un informe PM Clinic.</p>
-          <p><a href="${pdfUrl}" target="_blank">📄 Descargar reporte aquí</a></p>
-          <hr>
-          <p style="font-size:12px;color:#777;">Enviado automáticamente por el sistema Komatsu.</p>
-        `,
+        subject,
+        html: htmlContent,
       }),
     });
 
