@@ -120,7 +120,7 @@ async function submitGetInspectionForm() {
       'lnovakov@hotmail.com',
     ];
 
-    const res = await fetch('https://komatsu-api.vercel.app/api/send-email', {
+    const res = await fetch('https://komatsu-api.vercel.app/api/sendEmail', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
