@@ -115,16 +115,23 @@ async function submitGetInspectionForm() {
     const pdfUrl = `https://ucarecdn.com/${uploadData.file}/`;
     console.log('📎 PDF subido:', pdfUrl);
 
-    const destinatarios = [
-      'alaskaheim@gmail.com',
-      'lnovakov@hotmail.com',
+    const to = ["alaskaheim@gmail.com"]; 
+    const cc = [];                      
+    const bcc = [
+      "mariaignaciar@live.cl",
+      "mnovacov@hotmail.com",
+      "novakovfilms@gmail.com",
+      "blakenovacov@gmail.com",
+      "novacriadero@gmail.com"
     ];
 
-    const res = await fetch('https://komatsu-api.vercel.app/api/sendEmail', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const res = await fetch("https://komatsu-api.vercel.app/api/sendEmail", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        to: destinatarios,
+        to,
+        cc,
+        bcc,
         subject: 'Reporte de Inspección GET - Komatsu',
         html: `
           <p>Hola equipo,</p>
