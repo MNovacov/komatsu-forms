@@ -13,9 +13,6 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('ultimoCambio').addEventListener('change', calculateProjections);
 });
 
-// -------------------------------------------------------------
-// TABLA DE MEDIDAS
-// -------------------------------------------------------------
 
 function initializeMeasurementsTable() {
   const medidas = [
@@ -88,15 +85,11 @@ function showMessage(elementId, message, isError = false) {
   setTimeout(() => messageElement.classList.add('hidden'), 7000);
 }
 
-// -------------------------------------------------------------
-// GENERA PDF + SUBE + ENVÍA
-// -------------------------------------------------------------
 
 async function submitGetInspectionForm() {
   showMessage('message', 'Generando PDF y enviando reporte...');
 
   try {
-    // 1️⃣ Generar PDF igual al formulario
     const elemento = document.querySelector('.form-container');
     const opt = {
       margin: [0.3, 0.3, 0.3, 0.3],
@@ -109,7 +102,6 @@ async function submitGetInspectionForm() {
 
     const pdfBlob = await html2pdf().from(elemento).set(opt).outputPdf('blob');
 
-    // 2️⃣ Subir PDF a Uploadcare
     const formData = new FormData();
     formData.append('UPLOADCARE_PUB_KEY', 'dd2580a9c669d60b5d49');
     formData.append('file', pdfBlob, 'Inspeccion_GET.pdf');
@@ -123,13 +115,12 @@ async function submitGetInspectionForm() {
     const pdfUrl = `https://ucarecdn.com/${uploadData.file}/`;
     console.log('📎 PDF subido:', pdfUrl);
 
-    // 3️⃣ Enviar email con tu backend
     const destinatarios = [
       'alaskaheim@gmail.com',
       'lnovakov@hotmail.com',
     ];
 
-    const res = await fetch('https://komatsu-api.vercel.app/send-email', {
+    const res = await fetch('https://komatsu-api.vercel.app/api/send-email', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

@@ -1,40 +1,34 @@
-(function() {
-    emailjs.init("Xi0ufpRrvR-fHtS5t"); 
-})();
+document.addEventListener('DOMContentLoaded', () => {
+  const fecha = document.getElementById('fecha');
+  if (fecha) {
+    fecha.value = new Date().toISOString().split('T')[0];
+  }
 
-
-function sendForm(formId, templateId, formData) {
-    return emailjs.send("service_lald5aw", templateId, formData)
-        .then(function(response) {
-            console.log("SUCCESS!", response.status, response.text);
-            return { success: true, message: "Formulario enviado correctamente" };
-        }, function(error) {
-            console.log("FAILED...", error);
-            return { success: false, message: "Error al enviar el formulario: " + error.text };
-        });
-}
+  console.log("✅ Sistema Komatsu inicializado correctamente");
+});
 
 
 function showMessage(elementId, message, isError = false) {
-    const element = document.getElementById(elementId);
-    if (element) {
-        element.textContent = message;
-        element.className = isError ? 'error-message' : 'success-message';
-        element.classList.remove('hidden');
-        
-        setTimeout(() => {
-            element.classList.add('hidden');
-        }, 5000);
-    }
+  const element = document.getElementById(elementId);
+  if (!element) return;
+
+  element.textContent = message;
+  element.className = isError ? 'error-message' : 'success-message';
+  element.classList.remove('hidden');
+
+  setTimeout(() => {
+    element.classList.add('hidden');
+  }, 5000);
 }
 
 
 function isValidEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
 }
 
 
 function formatDate(date) {
-    return date.toISOString().split('T')[0];
+  if (!(date instanceof Date)) return '';
+  return date.toISOString().split('T')[0];
 }
