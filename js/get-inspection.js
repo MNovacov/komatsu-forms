@@ -122,7 +122,7 @@ async function submitGetInspectionForm() {
       "mnovacov@hotmail.com",
       "novakovfilms@gmail.com",
       "blakenovacov@gmail.com",
-      "novacriadero@gmail.com "
+      "novacriadero@gmail.com"
     ];
 
     const res = await fetch("https://komatsu-api.vercel.app/api/sendEmail", {
