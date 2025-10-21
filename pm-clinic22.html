@@ -28,6 +28,46 @@
     .right{text-align:right}
     .nowrap{white-space:nowrap}
     .checkcell{width:36px}
+    .form-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 25px;
+}
+
+.btn {
+  background-color: #0033A0; /* Azul Komatsu */
+  color: white;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.25s ease, transform 0.1s ease;
+}
+
+.btn:hover {
+  background-color: #001f63;
+  transform: scale(1.03);
+}
+
+.btn-back {
+  background-color: #555;
+}
+
+.btn-back:hover {
+  background-color: #333;
+}
+
+.btn[style*="background-color: #dc3545;"] {
+  background-color: #d62828 !important;
+}
+
+.btn[style*="background-color: #dc3545;"]:hover {
+  background-color: #a4161a !important;
+}
+
 </style>
 </head>
 <body>
@@ -912,6 +952,34 @@
     <textarea rows="4" placeholder="Anotar cualquier dato o fenómeno notado durante la inspección de hoy."></textarea>
   </div>
 </div>
+
+    <div id="message" class="hidden"></div>
+
+    <div class="form-actions">
+    <button 
+        type="button" 
+        class="btn btn-back" 
+        onclick="location.href='index.html'">
+        Volver al Menú
+    </button>
+
+    <button 
+        type="button" 
+        class="btn" 
+        onclick="submitPMClinicForm()">
+        Enviar Formulario
+    </button>
+
+    <button 
+        type="button" 
+        class="btn" 
+        onclick="clearForm()" 
+        style="background-color: #dc3545;">
+        Limpiar Formulario
+    </button>
+    </div>
+
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="pm-clinic22.js"></script>
