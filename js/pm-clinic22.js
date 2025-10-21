@@ -124,3 +124,6 @@ async function sendReportEmail(pdfUrl) {
     showMessage("❌ Error inesperado al enviar el reporte.", false);
   }
 }
+function submitPMClinicForm() {
+  generateAndSendPDF();
+}
