@@ -34,11 +34,10 @@ function showMessage(elementId, message, isError = false) {
 }
 
 async function submitPMClinicForm() {
-  showMessage("message", "📄 Generando PDF y enviando reporte...");
+  showMessage("message", "📄 Generando PDF y enviando formulario...");
 
   try {
-    // Capturar solo el formulario
-    const elemento = document.querySelector(".container");
+    const element = document.body;
 
     const opt = {
       margin: [0.3, 0.3, 0.3, 0.3],
@@ -49,7 +48,6 @@ async function submitPMClinicForm() {
       pagebreak: { mode: ["avoid-all", "css", "legacy"] }
     };
 
-    // Generar PDF
     const pdfBlob = await html2pdf().from(elemento).set(opt).outputPdf("blob");
 
     // Subir a Uploadcare
