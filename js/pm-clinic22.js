@@ -2,42 +2,23 @@ document.addEventListener("DOMContentLoaded", function () {
   // Fecha automática
   const dateInputs = document.querySelectorAll('input[type="date"]');
   if (dateInputs.length) dateInputs[0].value = new Date().toISOString().split("T")[0];
-
-  // Botón de envío
-  const submitButton = document.createElement("button");
-  submitButton.textContent = "Generar y Enviar Reporte";
-  submitButton.className = "btn";
-  submitButton.style.marginTop = "20px";
-
-  // Contenedor del formulario
-  const formContainer = document.querySelector(".container");
-  formContainer.appendChild(submitButton);
-
-  // Caja de mensajes
-  const messageBox = document.createElement("div");
-  messageBox.id = "message";
-  messageBox.style.cssText =
-    "margin-top:12px;font-size:14px;font-weight:bold;text-align:center;";
-  formContainer.appendChild(messageBox);
-
-  // Evento de click
-  submitButton.addEventListener("click", async () => {
-    await submitPMClinicForm();
-  });
 });
 
+// Mostrar mensajes al usuario
 function showMessage(elementId, message, isError = false) {
   const el = document.getElementById(elementId);
   if (!el) return;
   el.textContent = message;
   el.style.color = isError ? "#c00" : "#007b00";
+  el.classList.remove("hidden");
 }
 
+// Generar PDF y enviar
 async function submitPMClinicForm() {
   showMessage("message", "📄 Generando PDF y enviando formulario...");
 
   try {
-    const element = document.body;
+    const element = document.body; // Captura todo, incluido el encabezado
 
     const opt = {
       margin: [0.3, 0.3, 0.3, 0.3],
@@ -48,7 +29,8 @@ async function submitPMClinicForm() {
       pagebreak: { mode: ["avoid-all", "css", "legacy"] }
     };
 
-    const pdfBlob = await html2pdf().from(elemento).set(opt).outputPdf("blob");
+    // 👇 aquí el error estaba en "elemento"
+    const pdfBlob = await html2pdf().from(element).set(opt).outputPdf("blob");
 
     // Subir a Uploadcare
     const formData = new FormData();
@@ -61,17 +43,20 @@ async function submitPMClinicForm() {
     });
 
     const uploadData = await uploadRes.json();
+    if (!uploadData.file) throw new Error("Error al subir el PDF.");
+
     const pdfUrl = `https://ucarecdn.com/${uploadData.file}/`;
     console.log("📎 PDF subido:", pdfUrl);
 
     // Enviar email
     await sendReportEmail(pdfUrl);
   } catch (err) {
-    console.error(err);
+    console.error("❌ Error general:", err);
     showMessage("message", "❌ Error al generar o subir el PDF.", true);
   }
 }
 
+// Enviar correo con el enlace al PDF
 async function sendReportEmail(pdfUrl) {
   try {
     const today = new Date();
@@ -102,10 +87,7 @@ async function sendReportEmail(pdfUrl) {
     const res = await fetch("https://komatsu-api.vercel.app/api/sendEmail", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        subject,
-        html: htmlContent
-      })
+      body: JSON.stringify({ subject, html: htmlContent })
     });
 
     const data = await res.json();
