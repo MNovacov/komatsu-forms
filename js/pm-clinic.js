@@ -35,15 +35,12 @@ async function submitPMClinicForm() {
       pagebreak: { mode: ["avoid-all", "css", "legacy"] },
     };
 
-    // Compatibilidad con html2pdf versiones viejas
     if (typeof html2pdf === "function" && !html2pdf().outputPdf) {
       html2pdf.prototype.outputPdf = html2pdf.prototype.output;
     }
 
-    // Generar PDF en blob
     const pdfBlob = await html2pdf().from(elemento).set(opt).outputPdf("blob");
 
-    // Subir PDF a Uploadcare
     const formData = new FormData();
     formData.append("UPLOADCARE_PUB_KEY", "dd2580a9c669d60b5d49");
     formData.append("file", pdfBlob, "PM_Clinic_WD900-3.pdf");
@@ -59,7 +56,6 @@ async function submitPMClinicForm() {
     const pdfUrl = `https://ucarecdn.com/${uploadData.file}/`;
     console.log("📎 PDF subido:", pdfUrl);
 
-    // Fecha formateada
     const today = new Date();
     const fechaFormateada = today.toLocaleDateString("es-CL", {
       year: "numeric",
@@ -67,7 +63,6 @@ async function submitPMClinicForm() {
       day: "numeric",
     });
 
-    // Contenido del correo
     const htmlContent = `
       <div style="font-family:Arial,sans-serif;color:#333;">
         <h2 style="color:#0033A0;">Reporte PM Clinic – HD785-7</h2>
@@ -84,7 +79,6 @@ async function submitPMClinicForm() {
       </div>
     `;
 
-    // Enviar email con tu API
     const res = await fetch("https://komatsu-api.vercel.app/api/sendEmail", {
       method: "POST",
       headers: { "Content-Type": "application/json" },

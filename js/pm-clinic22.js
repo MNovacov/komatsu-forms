@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", function () {
   if (fecha) fecha.value = new Date().toISOString().split("T")[0];
 });
 
-// Mostrar mensajes al usuario
 function showMessage(elementId, message, isError = false) {
   const el = document.getElementById(elementId);
   if (!el) return;
@@ -13,7 +12,6 @@ function showMessage(elementId, message, isError = false) {
   setTimeout(() => el.classList.add("hidden"), 7000);
 }
 
-// Generar PDF y enviar por correo
 async function submitPMClinicForm() {
   showMessage("message", "📄 Generando PDF y enviando formulario...");
 
@@ -29,15 +27,12 @@ async function submitPMClinicForm() {
       pagebreak: { mode: ["avoid-all", "css", "legacy"] },
     };
 
-    // Compatibilidad: crea alias si la versión no tiene outputPdf
     if (typeof html2pdf === "function" && !html2pdf().outputPdf) {
       html2pdf.prototype.outputPdf = html2pdf.prototype.output;
     }
 
-    // Generar PDF como blob (mismo método que get-inspection.js)
     const pdfBlob = await html2pdf().from(elemento).set(opt).outputPdf("blob");
 
-    // Subir PDF a Uploadcare
     const formData = new FormData();
     formData.append("UPLOADCARE_PUB_KEY", "dd2580a9c669d60b5d49");
     formData.append("file", pdfBlob, "PM_Clinic_HD785-7.pdf");
@@ -53,7 +48,6 @@ async function submitPMClinicForm() {
     const pdfUrl = `https://ucarecdn.com/${uploadData.file}/`;
     console.log("📎 PDF subido:", pdfUrl);
 
-    // Fecha formateada para el email
     const today = new Date();
     const fechaFormateada = today.toLocaleDateString("es-CL", {
       year: "numeric",
@@ -61,7 +55,6 @@ async function submitPMClinicForm() {
       day: "numeric",
     });
 
-    // Cuerpo del mensaje de correo (tu versión)
     const htmlContent = `
       <div style="font-family:Arial,sans-serif;color:#333;">
         <h2 style="color:#0033A0;">Reporte PM Clinic – HD785-7</h2>
@@ -78,7 +71,6 @@ async function submitPMClinicForm() {
       </div>
     `;
 
-    // Enviar correo usando tu API
     const res = await fetch("https://komatsu-api.vercel.app/api/sendEmail", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
