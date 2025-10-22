@@ -1,8 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("pmClinicForm").addEventListener("submit", async function (e) {
-    e.preventDefault();
-    await submitPMClinicForm();
-    });
+  const fecha = document.querySelector('input[type="date"]');
+  if (fecha) fecha.value = new Date().toISOString().split("T")[0];
+
   // Fecha automática
   const dateInputs = document.querySelectorAll('input[type="date"]');
   if (dateInputs.length) dateInputs[0].value = new Date().toISOString().split("T")[0];
@@ -34,7 +33,7 @@ async function submitPMClinicForm() {
     };
 
     // 👇 aquí el error estaba en "elemento"
-    const pdfBlob = await html2pdf().from(element).set(opt).outputPdf("blob");
+    const pdfBlob = await html2pdf().from(elemento).set(opt).outputPdf("blob");
 
     // Subir a Uploadcare
     const formData = new FormData();
