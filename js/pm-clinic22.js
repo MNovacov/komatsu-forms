@@ -33,7 +33,7 @@ async function submitPMClinicForm() {
     };
 
     // 👇 aquí el error estaba en "elemento"
-    const pdfBlob = await html2pdf().from(elemento).set(opt).output("blob");
+    const pdfBlob = await html2pdf().from(elemento).set(opt).outputPdf("blob");
 
     // Subir a Uploadcare
     const formData = new FormData();
