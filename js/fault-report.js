@@ -1,29 +1,32 @@
 document.addEventListener("DOMContentLoaded", function () {
   const today = new Date().toISOString().split("T")[0];
-  document.getElementById("failureDate").value = today;
-  document.getElementById("visitDate").value = today;
+  const dateFields = ["failureDate", "visitDate", "repairDate", "deliveryDate"];
+  dateFields.forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.value = today;
+  });
 
   initializePartsTable();
   calculateTotals();
   initializePhotoUpload();
 
-  document
-    .getElementById("faultReportForm")
-    .addEventListener("submit", async function (e) {
+  const form = document.getElementById("faultReportForm");
+  if (form) {
+    form.addEventListener("submit", async function (e) {
       e.preventDefault();
       await submitFaultReportForm();
     });
+  }
 
-  document
-    .getElementById("partsTable")
-    .addEventListener("input", function (e) {
-      if (e.target.name === "cantidad" || e.target.name === "precioUn") {
-        calculateRowTotal(e.target.closest("tr"));
-        calculateTotals();
-      }
-    });
+  document.getElementById("partsTable")?.addEventListener("input", function (e) {
+    if (e.target.name === "cantidad" || e.target.name === "precioUn") {
+      calculateRowTotal(e.target.closest("tr"));
+      calculateTotals();
+    }
+  });
 });
 
+// ======= TABLA DE REPUESTOS =======
 function initializePartsTable() {
   for (let i = 0; i < 5; i++) addPartRow();
 }
@@ -71,6 +74,7 @@ function calculateTotals() {
   document.getElementById("totalAmount").textContent = `$ ${new Intl.NumberFormat("es-CL").format(totalAmount)}`;
 }
 
+// ======= MENSAJES =======
 function showMessage(elementId, message, isError = false) {
   const el = document.getElementById(elementId);
   el.textContent = message;
@@ -80,8 +84,9 @@ function showMessage(elementId, message, isError = false) {
   setTimeout(() => el.classList.add("hidden"), 7000);
 }
 
+// ======= ENVÍO =======
 async function submitFaultReportForm() {
-  showMessage("message", "⏳ Generando PDF y subiendo a la nube...");
+  showMessage("message", "📄 Generando PDF y enviando informe...");
 
   try {
     const elemento = document.querySelector(".form-container");
@@ -91,10 +96,18 @@ async function submitFaultReportForm() {
       image: { type: "jpeg", quality: 1 },
       html2canvas: { scale: 3, useCORS: true },
       jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+      pagebreak: { mode: ["avoid-all", "css", "legacy"] },
     };
 
+    // Compatibilidad de versiones
+    if (typeof html2pdf === "function" && !html2pdf().outputPdf) {
+      html2pdf.prototype.outputPdf = html2pdf.prototype.output;
+    }
+
+    // Generar PDF como Blob
     const pdfBlob = await html2pdf().from(elemento).set(opt).outputPdf("blob");
 
+    // Subir PDF a Uploadcare
     const formData = new FormData();
     formData.append("UPLOADCARE_PUB_KEY", "dd2580a9c669d60b5d49");
     formData.append("file", pdfBlob, "Informe_Falla.pdf");
@@ -105,39 +118,63 @@ async function submitFaultReportForm() {
     });
 
     const uploadData = await uploadRes.json();
+    if (!uploadData.file) throw new Error("Error al subir el PDF a Uploadcare.");
+
     const pdfUrl = `https://ucarecdn.com/${uploadData.file}/`;
     console.log("📎 PDF subido:", pdfUrl);
 
+    // Fecha formateada
+    const today = new Date();
+    const fechaFormateada = today.toLocaleDateString("es-CL", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+
+    // Mensaje de correo con estilo elegante
+    const htmlContent = `
+      <div style="font-family:Arial,sans-serif;color:#333;">
+        <h2 style="color:#0033A0;">Informe de Falla – Komatsu</h2>
+        <p>Hola equipo,</p>
+        <p>Se ha generado automáticamente un nuevo <b>Informe de Falla</b> para revisión.</p>
+        <p><b>Fecha de generación:</b> ${fechaFormateada}</p>
+        <p>Pueden visualizar o descargar el PDF desde el siguiente enlace:</p>
+        <p><a href="${pdfUrl}" style="color:#0033A0;font-weight:bold;" target="_blank">📄 Ver Informe de Falla</a></p>
+        <hr style="margin:20px 0;border:0;border-top:1px solid #ccc;">
+        <p style="font-size:12px;color:#777;">
+          Este correo fue enviado automáticamente por el sistema de reportes Komatsu.<br>
+          No responda a este mensaje.
+        </p>
+      </div>
+    `;
+
+    // Envío del correo
     const res = await fetch("https://komatsu-api.vercel.app/api/sendEmail", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        subject: "Informe de Falla - Komatsu",
-        html: `
-          <p>Hola equipo,</p>
-          <p>Adjunto el informe de falla generado automáticamente.</p>
-          <p><a href="${pdfUrl}" target="_blank">📄 Descargar reporte aquí</a></p>
-          <hr>
-          <p style="font-size:12px;color:#777;">Enviado automáticamente por el sistema Komatsu.</p>
-        `,
+        subject: `Informe de Falla – ${fechaFormateada}`,
+        html: htmlContent,
       }),
     });
 
     const data = await res.json();
-
     if (data.success) {
       showMessage("message", "✅ Informe de Falla enviado correctamente.");
+      console.log("✅ Email enviado:", data);
     } else {
-      showMessage("message", "❌ Error al enviar el informe.", true);
-      console.error(data);
+      showMessage("message", "❌ Error al enviar el correo.", true);
+      console.error("❌ Error al enviar email:", data);
     }
   } catch (err) {
-    console.error("Error:", err);
-    showMessage("message", "❌ Ocurrió un error al generar o enviar el PDF.", true);
+    console.error("❌ Error general:", err);
+    showMessage("message", "❌ Error al generar o enviar el informe.", true);
   }
 }
 
+// ======= FOTOS =======
 let selectedPhotos = [];
+
 function initializePhotoUpload() {
   const input = document.getElementById("photoUpload");
   const container = document.querySelector(".photo-container");
@@ -161,18 +198,21 @@ function initializePhotoUpload() {
 
       const del = document.createElement("span");
       del.textContent = "×";
-      del.style.position = "absolute";
-      del.style.top = "2px";
-      del.style.right = "5px";
-      del.style.color = "white";
-      del.style.backgroundColor = "rgba(0,0,0,0.6)";
-      del.style.borderRadius = "50%";
-      del.style.width = "20px";
-      del.style.height = "20px";
-      del.style.textAlign = "center";
-      del.style.lineHeight = "18px";
-      del.style.cursor = "pointer";
-      del.style.fontWeight = "bold";
+      Object.assign(del.style, {
+        position: "absolute",
+        top: "2px",
+        right: "5px",
+        color: "white",
+        backgroundColor: "rgba(0,0,0,0.6)",
+        borderRadius: "50%",
+        width: "20px",
+        height: "20px",
+        textAlign: "center",
+        lineHeight: "18px",
+        cursor: "pointer",
+        fontWeight: "bold",
+      });
+
       del.addEventListener("click", () => {
         wrapper.remove();
         selectedPhotos = selectedPhotos.filter((f) => f !== file);
