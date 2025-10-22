@@ -1,4 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("pmClinicForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    await submitPMClinicForm();
+    });
   // Fecha automática
   const dateInputs = document.querySelectorAll('input[type="date"]');
   if (dateInputs.length) dateInputs[0].value = new Date().toISOString().split("T")[0];
