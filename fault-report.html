@@ -285,12 +285,32 @@
                     
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="equipmentModel">MODELO EQUIPO</label>
-                            <input type="text" id="equipmentModel" name="equipmentModel">
+                            <label for="equipmentNumber">NÚMERO DE EQUIPO</label>
+                            <select id="equipmentNumber" name="equipmentNumber" required>
+                                <option value="">Seleccione número de equipo</option>
+                                <option value="437">437</option>
+                                <option value="438">438</option>
+                                <option value="511">511</option>
+                                <option value="512">512</option>
+                                <option value="513">513</option>
+                                <option value="514">514</option>
+                                <option value="515">515</option>
+                                <option value="516">516</option>
+                            </select>
                         </div>
                         <div class="form-group">
-                            <label for="equipmentSerial">SERIE DE EQUIPO</label>
-                            <input type="text" id="equipmentSerial" name="equipmentSerial">
+                            <label for="serialNumber">NÚMERO DE SERIE</label>
+                            <select id="serialNumber" name="serialNumber" required>
+                                <option value="">Seleccione número de serie</option>
+                                <option value="50110">50110</option>
+                                <option value="50111">50111</option>
+                                <option value="34208">34208</option>
+                                <option value="34239">34239</option>
+                                <option value="34245">34245</option>
+                                <option value="34254">34254</option>
+                                <option value="34292">34292</option>
+                                <option value="34294">34294</option>
+                            </select>
                         </div>
                     </div>
                     
@@ -325,65 +345,34 @@
                 </div>
                 
                 <div class="form-section">
-                    <h3>1. Descripción, problema planteado por el Cliente</h3>
+                    <h3>1. Título del Informe</h3>
                     <div class="form-group">
-                        <textarea id="problemDescription" name="problemDescription"></textarea>
+                        <textarea id="reportTitle" name="reportTitle" 
+                                  placeholder="Ingrese el título completo del informe."></textarea>
                     </div>
                 </div>
                 
                 <div class="form-section">
-                    <h3>1. Antecedentes</h3>
+                    <h3>2. Descripción de la Falla</h3>
                     <div class="form-group">
-                        <textarea id="background" name="background"></textarea>
+                        <textarea id="failureDescription" name="failureDescription" 
+                                  placeholder="Describa el problema reportado por el cliente y antecedentes relevantes del equipo."></textarea>
                     </div>
                 </div>
                 
                 <div class="form-section">
-                    <h3>2. Objetivo</h3>
+                    <h3>3. Evaluación y Análisis Técnico</h3>
                     <div class="form-group">
-                        <textarea id="objective" name="objective"></textarea>
+                        <textarea id="technicalAnalysis" name="technicalAnalysis" 
+                                  placeholder=""></textarea>
                     </div>
                 </div>
                 
                 <div class="form-section">
-                    <h3>3. Procedimiento de Inspección</h3>
+                    <h3>4. Conclusión</h3>
                     <div class="form-group">
-                        <textarea id="inspectionProcedure" name="inspectionProcedure"></textarea>
-                    </div>
-                </div>
-                
-                <div class="form-section">
-                    <h3>4. Hallazgos de la Inspección</h3>
-                    <div class="form-group">
-                        <textarea id="inspectionFindings" name="inspectionFindings"></textarea>
-                    </div>
-                </div>
-                
-                <div class="form-section">
-                    <h3>5. Análisis de correlación entre aceite inadecuado y daños</h3>
-                    <div class="form-group">
-                        <textarea id="oilAnalysis" name="oilAnalysis"></textarea>
-                    </div>
-                </div>
-                
-                <div class="form-section">
-                    <h3>6. Conclusiones</h3>
-                    <div class="form-group">
-                        <textarea id="conclusions" name="conclusions"></textarea>
-                    </div>
-                </div>
-                
-                <div class="form-section">
-                    <h3>7. Plan de Acción</h3>
-                    <div class="form-group">
-                        <textarea id="actionPlan" name="actionPlan"></textarea>
-                    </div>
-                </div>
-                
-                <div class="form-section">
-                    <h3>8. Próximos Pasos</h3>
-                    <div class="form-group">
-                        <textarea id="nextSteps" name="nextSteps"></textarea>
+                        <textarea id="conclusion" name="conclusion" 
+                                  placeholder=""></textarea>
                     </div>
                 </div>
                 
@@ -391,11 +380,20 @@
                     <h3>Set Fotográfico</h3>
                     <div class="photo-section">
                         <div class="photo-container">
-                            <div class="photo-placeholder" onclick="document.getElementById('photoUpload').click()">
-                                <span>+ Agregar Foto</span>
+                            <div class="photo-placeholder" onclick="addPhoto(this)">
+                                <span>+ Agregar Foto 1</span>
                             </div>
-                            <input type="file" id="photoUpload" accept="image/*" multiple style="display: none;">
+                            <div class="photo-placeholder" onclick="addPhoto(this)">
+                                <span>+ Agregar Foto 2</span>
+                            </div>
+                            <div class="photo-placeholder" onclick="addPhoto(this)">
+                                <span>+ Agregar Foto 3</span>
+                            </div>
+                            <div class="photo-placeholder" onclick="addPhoto(this)">
+                                <span>+ Agregar Foto 4</span>
+                            </div>
                         </div>
+                        <input type="file" id="photoUpload" accept="image/*" style="display: none;">
                     </div>
                 </div>
 

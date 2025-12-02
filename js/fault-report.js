@@ -6,6 +6,15 @@ document.addEventListener("DOMContentLoaded", function () {
     if (el) el.value = today;
   });
 
+  const reportNumber = document.getElementById("reportNumber");
+  if (reportNumber && !reportNumber.value) {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    reportNumber.value = `INF-${year}${month}${day}-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`;
+  }
+
   initializePartsTable();
   calculateTotals();
   initializePhotoUpload();
@@ -26,7 +35,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-// ======= TABLA DE REPUESTOS =======
 function initializePartsTable() {
   for (let i = 0; i < 5; i++) addPartRow();
 }
@@ -74,7 +82,84 @@ function calculateTotals() {
   document.getElementById("totalAmount").textContent = `$ ${new Intl.NumberFormat("es-CL").format(totalAmount)}`;
 }
 
-// ======= MENSAJES =======
+let currentPlaceholder = null;
+
+function addPhoto(placeholderElement) {
+  currentPlaceholder = placeholderElement;
+  document.getElementById('photoUpload').click();
+}
+
+function initializePhotoUpload() {
+  const input = document.getElementById("photoUpload");
+  
+  input.addEventListener("change", function () {
+    if (!currentPlaceholder || !this.files[0]) return;
+    
+    const file = this.files[0];
+    
+    if (!file.type.startsWith('image/')) {
+      alert('Por favor, seleccione solo archivos de imagen.');
+      return;
+    }
+    
+    if (file.size > 5 * 1024 * 1024) {
+      alert('La imagen es demasiado grande. Máximo 5MB.');
+      return;
+    }
+    
+    const img = document.createElement('img');
+    img.src = URL.createObjectURL(file);
+    img.style.width = '100%';
+    img.style.height = '100%';
+    img.style.objectFit = 'cover';
+    
+    const removeBtn = document.createElement('button');
+    removeBtn.innerHTML = '×';
+    removeBtn.style.position = 'absolute';
+    removeBtn.style.top = '5px';
+    removeBtn.style.right = '5px';
+    removeBtn.style.background = 'rgba(0,0,0,0.7)';
+    removeBtn.style.color = 'white';
+    removeBtn.style.border = 'none';
+    removeBtn.style.borderRadius = '50%';
+    removeBtn.style.width = '20px';
+    removeBtn.style.height = '20px';
+    removeBtn.style.cursor = 'pointer';
+    removeBtn.style.fontSize = '14px';
+    removeBtn.style.lineHeight = '18px';
+    
+    removeBtn.onclick = function(e) {
+      e.stopPropagation();
+      wrapper.remove();
+      URL.revokeObjectURL(img.src);
+      
+      const newPlaceholder = document.createElement('div');
+      newPlaceholder.className = 'photo-placeholder';
+      newPlaceholder.innerHTML = `<span>+ Agregar Foto</span>`;
+      newPlaceholder.onclick = function() {
+        addPhoto(newPlaceholder);
+      };
+      
+      container.insertBefore(newPlaceholder, container.children[placeholderIndex]);
+    };
+    
+    const wrapper = document.createElement('div');
+    wrapper.style.position = 'relative';
+    wrapper.style.width = '150px';
+    wrapper.style.height = '150px';
+    wrapper.style.border = '1px solid #ddd';
+    wrapper.appendChild(img);
+    wrapper.appendChild(removeBtn);
+    
+    const container = currentPlaceholder.parentNode;
+    const placeholderIndex = Array.from(container.children).indexOf(currentPlaceholder);
+    container.replaceChild(wrapper, currentPlaceholder);
+    
+    currentPlaceholder = null;
+    input.value = '';
+  });
+}
+
 function showMessage(elementId, message, isError = false) {
   const el = document.getElementById(elementId);
   el.textContent = message;
@@ -84,62 +169,113 @@ function showMessage(elementId, message, isError = false) {
   setTimeout(() => el.classList.add("hidden"), 7000);
 }
 
-// ======= ENVÍO =======
 async function submitFaultReportForm() {
   showMessage("message", "📄 Generando PDF y enviando informe...");
 
   try {
+    const requiredFields = ["reportNumber", "client", "equipmentModel", 
+                           "equipmentSerial", "technician", "reportTitle",
+                           "failureDescription", "technicalAnalysis", "conclusion"];
+    
+    for (const fieldId of requiredFields) {
+      const field = document.getElementById(fieldId);
+      if (field && !field.value.trim()) {
+        showMessage("message", `Por favor complete el campo: ${field.previousElementSibling?.textContent || fieldId}`, true);
+        field.focus();
+        return;
+      }
+    }
+
     const elemento = document.querySelector(".form-container");
     const opt = {
       margin: [0.3, 0.3, 0.3, 0.3],
-      filename: `Informe_Falla_${Date.now()}.pdf`,
+      filename: `Informe_Falla_${document.getElementById("reportNumber").value}_${Date.now()}.pdf`,
       image: { type: "jpeg", quality: 1 },
-      html2canvas: { scale: 3, useCORS: true },
-      jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
-      pagebreak: { mode: ["avoid-all", "css", "legacy"] },
+      html2canvas: { 
+        scale: 3, 
+        useCORS: true,
+        logging: false,
+        allowTaint: true
+      },
+      jsPDF: { 
+        unit: "in", 
+        format: "a4", 
+        orientation: "portrait",
+        compress: true
+      },
+      pagebreak: { 
+        mode: ["avoid-all", "css", "legacy"]
+      }
     };
 
-    // Compatibilidad de versiones
-    if (typeof html2pdf === "function" && !html2pdf().outputPdf) {
-      html2pdf.prototype.outputPdf = html2pdf.prototype.output;
-    }
-
-    // Generar PDF como Blob
     const pdfBlob = await html2pdf().from(elemento).set(opt).outputPdf("blob");
+    
+    const formData = {
+      reportNumber: document.getElementById("reportNumber").value,
+      client: document.getElementById("client").value,
+      equipmentModel: document.getElementById("equipmentModel").value,
+      equipmentSerial: document.getElementById("equipmentSerial").value,
+      reportTitle: document.getElementById("reportTitle").value,
+      technician: document.getElementById("technician").value,
+      failureDescription: document.getElementById("failureDescription").value.substring(0, 100) + "...",
+      totalAmount: document.getElementById("totalAmount").textContent
+    };
 
-    // Subir PDF a Uploadcare
-    const formData = new FormData();
-    formData.append("UPLOADCARE_PUB_KEY", "dd2580a9c669d60b5d49");
-    formData.append("file", pdfBlob, "Informe_Falla.pdf");
+    const uploadFormData = new FormData();
+    uploadFormData.append("UPLOADCARE_PUB_KEY", "dd2580a9c669d60b5d49");
+    uploadFormData.append("file", pdfBlob, `Informe_Falla_${formData.reportNumber}.pdf`);
+    uploadFormData.append("store", "auto");
 
     const uploadRes = await fetch("https://upload.uploadcare.com/base/", {
       method: "POST",
-      body: formData,
+      body: uploadFormData,
     });
 
     const uploadData = await uploadRes.json();
-    if (!uploadData.file) throw new Error("Error al subir el PDF a Uploadcare.");
+    if (!uploadData.file) {
+      throw new Error("Error al subir el PDF a Uploadcare.");
+    }
 
     const pdfUrl = `https://ucarecdn.com/${uploadData.file}/`;
     console.log("📎 PDF subido:", pdfUrl);
 
-    // Fecha formateada
+
     const today = new Date();
     const fechaFormateada = today.toLocaleDateString("es-CL", {
       year: "numeric",
       month: "long",
       day: "numeric",
+      hour: '2-digit',
+      minute: '2-digit'
     });
 
-    // Mensaje de correo con estilo elegante
     const htmlContent = `
       <div style="font-family:Arial,sans-serif;color:#333;">
         <h2 style="color:#0033A0;">Informe de Falla – Komatsu</h2>
         <p>Hola equipo,</p>
         <p>Se ha generado automáticamente un nuevo <b>Informe de Falla</b> para revisión.</p>
         <p><b>Fecha de generación:</b> ${fechaFormateada}</p>
+        
+        <div style="background-color:#f8f9fa;border:1px solid #e9ecef;border-radius:5px;padding:15px;margin:15px 0;">
+          <h3 style="color:#0033A0;margin-top:0;">Detalles del Informe</h3>
+          <p><strong>Título del Informe:</strong> ${formData.reportTitle}</p>
+          <p><strong>N° Informe:</strong> ${formData.reportNumber}</p>
+          <p><strong>Cliente:</strong> ${formData.client}</p>
+          <p><strong>Equipo:</strong> ${formData.equipmentModel} - ${formData.equipmentSerial}</p>
+          <p><strong>Técnico:</strong> ${formData.technician}</p>
+          <p><strong>Descripción:</strong> ${formData.failureDescription}</p>
+          <p><strong>Valor Total:</strong> ${formData.totalAmount}</p>
+        </div>
+        
         <p>Pueden visualizar o descargar el PDF desde el siguiente enlace:</p>
-        <p><a href="${pdfUrl}" style="color:#0033A0;font-weight:bold;" target="_blank">📄 Ver Informe de Falla</a></p>
+        <p style="text-align:center;margin:20px 0;">
+          <a href="${pdfUrl}" 
+             style="display:inline-block;background-color:#0033A0;color:white;padding:12px 25px;text-decoration:none;border-radius:5px;font-weight:bold;"
+             target="_blank">
+             Ver Informe de Falla Completo
+          </a>
+        </p>
+        
         <hr style="margin:20px 0;border:0;border-top:1px solid #ccc;">
         <p style="font-size:12px;color:#777;">
           Este correo fue enviado automáticamente por el sistema de reportes Komatsu.<br>
@@ -148,83 +284,26 @@ async function submitFaultReportForm() {
       </div>
     `;
 
-    // Envío del correo
     const res = await fetch("https://komatsu-api.vercel.app/api/sendEmail", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        subject: `Informe de Falla – ${fechaFormateada}`,
+        subject: `📋 ${formData.reportTitle.substring(0, 50)}... - ${formData.reportNumber}`,
         html: htmlContent,
       }),
     });
 
     const data = await res.json();
     if (data.success) {
-      showMessage("message", "✅ Informe de Falla enviado correctamente.");
-      console.log("✅ Email enviado:", data);
+      showMessage("message", "Informe de Falla enviado correctamente.");
+      console.log("Email enviado:", data);
     } else {
-      showMessage("message", "❌ Error al enviar el correo.", true);
-      console.error("❌ Error al enviar email:", data);
+      showMessage("message", "Error al enviar el correo.", true);
+      console.error("Error al enviar email:", data);
     }
+    
   } catch (err) {
-    console.error("❌ Error general:", err);
-    showMessage("message", "❌ Error al generar o enviar el informe.", true);
+    console.error("Error general:", err);
+    showMessage("message", "Error al generar o enviar el informe.", true);
   }
-}
-
-// ======= FOTOS =======
-let selectedPhotos = [];
-
-function initializePhotoUpload() {
-  const input = document.getElementById("photoUpload");
-  const container = document.querySelector(".photo-container");
-
-  input.addEventListener("change", function () {
-    Array.from(input.files).forEach((file) => {
-      selectedPhotos.push(file);
-
-      const wrapper = document.createElement("div");
-      wrapper.style.position = "relative";
-      wrapper.style.width = "150px";
-      wrapper.style.height = "150px";
-
-      const img = document.createElement("img");
-      img.src = URL.createObjectURL(file);
-      img.style.width = "100%";
-      img.style.height = "100%";
-      img.style.objectFit = "cover";
-      img.style.border = "1px solid #ccc";
-      img.style.borderRadius = "4px";
-
-      const del = document.createElement("span");
-      del.textContent = "×";
-      Object.assign(del.style, {
-        position: "absolute",
-        top: "2px",
-        right: "5px",
-        color: "white",
-        backgroundColor: "rgba(0,0,0,0.6)",
-        borderRadius: "50%",
-        width: "20px",
-        height: "20px",
-        textAlign: "center",
-        lineHeight: "18px",
-        cursor: "pointer",
-        fontWeight: "bold",
-      });
-
-      del.addEventListener("click", () => {
-        wrapper.remove();
-        selectedPhotos = selectedPhotos.filter((f) => f !== file);
-      });
-
-      wrapper.appendChild(img);
-      wrapper.appendChild(del);
-
-      const placeholder = container.querySelector(".photo-placeholder");
-      container.insertBefore(wrapper, placeholder);
-    });
-
-    input.value = "";
-  });
 }
