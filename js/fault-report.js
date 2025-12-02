@@ -170,11 +170,11 @@ function showMessage(elementId, message, isError = false) {
 }
 
 async function submitFaultReportForm() {
-  showMessage("message", "📄 Generando PDF y enviando informe...");
+  showMessage("message", "Generando PDF y enviando informe...");
 
   try {
-    const requiredFields = ["reportNumber", "client", "equipmentModel", 
-                           "equipmentSerial", "technician", "reportTitle",
+    const requiredFields = ["reportNumber", "client", "equipmentNumber", 
+                           "serialNumber", "technician", "reportTitle",
                            "failureDescription", "technicalAnalysis", "conclusion"];
     
     for (const fieldId of requiredFields) {
@@ -213,8 +213,8 @@ async function submitFaultReportForm() {
     const formData = {
       reportNumber: document.getElementById("reportNumber").value,
       client: document.getElementById("client").value,
-      equipmentModel: document.getElementById("equipmentModel").value,
-      equipmentSerial: document.getElementById("equipmentSerial").value,
+      equipmentModel: document.getElementById("equipmentNumber").value,
+      equipmentSerial: document.getElementById("serialNumber").value,
       reportTitle: document.getElementById("reportTitle").value,
       technician: document.getElementById("technician").value,
       failureDescription: document.getElementById("failureDescription").value.substring(0, 100) + "...",
@@ -288,7 +288,7 @@ async function submitFaultReportForm() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        subject: `📋 ${formData.reportTitle.substring(0, 50)}... - ${formData.reportNumber}`,
+        subject: `Informe de Falla – ${fechaFormateada}`,
         html: htmlContent,
       }),
     });
