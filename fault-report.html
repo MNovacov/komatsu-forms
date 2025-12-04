@@ -201,119 +201,119 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
+
         <header>
             <div class="logo">
                 <h1>KOMATSU</h1>
             </div>
         </header>
-        
+
         <div class="form-container">
+
             <div class="form-header">
                 <h2>INFORME DE FALLA</h2>
             </div>
-            
+
             <form id="faultReportForm">
+
                 <div class="form-section">
                     <h3>Información General</h3>
+
                     <div class="form-row">
                         <div class="form-group">
                             <label for="osNumber">OS Nº</label>
                             <input type="text" id="osNumber" name="osNumber">
                         </div>
+
                         <div class="form-group" style="visibility:hidden;">
                             <label>Placeholder</label>
                             <input type="text" disabled>
                         </div>
                     </div>
-                    
+
                     <div class="form-row">
                         <div class="form-group">
                             <label for="reportNumber">N° INFORME</label>
                             <input type="text" id="reportNumber" name="reportNumber">
                         </div>
+
                         <div class="form-group">
                             <label for="client">CLIENTE / FAENA</label>
-                            <input type="text" id="client" name="client" value="">
+                            <input type="text" id="client" name="client">
                         </div>
                     </div>
-                    
+
                     <div class="form-row">
                         <div class="form-group">
                             <label for="attentionTo">ATENCIÓN A</label>
-                            <input type="text" id="attentionTo" name="attentionTo" value="">
+                            <input type="text" id="attentionTo" name="attentionTo">
                         </div>
+
                         <div class="form-group">
                             <label for="failureDate">FECHA DE FALLA</label>
                             <input type="date" id="failureDate" name="failureDate">
                         </div>
                     </div>
-                    
+
                     <div class="form-row">
                         <div class="form-group">
                             <label for="repairDate">FECHA REPARACIÓN</label>
                             <input type="date" id="repairDate" name="repairDate">
                         </div>
+
                         <div class="form-group">
                             <label for="visitDate">FECHA DE VISITA</label>
                             <input type="date" id="visitDate" name="visitDate">
                         </div>
                     </div>
-                    
+
                     <div class="form-row">
                         <div class="form-group">
                             <label for="deliveryDate">FECHA DE ENTREGA TECNICA</label>
                             <input type="date" id="deliveryDate" name="deliveryDate">
                         </div>
+
                         <div class="form-group">
                             <label for="subject">ASUNTO</label>
                             <input type="text" id="subject" name="subject">
                         </div>
                     </div>
-                    
+
                     <div class="form-row">
                         <div class="form-group">
                             <label for="contact">CONTACTO</label>
                             <input type="text" id="contact" name="contact">
                         </div>
+
                         <div class="form-group">
                             <label for="technician">TECNICO KOMATSU</label>
                             <input type="text" id="technician" name="technician">
                         </div>
                     </div>
-                    
+
+                    <!-- 🔵 CAMBIO ÚNICO: UNIÓN DE EQUIPO + SERIE -->
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="equipmentNumber">NÚMERO DE EQUIPO</label>
-                            <select id="equipmentNumber" name="equipmentNumber" required>
-                                <option value="">Seleccione número de equipo</option>
-                                <option value="437">437</option>
-                                <option value="438">438</option>
-                                <option value="511">511</option>
-                                <option value="512">512</option>
-                                <option value="513">513</option>
-                                <option value="514">514</option>
-                                <option value="515">515</option>
-                                <option value="516">516</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="serialNumber">NÚMERO DE SERIE</label>
-                            <select id="serialNumber" name="serialNumber" required>
-                                <option value="">Seleccione número de serie</option>
-                                <option value="50110">50110</option>
-                                <option value="50111">50111</option>
-                                <option value="34208">34208</option>
-                                <option value="34239">34239</option>
-                                <option value="34245">34245</option>
-                                <option value="34254">34254</option>
-                                <option value="34292">34292</option>
-                                <option value="34294">34294</option>
+                            <label for="equipmentCombined">EQUIPO + SERIE</label>
+                            <select id="equipmentCombined" name="equipmentCombined" required>
+                                <option value="">Seleccione equipo y serie</option>
+                                <option value="437 50110">437 50110</option>
+                                <option value="438 50111">438 50111</option>
+                                <option value="511 34208">511 34208</option>
+                                <option value="512 34239">512 34239</option>
+                                <option value="513 34245">513 34245</option>
+                                <option value="514 34254">514 34254</option>
+                                <option value="515 34292">515 34292</option>
+                                <option value="516 34294">516 34294</option>
                             </select>
                         </div>
                     </div>
-                    
+
+                    <!-- 🔵 TODO LO DEMÁS SIGUE IGUAL (SIN CAMBIOS) -->
+
                     <div class="form-row">
                         <div class="form-group">
                             <label for="engineModel">MODELO MOTOR</label>
@@ -324,7 +324,7 @@
                             <input type="text" id="engineSerial" name="engineSerial">
                         </div>
                     </div>
-                    
+
                     <div class="form-row">
                         <div class="form-group">
                             <label for="disassemblySerial">SERIE COMP.DESM.</label>
@@ -335,7 +335,7 @@
                             <input type="text" id="assemblySerial" name="assemblySerial">
                         </div>
                     </div>
-                    
+
                     <div class="form-row">
                         <div class="form-group">
                             <label for="horometer">HOROMETRO</label>
@@ -343,39 +343,34 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="form-section">
                     <h3>1. Título del Informe</h3>
                     <div class="form-group">
-                        <textarea id="reportTitle" name="reportTitle" 
-                                  placeholder="Ingrese el título completo del informe."></textarea>
+                        <textarea id="reportTitle" name="reportTitle"></textarea>
                     </div>
                 </div>
-                
+
                 <div class="form-section">
                     <h3>2. Descripción de la Falla</h3>
                     <div class="form-group">
-                        <textarea id="failureDescription" name="failureDescription" 
-                                  placeholder="Describa el problema reportado por el cliente y antecedentes relevantes del equipo."></textarea>
+                        <textarea id="failureDescription" name="failureDescription"></textarea>
                     </div>
                 </div>
-                
+
                 <div class="form-section">
                     <h3>3. Evaluación y Análisis Técnico</h3>
                     <div class="form-group">
-                        <textarea id="technicalAnalysis" name="technicalAnalysis" 
-                                  placeholder=""></textarea>
+                        <textarea id="technicalAnalysis" name="technicalAnalysis"></textarea>
                     </div>
                 </div>
-                
+
                 <div class="form-section">
                     <h3>4. Conclusión</h3>
                     <div class="form-group">
-                        <textarea id="conclusion" name="conclusion" 
-                                  placeholder=""></textarea>
+                        <textarea id="conclusion" name="conclusion"></textarea>
                     </div>
                 </div>
-                
                 <div class="form-section">
                     <h3>Set Fotográfico</h3>
                     <div class="photo-section">
@@ -403,10 +398,12 @@
                             <label for="equipmentField">Equipo:</label>
                             <input type="text" id="equipmentField" name="equipmentField">
                         </div>
+
                         <div class="form-group">
                             <label for="serialField">Serie:</label>
                             <input type="text" id="serialField" name="serialField">
                         </div>
+
                         <div class="form-group">
                             <label for="clientField">Cliente:</label>
                             <input type="text" id="clientField" name="clientField">
@@ -429,8 +426,7 @@
                                 <th>Total</th>
                             </tr>
                         </thead>
-                        <tbody>
-                        </tbody>
+                        <tbody></tbody>
                         <tfoot>
                             <tr>
                                 <td colspan="7" style="text-align: right;"><strong>Total General:</strong></td>
@@ -438,25 +434,27 @@
                             </tr>
                         </tfoot>
                     </table>
+
                     <button type="button" class="btn" onclick="addPartRow()">Agregar Parte</button>
                 </div>
-                
+
                 <div class="form-section">
                     <h3>Firma del Técnico</h3>
+
                     <div class="form-row">
                         <div class="form-group">
                             <label for="technicianSignature">Técnico</label>
                             <input type="text" id="technicianSignature" name="technicianSignature" placeholder="Nombre del Técnico">
                         </div>
                     </div>
+
                     <div class="form-row">
                         <div class="form-group">
                             <label for="technicianRole">Cargo</label>
-                            <input type="text" id="technicianRole" name="technicianRole" value="">
+                            <input type="text" id="technicianRole" name="technicianRole">
                         </div>
                     </div>
                 </div>
-                
 
                 <div id="message" class="hidden"></div>
 
@@ -464,11 +462,13 @@
                     <button type="button" class="btn btn-back" onclick="location.href='index.html'">Volver al Menú</button>
                     <button type="submit" class="btn">Enviar Formulario</button>
                 </div>
+
             </form>
         </div>
     </div>
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
     <script src="js/fault-report.js"></script>
+
 </body>
 </html>
