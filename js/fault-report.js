@@ -253,7 +253,7 @@ async function submitFaultReportForm() {
     );
     uploadFormData.append("store", "auto");
 
-    const uploadRes = await fetch("https://komatsu-api.vercel.app/api/uploadPdf", {
+    const uploadRes = await fetch("https://komatsu-api.vercel.app/api/uploadAndSend", {
       method: "POST",
       body: uploadFormData,
     });
