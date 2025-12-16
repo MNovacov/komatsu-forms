@@ -179,13 +179,14 @@ function showMessage(elementId, message, isError = false) {
 }
 
 async function submitFaultReportForm() {
-  showMessage("message", "Generando PDF y enviando informe...");
+  showMessage("message", "Generando PDF...");
 
   try {
+    // ========== VALIDACIONES (igual que antes) ==========
     const requiredFields = [
       "reportNumber",
       "client",
-      "equipmentCombined", // ← CAMBIO
+      "equipmentCombined",
       "technician",
       "reportTitle",
       "failureDescription",
@@ -208,6 +209,7 @@ async function submitFaultReportForm() {
       }
     }
 
+    // ========== GENERAR PDF ==========
     const elemento = document.querySelector(".form-container");
     const opt = {
       margin: [0.3, 0.3, 0.3, 0.3],
@@ -230,8 +232,10 @@ async function submitFaultReportForm() {
       },
     };
 
+    showMessage("message", "Generando PDF...");
     const pdfBlob = await html2pdf().from(elemento).set(opt).outputPdf("blob");
 
+    // ========== DATOS DEL FORMULARIO ==========
     const formData = {
       reportNumber: document.getElementById("reportNumber").value,
       client: document.getElementById("client").value,
@@ -244,27 +248,45 @@ async function submitFaultReportForm() {
       totalAmount: document.getElementById("totalAmount").textContent,
     };
 
-    const uploadFormData = new FormData();
-    uploadFormData.append("UPLOADCARE_PUB_KEY", "dd2580a9c669d60b5d49");
-    uploadFormData.append(
-      "file",
-      pdfBlob,
-      `Informe_Falla_${formData.reportNumber}.pdf`
-    );
-    uploadFormData.append("store", "auto");
-
-    const uploadRes = await fetch("https://komatsu-api.vercel.app/api/uploadAndSend", {
-      method: "POST",
-      body: uploadFormData,
+    // ========== SUBIR PDF A UPLOADCARE USANDO WIDGET ==========
+    showMessage("message", "Subiendo PDF...");
+    
+    const pdfUrl = await new Promise((resolve, reject) => {
+      // Convertir blob a File
+      const pdfFile = new File(
+        [pdfBlob], 
+        `Informe_Falla_${formData.reportNumber}.pdf`, 
+        { type: 'application/pdf' }
+      );
+      
+      // Usar Uploadcare Widget para subir
+      uploadcare.openDialog([pdfFile], {
+        publicKey: 'dd2580a9c669d60b5d49',
+        tabs: 'file',
+        multiple: false,
+        imagesOnly: false,
+        previewStep: false,
+        crop: false
+      })
+      .done(function(file) {
+        file.done(function(fileInfo) {
+          console.log("✅ PDF subido a Uploadcare:", fileInfo);
+          resolve(`https://ucarecdn.com/${fileInfo.uuid}/`);
+        })
+        .fail(function(error) {
+          console.error("❌ Error subiendo PDF:", error);
+          reject(new Error("Error al subir PDF: " + error.error));
+        });
+      })
+      .fail(function(error) {
+        console.error("❌ Error abriendo diálogo Uploadcare:", error);
+        reject(new Error("No se pudo abrir el uploader: " + error.error));
+      });
     });
 
-    const uploadData = await uploadRes.json();
-    if (!uploadData.file) {
-      throw new Error("Error al subir el PDF a Uploadcare.");
-    }
+    console.log("📄 PDF disponible en:", pdfUrl);
 
-    const pdfUrl = `https://ucarecdn.com/${uploadData.file}/`;
-
+    // ========== PREPARAR Y ENVIAR EMAIL ==========
     const today = new Date();
     const fechaFormateada = today.toLocaleDateString("es-CL", {
       year: "numeric",
