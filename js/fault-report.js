@@ -1,3 +1,33 @@
+// Añade esta función al principio de fault-report.js
+function loadUploadcareWidget() {
+  return new Promise((resolve, reject) => {
+    // Si ya está cargado, continuar
+    if (window.uploadcare) {
+      console.log("✅ Uploadcare ya está cargado");
+      return resolve();
+    }
+    
+    console.log("📦 Cargando Uploadcare Widget...");
+    const script = document.createElement('script');
+    script.src = 'https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js';
+    script.async = true;
+    
+    script.onload = () => {
+      console.log("✅ Uploadcare Widget cargado");
+      // Esperar un momento para que se inicialice
+      setTimeout(resolve, 100);
+    };
+    
+    script.onerror = () => {
+      console.error("❌ Error cargando Uploadcare Widget");
+      reject(new Error("No se pudo cargar Uploadcare Widget"));
+    };
+    
+    document.head.appendChild(script);
+  });
+}
+
+
 document.addEventListener("DOMContentLoaded", function () {
   const today = new Date().toISOString().split("T")[0];
   const dateFields = ["failureDate", "visitDate", "repairDate", "deliveryDate"];
