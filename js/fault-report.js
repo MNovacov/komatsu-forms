@@ -1,3 +1,5 @@
+// fault-report.js - VERSIÓN COMPLETA Y CORREGIDA
+
 // ========== FUNCIÓN PARA CARGAR UPLOADCARE ==========
 function loadUploadcareWidget() {
   return new Promise((resolve, reject) => {
@@ -97,20 +99,34 @@ async function uploadPdfSimple(pdfBlob, reportNumber) {
   }
 }
 
-// ========== NUEVA FUNCIÓN: SUBIR PDF USANDO TU BACKEND COMO PROXY ==========
+// ========== NUEVA FUNCIÓN: SUBIR PDF USANDO TU BACKEND CON BASE64 ==========
 async function uploadPdfUsingBackend(pdfBlob, reportNumber) {
-  console.log("🚀 Enviando PDF a TU backend (komatsu-api)...");
+  console.log("🚀 Enviando PDF a TU backend (komatsu-api) como base64...");
   
   try {
-    // Crear FormData para enviar a TU backend
-    const formData = new FormData();
-    formData.append('file', pdfBlob, `Informe_Falla_${reportNumber}.pdf`);
+    // Convertir Blob a base64
+    const reader = new FileReader();
     
-    // Enviar a TU endpoint de backend
+    const base64Promise = new Promise((resolve, reject) => {
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+    });
+    
+    reader.readAsDataURL(pdfBlob);
+    const pdfBase64 = await base64Promise;
+    
+    console.log("📊 Base64 generado, tamaño:", pdfBase64.length, "caracteres");
+    
+    // Enviar a TU endpoint de backend como JSON con base64
     const response = await fetch('https://komatsu-api.vercel.app/api/uploadPdf', {
       method: 'POST',
-      body: formData,
-      // No necesitamos headers para FormData
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        pdfBase64: pdfBase64,
+        reportNumber: reportNumber
+      }),
     });
     
     if (!response.ok) {
@@ -134,8 +150,11 @@ async function uploadPdfUsingBackend(pdfBlob, reportNumber) {
   }
 }
 
-// ========== RESTANTE DEL CÓDIGO (igual que antes) ==========
+// ========== INICIALIZACIÓN DEL FORMULARIO ==========
 document.addEventListener("DOMContentLoaded", function () {
+  console.log("📄 Cargando formulario de informe de falla...");
+  
+  // Establecer fechas por defecto
   const today = new Date().toISOString().split("T")[0];
   const dateFields = ["failureDate", "visitDate", "repairDate", "deliveryDate"];
   dateFields.forEach((id) => {
@@ -143,6 +162,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (el) el.value = today;
   });
 
+  // Generar número de reporte automático
   const reportNumber = document.getElementById("reportNumber");
   if (reportNumber && !reportNumber.value) {
     const date = new Date();
@@ -154,10 +174,12 @@ document.addEventListener("DOMContentLoaded", function () {
       .padStart(3, "0")}`;
   }
 
+  // Inicializar componentes
   initializePartsTable();
   calculateTotals();
   initializePhotoUpload();
 
+  // Configurar evento de envío del formulario
   const form = document.getElementById("faultReportForm");
   if (form) {
     form.addEventListener("submit", async function (e) {
@@ -166,6 +188,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // Configurar eventos para cálculo de totales
   document.getElementById("partsTable")?.addEventListener("input", function (e) {
     if (e.target.name === "cantidad" || e.target.name === "precioUn") {
       calculateRowTotal(e.target.closest("tr"));
@@ -174,7 +197,9 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+// ========== FUNCIONES DE LA TABLA DE PARTES ==========
 function initializePartsTable() {
+  console.log("📊 Inicializando tabla de partes...");
   for (let i = 0; i < 5; i++) addPartRow();
 }
 
@@ -228,6 +253,7 @@ function calculateTotals() {
   ).format(totalAmount)}`;
 }
 
+// ========== FUNCIONES PARA FOTOS ==========
 let currentPlaceholder = null;
 
 function addPhoto(placeholderElement) {
@@ -306,6 +332,7 @@ function initializePhotoUpload() {
   });
 }
 
+// ========== FUNCIÓN PARA MOSTRAR MENSAJES ==========
 function showMessage(elementId, message, isError = false) {
   const el = document.getElementById(elementId);
   el.textContent = message;
@@ -315,11 +342,13 @@ function showMessage(elementId, message, isError = false) {
   setTimeout(() => el.classList.add("hidden"), 7000);
 }
 
-// ========== FUNCIÓN PRINCIPAL MODIFICADA ==========
+// ========== FUNCIÓN PRINCIPAL MODIFICADA (VERSIÓN CORREGIDA) ==========
 async function submitFaultReportForm() {
+  console.log("=== INICIANDO ENVÍO DE INFORME ===");
   showMessage("message", "Generando PDF...");
 
   try {
+    // Validar campos requeridos
     const requiredFields = [
       "reportNumber",
       "client",
@@ -346,6 +375,7 @@ async function submitFaultReportForm() {
       }
     }
 
+    // Configuración para generar PDF
     const elemento = document.querySelector(".form-container");
     const opt = {
       margin: [0.3, 0.3, 0.3, 0.3],
@@ -368,9 +398,13 @@ async function submitFaultReportForm() {
       },
     };
 
+    // Generar PDF
     showMessage("message", "Generando PDF...");
+    console.log("📄 Generando PDF con html2pdf...");
     const pdfBlob = await html2pdf().from(elemento).set(opt).outputPdf("blob");
+    console.log("✅ PDF generado, tamaño:", pdfBlob.size, "bytes");
 
+    // Datos para el email
     const formData = {
       reportNumber: document.getElementById("reportNumber").value,
       client: document.getElementById("client").value,
@@ -383,6 +417,8 @@ async function submitFaultReportForm() {
       totalAmount: document.getElementById("totalAmount").textContent,
     };
 
+    console.log("📋 Datos del informe:", formData);
+
     // ========== SUBIR PDF (MÉTODO MEJORADO) ==========
     showMessage("message", "Subiendo PDF...");
     
@@ -390,7 +426,7 @@ async function submitFaultReportForm() {
     
     // INTENTAR PRIMERO CON TU BACKEND (el método que SÍ funciona)
     try {
-      console.log("🔄 Intentando subir usando TU backend...");
+      console.log("🔄 Intentando subir usando TU backend (base64)...");
       pdfUrl = await uploadPdfUsingBackend(pdfBlob, formData.reportNumber);
       console.log("✅ PDF subido usando backend:", pdfUrl);
       
@@ -400,6 +436,7 @@ async function submitFaultReportForm() {
       
       try {
         // INTENTAR MÉTODO DIRECTO (por si acaso)
+        console.log("🔄 Intentando subida directa...");
         pdfUrl = await uploadPdfDirect(pdfBlob, formData.reportNumber);
         console.log("✅ PDF subido directamente:", pdfUrl);
         
@@ -409,12 +446,13 @@ async function submitFaultReportForm() {
         
         try {
           // ÚLTIMO INTENTO: PROXY
+          console.log("🔄 Intentando con proxy CORS...");
           pdfUrl = await uploadPdfSimple(pdfBlob, formData.reportNumber);
           console.log("✅ PDF subido con proxy:", pdfUrl);
           
         } catch (proxyError) {
           console.error("💥 TODOS los métodos fallaron:", proxyError);
-          throw new Error("No se pudo subir el PDF. Verifique que tu backend (/api/uploadPdf) esté funcionando.");
+          throw new Error("No se pudo subir el PDF. Verifique que tu backend (/api/uploadPdf) esté funcionando y accesible desde https://komatsu-api.vercel.app/api/uploadPdf");
         }
       }
     }
@@ -485,6 +523,7 @@ async function submitFaultReportForm() {
     
     if (data.success) {
       showMessage("message", "✅ Informe de Falla enviado correctamente!");
+      console.log("✅ Email enviado exitosamente");
     } else {
       showMessage("message", data.error || "Error al enviar el correo.", true);
     }
@@ -493,3 +532,14 @@ async function submitFaultReportForm() {
     showMessage("message", `❌ Error: ${err.message}`, true);
   }
 }
+
+// ========== FUNCIÓN DE DEPURACIÓN (opcional) ==========
+window.debugForm = function() {
+  console.log("=== DEBUG FORMULARIO ===");
+  console.log("Backend URL:", 'https://komatsu-api.vercel.app/api/uploadPdf');
+  console.log("SendEmail URL:", 'https://komatsu-api.vercel.app/api/sendEmail');
+  console.log("Report Number:", document.getElementById("reportNumber")?.value);
+  console.log("Form ready:", document.getElementById("faultReportForm") ? "✅" : "❌");
+  console.log("html2pdf disponible:", typeof html2pdf === 'function' ? "✅" : "❌");
+  console.log("Uploadcare disponible:", window.uploadcare ? "✅" : "❌");
+};
