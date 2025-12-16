@@ -1,4 +1,4 @@
-// Añade esta función al principio de fault-report.js
+// ========== FUNCIÓN PARA CARGAR UPLOADCARE ==========
 function loadUploadcareWidget() {
   return new Promise((resolve, reject) => {
     // Si ya está cargado, continuar
@@ -27,7 +27,267 @@ function loadUploadcareWidget() {
   });
 }
 
+// ========== FUNCIÓN PARA RESETEAR FORMULARIO ==========
+function resetForm() {
+  const form = document.getElementById("faultReportForm");
+  const inputs = form.querySelectorAll('input:not(#reportNumber), textarea, select');
+  
+  inputs.forEach(input => {
+    if (input.type === 'date') {
+      input.value = new Date().toISOString().split('T')[0];
+    } else {
+      input.value = '';
+    }
+  });
+  
+  // Generar nuevo número de reporte
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  document.getElementById("reportNumber").value = 
+    `INF-${year}${month}${day}-${Math.floor(Math.random() * 1000).toString().padStart(3, "0")}`;
+    
+  // Resetear tabla de partes
+  const tbody = document.querySelector("#partsTable tbody");
+  tbody.innerHTML = '';
+  initializePartsTable();
+  calculateTotals();
+}
 
+// ========== FUNCIÓN PARA SUBIR PDF (alternativa si falla) ==========
+async function uploadPdfSimple(pdfBlob, reportNumber) {
+  try {
+    showMessage("message", "Subiendo PDF (método alternativo)...");
+    
+    // Método alternativo usando FormData
+    const formData = new FormData();
+    formData.append('UPLOADCARE_PUB_KEY', 'dd2580a9c669d60b5d49');
+    formData.append('UPLOADCARE_STORE', '1');
+    formData.append('file', pdfBlob, `Informe_${reportNumber}.pdf`);
+    
+    // Usar proxy CORS gratuito
+    const proxyUrl = 'https://corsproxy.io/?';
+    const targetUrl = 'https://upload.uploadcare.com/base/';
+    
+    const response = await fetch(proxyUrl + encodeURIComponent(targetUrl), {
+      method: 'POST',
+      body: formData,
+    });
+    
+    if (response.ok) {
+      const data = await response.json();
+      console.log("✅ PDF subido (método alternativo):", data);
+      return `https://ucarecdn.com/${data.file}/`;
+    } else {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+    
+  } catch (error) {
+    console.error("❌ Método alternativo falló:", error);
+    throw new Error("No se pudo subir el PDF. Intente nuevamente.");
+  }
+}
+
+// ========== FUNCIÓN PRINCIPAL ==========
+async function submitFaultReportForm() {
+  showMessage("message", "Generando PDF...");
+
+  try {
+    // ========== VALIDACIONES ==========
+    const requiredFields = [
+      "reportNumber", "client", "equipmentCombined", "technician",
+      "reportTitle", "failureDescription", "technicalAnalysis", "conclusion",
+    ];
+
+    for (const fieldId of requiredFields) {
+      const field = document.getElementById(fieldId);
+      if (field && !field.value.trim()) {
+        showMessage("message", `Por favor complete: ${field.previousElementSibling?.textContent || fieldId}`, true);
+        field.focus();
+        return;
+      }
+    }
+
+    // ========== GENERAR PDF ==========
+    const elemento = document.querySelector(".form-container");
+    const opt = {
+      margin: [0.3, 0.3, 0.3, 0.3],
+      filename: `Informe_Falla_${document.getElementById("reportNumber").value}_${Date.now()}.pdf`,
+      image: { type: "jpeg", quality: 1 },
+      html2canvas: {
+        scale: 3,
+        useCORS: true,
+        logging: false,
+        allowTaint: true,
+      },
+      jsPDF: {
+        unit: "in",
+        format: "a4",
+        orientation: "portrait",
+        compress: true,
+      },
+      pagebreak: {
+        mode: ["avoid-all", "css", "legacy"],
+      },
+    };
+
+    showMessage("message", "Generando PDF...");
+    const pdfBlob = await html2pdf().from(elemento).set(opt).outputPdf("blob");
+
+    // ========== DATOS DEL FORMULARIO ==========
+    const formData = {
+      reportNumber: document.getElementById("reportNumber").value,
+      client: document.getElementById("client").value,
+      equipmentCombined: document.getElementById("equipmentCombined").value,
+      reportTitle: document.getElementById("reportTitle").value,
+      technician: document.getElementById("technician").value,
+      failureDescription: document.getElementById("failureDescription").value.substring(0, 100) + "...",
+      totalAmount: document.getElementById("totalAmount").textContent,
+    };
+
+    // ========== CARGAR UPLOADCARE SI NO ESTÁ CARGADO ==========
+    if (!window.uploadcare) {
+      showMessage("message", "Cargando servicio de subida...");
+      try {
+        await loadUploadcareWidget();
+      } catch (error) {
+        console.warn("No se pudo cargar Uploadcare Widget, usando método alternativo");
+      }
+    }
+
+    // ========== SUBIR PDF A UPLOADCARE ==========
+    showMessage("message", "Subiendo PDF...");
+    
+    let pdfUrl;
+    
+    // Intentar con Widget primero
+    if (window.uploadcare) {
+      try {
+        pdfUrl = await new Promise((resolve, reject) => {
+          // Convertir blob a File
+          const pdfFile = new File(
+            [pdfBlob], 
+            `Informe_Falla_${formData.reportNumber}.pdf`, 
+            { type: 'application/pdf' }
+          );
+          
+          // Usar Uploadcare Widget
+          window.uploadcare.openDialog([pdfFile], {
+            publicKey: 'dd2580a9c669d60b5d49',
+            tabs: 'file',
+            multiple: false,
+            imagesOnly: false,
+            previewStep: false,
+            crop: false
+          })
+          .done(function(file) {
+            file.done(function(fileInfo) {
+              console.log("✅ PDF subido con Widget:", fileInfo);
+              resolve(`https://ucarecdn.com/${fileInfo.uuid}/`);
+            })
+            .fail(function(error) {
+              console.error("❌ Error en Widget:", error);
+              reject(error);
+            });
+          })
+          .fail(function(error) {
+            console.error("❌ Error abriendo Widget:", error);
+            reject(error);
+          });
+        });
+      } catch (widgetError) {
+        console.warn("Widget falló, usando método alternativo:", widgetError);
+        pdfUrl = await uploadPdfSimple(pdfBlob, formData.reportNumber);
+      }
+    } else {
+      // Si no hay widget, usar método alternativo
+      pdfUrl = await uploadPdfSimple(pdfBlob, formData.reportNumber);
+    }
+
+    console.log("📄 PDF disponible en:", pdfUrl);
+
+    // ========== PREPARAR Y ENVIAR EMAIL ==========
+    const today = new Date();
+    const fechaFormateada = today.toLocaleDateString("es-CL", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+    const htmlContent = `
+      <div style="font-family:Arial,sans-serif;color:#333;">
+        <h2 style="color:#0033A0;">Informe de Falla – Komatsu</h2>
+        <p>Hola equipo,</p>
+        <p>Se ha generado automáticamente un nuevo <b>Informe de Falla</b> para revisión.</p>
+        <p><b>Fecha de generación:</b> ${fechaFormateada}</p>
+
+        <div style="background-color:#f8f9fa;border:1px solid #e9ecef;border-radius:5px;padding:15px;margin:15px 0;">
+          <h3 style="color:#0033A0;margin-top:0;">Detalles del Informe</h3>
+          <p><strong>Título del Informe:</strong> ${formData.reportTitle}</p>
+          <p><strong>N° Informe:</strong> ${formData.reportNumber}</p>
+          <p><strong>Cliente:</strong> ${formData.client}</p>
+          <p><strong>Equipo:</strong> ${formData.equipmentCombined}</p>
+          <p><strong>Técnico:</strong> ${formData.technician}</p>
+          <p><strong>Descripción:</strong> ${formData.failureDescription}</p>
+          <p><strong>Valor Total:</strong> ${formData.totalAmount}</p>
+        </div>
+
+        <p>Pueden visualizar o descargar el PDF desde el siguiente enlace:</p>
+        <p style="text-align:center;margin:20px 0;">
+          <a href="${pdfUrl}"
+             style="display:inline-block;background-color:#0033A0;color:white;padding:12px 25px;text-decoration:none;border-radius:5px;font-weight:bold;"
+             target="_blank">
+             Ver Informe de Falla Completo
+          </a>
+        </p>
+
+        <hr style="margin:20px 0;border:0;border-top:1px solid #ccc;">
+        <p style="font-size:12px;color:#777;">
+          Este correo fue enviado automáticamente por el sistema de reportes Komatsu.<br>
+          No responda a este mensaje.
+        </p>
+      </div>
+    `;
+
+    showMessage("message", "Enviando email...");
+
+    const res = await fetch("https://komatsu-api.vercel.app/api/sendEmail", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        subject: `Informe de Falla – ${formData.equipmentCombined} – ${fechaFormateada}`,
+        html: htmlContent,
+      }),
+    });
+
+    const data = await res.json();
+    
+    if (!res.ok) {
+      throw new Error(data.error || `Error ${res.status}: ${res.statusText}`);
+    }
+    
+    if (data.success) {
+      showMessage("message", "✅ Informe de Falla enviado correctamente!");
+      
+      // Resetear formulario después de 2 segundos
+      setTimeout(() => {
+        resetForm();
+      }, 2000);
+      
+    } else {
+      throw new Error(data.error || "Error del servidor al enviar email");
+    }
+    
+  } catch (err) {
+    console.error("❌ Error general:", err);
+    showMessage("message", `❌ Error: ${err.message}`, true);
+  }
+}
+
+// ========== RESTANTE DEL CÓDIGO (SIN CAMBIOS) ==========
 document.addEventListener("DOMContentLoaded", function () {
   const today = new Date().toISOString().split("T")[0];
   const dateFields = ["failureDate", "visitDate", "repairDate", "deliveryDate"];
@@ -206,178 +466,4 @@ function showMessage(elementId, message, isError = false) {
   el.classList.remove("hidden");
   el.scrollIntoView({ behavior: "smooth", block: "center" });
   setTimeout(() => el.classList.add("hidden"), 7000);
-}
-
-async function submitFaultReportForm() {
-  showMessage("message", "Generando PDF...");
-
-  try {
-    // ========== VALIDACIONES (igual que antes) ==========
-    const requiredFields = [
-      "reportNumber",
-      "client",
-      "equipmentCombined",
-      "technician",
-      "reportTitle",
-      "failureDescription",
-      "technicalAnalysis",
-      "conclusion",
-    ];
-
-    for (const fieldId of requiredFields) {
-      const field = document.getElementById(fieldId);
-      if (field && !field.value.trim()) {
-        showMessage(
-          "message",
-          `Por favor complete el campo: ${
-            field.previousElementSibling?.textContent || fieldId
-          }`,
-          true
-        );
-        field.focus();
-        return;
-      }
-    }
-
-    // ========== GENERAR PDF ==========
-    const elemento = document.querySelector(".form-container");
-    const opt = {
-      margin: [0.3, 0.3, 0.3, 0.3],
-      filename: `Informe_Falla_${document.getElementById("reportNumber").value}_${Date.now()}.pdf`,
-      image: { type: "jpeg", quality: 1 },
-      html2canvas: {
-        scale: 3,
-        useCORS: true,
-        logging: false,
-        allowTaint: true,
-      },
-      jsPDF: {
-        unit: "in",
-        format: "a4",
-        orientation: "portrait",
-        compress: true,
-      },
-      pagebreak: {
-        mode: ["avoid-all", "css", "legacy"],
-      },
-    };
-
-    showMessage("message", "Generando PDF...");
-    const pdfBlob = await html2pdf().from(elemento).set(opt).outputPdf("blob");
-
-    // ========== DATOS DEL FORMULARIO ==========
-    const formData = {
-      reportNumber: document.getElementById("reportNumber").value,
-      client: document.getElementById("client").value,
-      equipmentCombined: document.getElementById("equipmentCombined").value,
-      reportTitle: document.getElementById("reportTitle").value,
-      technician: document.getElementById("technician").value,
-      failureDescription:
-        document.getElementById("failureDescription").value.substring(0, 100) +
-        "...",
-      totalAmount: document.getElementById("totalAmount").textContent,
-    };
-
-    // ========== SUBIR PDF A UPLOADCARE USANDO WIDGET ==========
-    showMessage("message", "Subiendo PDF...");
-    
-    const pdfUrl = await new Promise((resolve, reject) => {
-      // Convertir blob a File
-      const pdfFile = new File(
-        [pdfBlob], 
-        `Informe_Falla_${formData.reportNumber}.pdf`, 
-        { type: 'application/pdf' }
-      );
-      
-      // Usar Uploadcare Widget para subir
-      uploadcare.openDialog([pdfFile], {
-        publicKey: 'dd2580a9c669d60b5d49',
-        tabs: 'file',
-        multiple: false,
-        imagesOnly: false,
-        previewStep: false,
-        crop: false
-      })
-      .done(function(file) {
-        file.done(function(fileInfo) {
-          console.log("✅ PDF subido a Uploadcare:", fileInfo);
-          resolve(`https://ucarecdn.com/${fileInfo.uuid}/`);
-        })
-        .fail(function(error) {
-          console.error("❌ Error subiendo PDF:", error);
-          reject(new Error("Error al subir PDF: " + error.error));
-        });
-      })
-      .fail(function(error) {
-        console.error("❌ Error abriendo diálogo Uploadcare:", error);
-        reject(new Error("No se pudo abrir el uploader: " + error.error));
-      });
-    });
-
-    console.log("📄 PDF disponible en:", pdfUrl);
-
-    // ========== PREPARAR Y ENVIAR EMAIL ==========
-    const today = new Date();
-    const fechaFormateada = today.toLocaleDateString("es-CL", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-
-    const htmlContent = `
-      <div style="font-family:Arial,sans-serif;color:#333;">
-        <h2 style="color:#0033A0;">Informe de Falla – Komatsu</h2>
-        <p>Hola equipo,</p>
-        <p>Se ha generado automáticamente un nuevo <b>Informe de Falla</b> para revisión.</p>
-        <p><b>Fecha de generación:</b> ${fechaFormateada}</p>
-
-        <div style="background-color:#f8f9fa;border:1px solid #e9ecef;border-radius:5px;padding:15px;margin:15px 0;">
-          <h3 style="color:#0033A0;margin-top:0;">Detalles del Informe</h3>
-          <p><strong>Título del Informe:</strong> ${formData.reportTitle}</p>
-          <p><strong>N° Informe:</strong> ${formData.reportNumber}</p>
-          <p><strong>Cliente:</strong> ${formData.client}</p>
-          <p><strong>Equipo:</strong> ${formData.equipmentCombined}</p>
-          <p><strong>Técnico:</strong> ${formData.technician}</p>
-          <p><strong>Descripción:</strong> ${formData.failureDescription}</p>
-          <p><strong>Valor Total:</strong> ${formData.totalAmount}</p>
-        </div>
-
-        <p>Pueden visualizar o descargar el PDF desde el siguiente enlace:</p>
-        <p style="text-align:center;margin:20px 0;">
-          <a href="${pdfUrl}"
-             style="display:inline-block;background-color:#0033A0;color:white;padding:12px 25px;text-decoration:none;border-radius:5px;font-weight:bold;"
-             target="_blank">
-             Ver Informe de Falla Completo
-          </a>
-        </p>
-
-        <hr style="margin:20px 0;border:0;border-top:1px solid #ccc;">
-        <p style="font-size:12px;color:#777;">
-          Este correo fue enviado automáticamente por el sistema de reportes Komatsu.<br>
-          No responda a este mensaje.
-        </p>
-      </div>
-    `;
-
-    const res = await fetch("https://komatsu-api.vercel.app/api/sendEmail", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        subject: `Informe de Falla – ${formData.equipmentCombined} – ${fechaFormateada}`,
-        html: htmlContent,
-      }),
-    });
-
-    const data = await res.json();
-    if (data.success) {
-      showMessage("message", "Informe de Falla enviado correctamente.");
-    } else {
-      showMessage("message", "Error al enviar el correo.", true);
-    }
-  } catch (err) {
-    console.error("Error general:", err);
-    showMessage("message", "Error al generar o enviar el informe.", true);
-  }
 }

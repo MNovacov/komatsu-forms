@@ -7,6 +7,36 @@
     <link rel="stylesheet" href="css/style.css">
 
     <link rel="icon" href="/public/favicon.ico" type="image/x-icon" />
+    
+    <!-- CARGAR UPLOADCARE ASÍNCRONAMENTE -->
+    <script>
+      // Cargar Uploadcare Widget apenas se carga la página
+      (function() {
+        // Verificar si ya está cargado
+        if (window.uploadcare) {
+          console.log('✅ Uploadcare ya está cargado');
+          return;
+        }
+        
+        console.log('📦 Cargando Uploadcare Widget...');
+        var script = document.createElement('script');
+        script.src = 'https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js';
+        script.async = true;
+        script.crossOrigin = 'anonymous';
+        
+        script.onload = function() {
+          console.log('✅ Uploadcare Widget cargado exitosamente');
+          window.uploadcareLoaded = true;
+        };
+        
+        script.onerror = function() {
+          console.warn('⚠️ No se pudo cargar Uploadcare Widget');
+          window.uploadcareLoaded = false;
+        };
+        
+        document.head.appendChild(script);
+      })();
+    </script>
 
     <style>
         body {
@@ -469,6 +499,43 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
     <script src="js/fault-report.js"></script>
+    
+    <!-- Script adicional para mejor manejo de Uploadcare -->
+    <script>
+      // Verificar estado de carga de Uploadcare
+      document.addEventListener('DOMContentLoaded', function() {
+        console.log('🔍 Verificando Uploadcare...');
+        
+        // Verificar cada 500ms si Uploadcare está cargado
+        let checkAttempts = 0;
+        const maxAttempts = 20; // 10 segundos máximo
+        
+        const checkUploadcare = setInterval(() => {
+          checkAttempts++;
+          
+          if (window.uploadcare) {
+            console.log('✅ Uploadcare está disponible');
+            clearInterval(checkUploadcare);
+          } else if (checkAttempts >= maxAttempts) {
+            console.warn('⚠️ Uploadcare no se cargó después de 10 segundos');
+            clearInterval(checkUploadcare);
+          }
+        }, 500);
+        
+        // Botón de prueba para verificar Uploadcare
+        window.testUploadcare = function() {
+          console.log('=== PRUEBA UPLOADCARE ===');
+          console.log('window.uploadcare:', window.uploadcare ? '✅ DISPONIBLE' : '❌ NO DISPONIBLE');
+          console.log('window.uploadcareLoaded:', window.uploadcareLoaded);
+          
+          if (window.uploadcare) {
+            alert('✅ Uploadcare está cargado y listo para usar');
+          } else {
+            alert('⚠️ Uploadcare NO está disponible. Se usará método alternativo.');
+          }
+        };
+      });
+    </script>
 
 </body>
 </html>
