@@ -92,7 +92,7 @@ async function submitGetInspectionForm() {
   try {
     const elemento = document.querySelector('.form-container');
     const opt = {
-      margin: [0.3, 0.3, 0.3, 0.3],
+      margin: [0.5, 0.6, 0.5, 0.6],
       filename: `Inspeccion_GET_${Date.now()}.pdf`,
       image: { type: 'jpeg', quality: 1 },
       html2canvas: { scale: 3, useCORS: true },
