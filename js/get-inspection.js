@@ -115,13 +115,15 @@ async function submitGetInspectionForm() {
 
 
     const tablaMedidas = document.getElementById('medidasTable');
-
+    
     const originalMarginLeft = tablaMedidas.style.marginLeft;
-    const originalWidth = tablaMedidas.style.width;
+    const originalTransform = tablaMedidas.style.transform;
+    const originalTransformOrigin = tablaMedidas.style.transformOrigin;
 
-    // mover apenas la tabla
-    tablaMedidas.style.marginLeft = '-40px';
-    tablaMedidas.style.width = 'calc(100% + 40px)';
+    // ajustar solo para PDF
+    tablaMedidas.style.marginLeft = '-10px';
+    tablaMedidas.style.transform = 'scale(0.92)';
+    tablaMedidas.style.transformOrigin = 'top left';
 
     const pdfBlob = await html2pdf()
       .from(elemento)
@@ -130,7 +132,8 @@ async function submitGetInspectionForm() {
 
     // restaurar
     tablaMedidas.style.marginLeft = originalMarginLeft;
-    tablaMedidas.style.width = originalWidth;
+    tablaMedidas.style.transform = originalTransform;
+    tablaMedidas.style.transformOrigin = originalTransformOrigin;
 
 
     const formData = new FormData();
