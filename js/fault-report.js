@@ -382,7 +382,7 @@ async function submitFaultReportForm() {
       filename: `Informe_Falla_${document.getElementById("reportNumber").value}_${Date.now()}.pdf`,
       image: { type: "jpeg", quality: 1 },
       html2canvas: {
-        scale: 3,
+        scale: 2,
         useCORS: true,
         logging: false,
         allowTaint: true,
@@ -394,8 +394,9 @@ async function submitFaultReportForm() {
         compress: true,
       },
       pagebreak: {
-        mode: ["avoid-all", "css", "legacy"],
-      },
+        mode: ["css", "legacy"],
+        avoid: ['.form-section', 'tr', 'img']
+       },
     };
 
     // Generar PDF

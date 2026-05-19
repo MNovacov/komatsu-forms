@@ -323,3 +323,51 @@ header {
     }
 }
 
+.form-section {
+    page-break-inside: avoid;
+    break-inside: avoid;
+}
+
+table {
+    page-break-inside: auto;
+}
+
+tr,
+td,
+th {
+    page-break-inside: avoid;
+    break-inside: avoid;
+}
+
+img {
+    page-break-inside: avoid;
+    break-inside: avoid;
+}
+
+.photo-container {
+    page-break-inside: avoid;
+    break-inside: avoid;
+}
+
+.form-section h3 {
+    page-break-after: avoid;
+}
+
+
+@media print {
+
+    .form-row {
+        display: block !important;
+    }
+
+    .form-row .form-group {
+        width: 100% !important;
+        margin-right: 0 !important;
+        margin-bottom: 10px !important;
+    }
+
+    .container,
+    .form-container {
+        box-shadow: none !important;
+    }
+}
