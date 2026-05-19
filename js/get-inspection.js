@@ -120,8 +120,8 @@ async function submitGetInspectionForm() {
     const originalWidth = tablaMedidas.style.width;
 
     // mover apenas la tabla
-    tablaMedidas.style.marginLeft = '-10px';
-    tablaMedidas.style.width = 'calc(100% + 10px)';
+    tablaMedidas.style.marginLeft = '-20px';
+    tablaMedidas.style.width = 'calc(100% + 20px)';
 
     const pdfBlob = await html2pdf()
       .from(elemento)
