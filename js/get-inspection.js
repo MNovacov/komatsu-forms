@@ -93,11 +93,11 @@ async function submitGetInspectionForm() {
     const tablaMedidas = document.getElementById('medidasTable');
 
     const originalFontSize = tablaMedidas.style.fontSize;
-    const originalMarginLeft = tablaMedidas.style.marginLeft;
+    const originalTransform = tablaMedidas.style.transform;
 
     // ajustes solo para PDF
     tablaMedidas.style.fontSize = '10px';
-    tablaMedidas.style.marginLeft = '-35px';
+    tablaMedidas.style.transform = 'translateX(20px)';
     
     const opt = {
       margin: [0.4, 0.3, 0.4, 0.3],
@@ -128,7 +128,7 @@ async function submitGetInspectionForm() {
 
     // restaurar estilos
     tablaMedidas.style.fontSize = originalFontSize;
-    tablaMedidas.style.marginLeft = originalMarginLeft;
+    tablaMedidas.style.transform = originalTransform;
     // Subir y enviar
     const formData = new FormData();
     formData.append('UPLOADCARE_PUB_KEY', 'dd2580a9c669d60b5d49');
