@@ -92,15 +92,58 @@ async function submitGetInspectionForm() {
   try {
     const elemento = document.querySelector('.form-container');
     const opt = {
-      margin: [0.5, 0.6, 0.5, 0.6],
+      margin: [0.3, 0.2, 0.3, 0.2],
       filename: `Inspeccion_GET_${Date.now()}.pdf`,
       image: { type: 'jpeg', quality: 1 },
-      html2canvas: { scale: 3, useCORS: true },
-      jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
-      pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+      html2canvas: { 
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        allowTaint: true
+      },
+      jsPDF: { 
+        unit: 'in', 
+        format: 'a4', 
+        orientation: 'portrait',
+        compress: true
+      },
+      pagebreak: {
+        mode: ['css', 'legacy'],
+        avoid: ['.form-section', 'tr', 'img']
+      }
     };
 
-    const pdfBlob = await html2pdf().from(elemento).set(opt).outputPdf('blob');
+    // Guardar estilos originales
+    const originalWidth = elemento.style.width;
+    const originalMaxWidth = elemento.style.maxWidth;
+
+    const tablaMedidas = document.getElementById('medidasTable');
+    const originalTransform = tablaMedidas.style.transform;
+    const originalTransformOrigin = tablaMedidas.style.transformOrigin;
+    const originalMarginLeft = tablaMedidas.style.marginLeft;
+
+    // Expandir contenido temporalmente para el PDF
+    elemento.style.width = '1200px';
+    elemento.style.maxWidth = '1200px';
+
+    // Ajustar tabla ancha
+    tablaMedidas.style.transform = 'scale(0.92)';
+    tablaMedidas.style.transformOrigin = 'top left';
+    tablaMedidas.style.marginLeft = '-35px';
+
+    // Generar PDF
+    const pdfBlob = await html2pdf()
+      .from(elemento)
+      .set(opt)
+      .outputPdf('blob');
+
+    // Restaurar estilos originales
+    elemento.style.width = originalWidth;
+    elemento.style.maxWidth = originalMaxWidth;
+
+    tablaMedidas.style.transform = originalTransform;
+    tablaMedidas.style.transformOrigin = originalTransformOrigin;
+    tablaMedidas.style.marginLeft = originalMarginLeft;
 
     const formData = new FormData();
     formData.append('UPLOADCARE_PUB_KEY', 'dd2580a9c669d60b5d49');

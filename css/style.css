@@ -370,4 +370,23 @@ img {
     .form-container {
         box-shadow: none !important;
     }
+
+    .form-section {
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+
+    table {
+        page-break-inside: auto;
+    }
+
+    tr {
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+
+    img {
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
 }
