@@ -90,31 +90,14 @@ async function submitGetInspectionForm() {
   try {
     const elemento = document.querySelector('.form-container');
     
-    // === FIX PARA TABLA DE 9 COLUMNAS ===
     const tablaMedidas = document.getElementById('medidasTable');
-    const tablaContainer = tablaMedidas.parentElement;
-    
-    // Crear un contenedor con scroll si no existe
-    let scrollContainer = tablaContainer.querySelector('.table-scroll-wrapper');
-    if (!scrollContainer) {
-      scrollContainer = document.createElement('div');
-      scrollContainer.className = 'table-scroll-wrapper';
-      scrollContainer.style.cssText = `
-        width: 100%;
-        overflow-x: auto;
-        overflow-y: visible;
-        -webkit-overflow-scrolling: touch;
-        margin: 10px 0;
-      `;
-      // Mover la tabla dentro del contenedor
-      tablaMedidas.parentNode.insertBefore(scrollContainer, tablaMedidas);
-      scrollContainer.appendChild(tablaMedidas);
-    }
-    
-    // Asegurar que la tabla tenga el ancho mínimo para 9 columnas
-    tablaMedidas.style.minWidth = '1400px';
-    tablaMedidas.style.width = 'max-content';
-    tablaMedidas.style.borderCollapse = 'collapse';
+
+    const originalFontSize = tablaMedidas.style.fontSize;
+    const originalMarginLeft = tablaMedidas.style.marginLeft;
+
+    // ajustes solo para PDF
+    tablaMedidas.style.fontSize = '10px';
+    tablaMedidas.style.marginLeft = '-35px';
     
     const opt = {
       margin: [0.4, 0.3, 0.4, 0.3],
@@ -125,12 +108,11 @@ async function submitGetInspectionForm() {
         useCORS: true,
         logging: false,
         allowTaint: true,
-        windowWidth: scrollContainer.scrollWidth + 50
       },
       jsPDF: { 
         unit: 'in', 
         format: 'a4', 
-        orientation: 'landscape',
+        orientation: 'portrait',
         compress: true
       },
       pagebreak: {
@@ -144,10 +126,9 @@ async function submitGetInspectionForm() {
       .set(opt)
       .outputPdf('blob');
 
-    // Restaurar estilos
-    tablaMedidas.style.minWidth = '';
-    tablaMedidas.style.width = '';
-
+    // restaurar estilos
+    tablaMedidas.style.fontSize = originalFontSize;
+    tablaMedidas.style.marginLeft = originalMarginLeft;
     // Subir y enviar
     const formData = new FormData();
     formData.append('UPLOADCARE_PUB_KEY', 'dd2580a9c669d60b5d49');
