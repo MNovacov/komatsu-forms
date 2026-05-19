@@ -511,7 +511,7 @@ async function submitFaultReportForm() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        subject: `Informe de Falla | Equipo ${formData.equipmentCombined} | ${formData.client} | ${fechaFormateada}`,
+        subject: `Informe de Falla | Equipo ${document.getElementById("equipmentField").value} | ${fechaFormateada}`,
         html: htmlContent,
       }),
     });
