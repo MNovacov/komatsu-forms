@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('ultimoCambio').addEventListener('change', calculateProjections);
 });
 
-
 function initializeMeasurementsTable() {
   const medidas = [
     { id: 'A', medidaBase: 110, medidaTomada: 0 },
@@ -85,57 +84,71 @@ function showMessage(elementId, message, isError = false) {
   setTimeout(() => messageElement.classList.add('hidden'), 7000);
 }
 
-
 async function submitGetInspectionForm() {
   showMessage('message', 'Generando PDF y enviando reporte...');
 
   try {
     const elemento = document.querySelector('.form-container');
+    
+    // === FIX PARA TABLA DE 9 COLUMNAS ===
+    const tablaMedidas = document.getElementById('medidasTable');
+    const tablaContainer = tablaMedidas.parentElement;
+    
+    // Crear un contenedor con scroll si no existe
+    let scrollContainer = tablaContainer.querySelector('.table-scroll-wrapper');
+    if (!scrollContainer) {
+      scrollContainer = document.createElement('div');
+      scrollContainer.className = 'table-scroll-wrapper';
+      scrollContainer.style.cssText = `
+        width: 100%;
+        overflow-x: auto;
+        overflow-y: visible;
+        -webkit-overflow-scrolling: touch;
+        margin: 10px 0;
+      `;
+      // Mover la tabla dentro del contenedor
+      tablaMedidas.parentNode.insertBefore(scrollContainer, tablaMedidas);
+      scrollContainer.appendChild(tablaMedidas);
+    }
+    
+    // Asegurar que la tabla tenga el ancho mínimo para 9 columnas
+    tablaMedidas.style.minWidth = '1400px';
+    tablaMedidas.style.width = 'max-content';
+    tablaMedidas.style.borderCollapse = 'collapse';
+    
     const opt = {
-      margin: [0.5, 0.6, 0.5, 0.6],
+      margin: [0.4, 0.3, 0.4, 0.3],
       filename: `Inspeccion_GET_${Date.now()}.pdf`,
       image: { type: 'jpeg', quality: 1 },
       html2canvas: { 
-        scale: 2,
+        scale: 2.5,
         useCORS: true,
         logging: false,
-        allowTaint: true
+        allowTaint: true,
+        windowWidth: scrollContainer.scrollWidth + 50
       },
       jsPDF: { 
         unit: 'in', 
         format: 'a4', 
-        orientation: 'portrait',
+        orientation: 'landscape',
         compress: true
       },
       pagebreak: {
         mode: ['css', 'legacy'],
-        avoid: ['.form-section', 'tr', 'img']
+        avoid: ['.form-section', 'tr', 'img', '.table-scroll-wrapper']
       }
     };
-
-
-    const tablaMedidas = document.getElementById('medidasTable');
-    
-    const originalMarginLeft = tablaMedidas.style.marginLeft;
-    const originalTransform = tablaMedidas.style.transform;
-    const originalTransformOrigin = tablaMedidas.style.transformOrigin;
-
-    // ajustar solo para PDF
-    tablaMedidas.style.marginLeft = '-10px';
-    tablaMedidas.style.transform = 'scale(0.92)';
-    tablaMedidas.style.transformOrigin = 'top left';
 
     const pdfBlob = await html2pdf()
       .from(elemento)
       .set(opt)
       .outputPdf('blob');
 
-    // restaurar
-    tablaMedidas.style.marginLeft = originalMarginLeft;
-    tablaMedidas.style.transform = originalTransform;
-    tablaMedidas.style.transformOrigin = originalTransformOrigin;
+    // Restaurar estilos
+    tablaMedidas.style.minWidth = '';
+    tablaMedidas.style.width = '';
 
-
+    // Subir y enviar
     const formData = new FormData();
     formData.append('UPLOADCARE_PUB_KEY', 'dd2580a9c669d60b5d49');
     formData.append('file', pdfBlob, 'Inspeccion_GET.pdf');

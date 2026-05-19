@@ -389,4 +389,105 @@ img {
         page-break-inside: avoid;
         break-inside: avoid;
     }
+
+    /* ============================================
+   SCROLL HORIZONTAL PARA TABLA DE 9 COLUMNAS
+   ============================================ */
+
+/* Contenedor con scroll para la tabla */
+.table-scroll-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: visible;
+    -webkit-overflow-scrolling: touch;
+    margin: 15px 0;
+    border-radius: 8px;
+    border: 1px solid #ddd;
 }
+
+/* La tabla mantiene su ancho completo */
+#medidasTable {
+    min-width: 1300px;
+    width: max-content;
+    border-collapse: collapse;
+    background: white;
+}
+
+#medidasTable th,
+#medidasTable td {
+    border: 1px solid #ddd;
+    padding: 10px 8px;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+#medidasTable th {
+    background-color: #0033a0;
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+#medidasTable td {
+    font-size: 12px;
+}
+
+/* Ajustar inputs dentro de la tabla */
+#medidasTable input,
+#medidasTable select {
+    min-width: 60px;
+    width: 100%;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 12px;
+    text-align: center;
+}
+
+#medidasTable input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    margin: 0 auto;
+    display: block;
+    cursor: pointer;
+}
+
+/* Para pantallas pequeñas */
+@media (max-width: 768px) {
+    .table-scroll-wrapper {
+        overflow-x: scroll;
+    }
+    
+    #medidasTable {
+        min-width: 1200px;
+    }
+    
+    #medidasTable th,
+    #medidasTable td {
+        padding: 6px 4px;
+        font-size: 10px;
+    }
+}
+
+/* Para impresión y PDF */
+@media print {
+    .table-scroll-wrapper {
+        overflow-x: visible !important;
+        border: 1px solid #ddd;
+    }
+    
+    #medidasTable {
+        min-width: 100%;
+        width: 100%;
+    }
+    
+    #medidasTable th,
+    #medidasTable td {
+        border: 1px solid #000;
+        padding: 8px;
+    }
+}
+}
+
