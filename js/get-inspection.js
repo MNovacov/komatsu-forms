@@ -121,6 +121,28 @@ async function submitGetInspectionForm() {
       }
     };
 
+    // CLONAR valores visibles para PDF
+    const inputs = elemento.querySelectorAll('input, textarea, select');
+
+    inputs.forEach(el => {
+      if (el.type === 'checkbox') {
+        el.setAttribute('data-html2canvas-ignore', 'true');
+
+        const span = document.createElement('span');
+        span.className = 'temp-checkbox';
+        span.textContent = el.checked ? '☑' : '☐';
+
+        el.parentNode.appendChild(span);
+      } else {
+        el.setAttribute('data-original-value', el.value);
+        el.setAttribute('value', el.value);
+
+        if (el.tagName === 'TEXTAREA') {
+          el.innerHTML = el.value;
+        }
+      }
+    });
+
     const pdfBlob = await html2pdf()
       .from(elemento)
       .set(opt)
@@ -129,6 +151,8 @@ async function submitGetInspectionForm() {
     // restaurar estilos
     tablaMedidas.style.fontSize = originalFontSize;
     tablaMedidas.style.transform = originalTransform;
+    // limpiar elementos temporales
+    document.querySelectorAll('.temp-checkbox').forEach(el => el.remove());
     // Subir y enviar
     const formData = new FormData();
     formData.append('UPLOADCARE_PUB_KEY', 'dd2580a9c669d60b5d49');
