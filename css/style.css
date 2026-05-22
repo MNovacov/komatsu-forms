@@ -488,6 +488,15 @@ img {
         border: 1px solid #000;
         padding: 8px;
     }
+
+    #subject {
+        width: 100%;
+        min-height: 80px;
+        resize: none;
+        overflow: hidden;
+        white-space: pre-wrap;
+        overflow-wrap: break-word;
+    }
 }
 }
 

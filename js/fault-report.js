@@ -534,6 +534,13 @@ async function submitFaultReportForm() {
   }
 }
 
+const subjectTextarea = document.getElementById("subject");
+
+subjectTextarea.addEventListener("input", function () {
+  this.style.height = "auto";
+  this.style.height = this.scrollHeight + "px";
+});
+
 // ========== FUNCIÓN DE DEPURACIÓN (opcional) ==========
 window.debugForm = function() {
   console.log("=== DEBUG FORMULARIO ===");
