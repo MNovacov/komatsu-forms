@@ -404,8 +404,7 @@ async function submitFaultReportForm() {
         compress: true,
       },
       pagebreak: {
-        mode: ["css"],
-        avoid: ['tr', 'img']
+        mode: ["avoid-all"]
        },
     };
 
