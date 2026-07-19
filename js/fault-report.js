@@ -404,9 +404,9 @@ async function submitFaultReportForm() {
         compress: true,
       },
       pagebreak: {
-        mode: ["css"],
-        avoid: ['tr', 'img']
-       },
+        mode: ["legacy"],
+        avoid: ["tr", "img"]
+      },
     };
 
     // Generar PDF

@@ -324,8 +324,7 @@ header {
 }
 
 .form-section {
-    page-break-inside: avoid;
-    break-inside: avoid;
+    margin-bottom: 30px;
 }
 
 table {
@@ -349,9 +348,6 @@ img {
     break-inside: avoid;
 }
 
-.form-section h3 {
-    page-break-after: avoid;
-}
 
 
 @media print {
@@ -371,10 +367,6 @@ img {
         box-shadow: none !important;
     }
 
-    .form-section {
-        page-break-inside: avoid;
-        break-inside: avoid;
-    }
 
     table {
         page-break-inside: auto;
