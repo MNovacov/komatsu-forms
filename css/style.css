@@ -327,25 +327,25 @@ header {
    CONTROL DE SALTOS DE PÁGINA PARA PDF
    ============================================ */
 
-/* Las secciones pueden continuar en otra página */
+/* Las secciones pueden dividirse entre páginas */
 .form-section {
     page-break-inside: auto;
     break-inside: auto;
 }
 
-/* Cada fila debe mantenerse completa */
+/* Evitar cortar filas completas */
 .form-row {
     page-break-inside: avoid;
     break-inside: avoid;
 }
 
-/* Cada campo debe mantenerse completo */
+/* Evitar cortar campos completos */
 .form-group {
     page-break-inside: avoid;
     break-inside: avoid;
 }
 
-/* Los títulos no deben quedar solos al final */
+/* Evitar que el título quede solo al final de una página */
 .form-section h3 {
     page-break-after: avoid;
     break-after: avoid;
@@ -453,7 +453,7 @@ img {
 }
 
 /* ============================================
-   ESTILOS DE IMPRESIÓN / PDF
+   ESTILOS DE IMPRESIÓN
    ============================================ */
 
 @media print {

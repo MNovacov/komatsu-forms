@@ -405,7 +405,7 @@ async function submitFaultReportForm() {
       },
       pagebreak: {
         mode: ["legacy"],
-        avoid: ["tr", "img"]
+        avoid: [".form-group", ".form-row", "tr", "img"]
       },
     };
 
