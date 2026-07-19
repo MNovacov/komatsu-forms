@@ -17,7 +17,7 @@ body {
 }
 
 header {
-    background-color: #0033a0; /* Azul Komatsu */
+    background-color: #0033a0;
     color: white;
     padding: 20px;
     border-radius: 8px 8px 0 0;
@@ -52,7 +52,7 @@ header {
     border-radius: 8px;
     padding: 25px;
     text-align: center;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     transition: transform 0.3s, box-shadow 0.3s;
     border: 2px solid #0033a0;
@@ -60,7 +60,7 @@ header {
 
 .form-option:hover {
     transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .option-icon {
@@ -84,7 +84,7 @@ header {
     background: white;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .form-header {
@@ -299,7 +299,7 @@ header {
     font-weight: bold;
     margin-bottom: 8px;
     display: block;
-    color: #0033A0;
+    color: #0033a0;
 }
 
 .suelo-suboptions {
@@ -316,25 +316,42 @@ header {
     .suelo-options {
         grid-template-columns: 1fr;
     }
-    
+
     .checkbox-group {
         flex-direction: column;
         gap: 8px;
     }
 }
 
-.form-section {
-    margin-bottom: 30px;
-    page-break-inside: avoid;
-    break-inside: avoid;
-}
+/* ============================================
+   CONTROL DE SALTOS DE PÁGINA PARA PDF
+   ============================================ */
 
-/* La sección Información General puede continuar en otra página */
-#faultReportForm > .form-section:first-child {
+/* Las secciones pueden continuar en otra página */
+.form-section {
     page-break-inside: auto;
     break-inside: auto;
 }
 
+/* Cada fila debe mantenerse completa */
+.form-row {
+    page-break-inside: avoid;
+    break-inside: avoid;
+}
+
+/* Cada campo debe mantenerse completo */
+.form-group {
+    page-break-inside: avoid;
+    break-inside: avoid;
+}
+
+/* Los títulos no deben quedar solos al final */
+.form-section h3 {
+    page-break-after: avoid;
+    break-after: avoid;
+}
+
+/* Tablas */
 table {
     page-break-inside: auto;
 }
@@ -346,54 +363,22 @@ th {
     break-inside: avoid;
 }
 
+/* Imágenes */
 img {
     page-break-inside: avoid;
     break-inside: avoid;
 }
 
+/* Fotos */
 .photo-container {
     page-break-inside: avoid;
     break-inside: avoid;
 }
 
-
-
-@media print {
-
-    .form-row {
-        display: block !important;
-    }
-
-    .form-row .form-group {
-        width: 100% !important;
-        margin-right: 0 !important;
-        margin-bottom: 10px !important;
-    }
-
-    .container,
-    .form-container {
-        box-shadow: none !important;
-    }
-    
-    table {
-        page-break-inside: auto;
-    }
-
-    tr {
-        page-break-inside: avoid;
-        break-inside: avoid;
-    }
-
-    img {
-        page-break-inside: avoid;
-        break-inside: avoid;
-    }
-
-    /* ============================================
-   SCROLL HORIZONTAL PARA TABLA DE 9 COLUMNAS
+/* ============================================
+   SCROLL HORIZONTAL PARA TABLAS GRANDES
    ============================================ */
 
-/* Contenedor con scroll para la tabla */
 .table-scroll-wrapper {
     width: 100%;
     overflow-x: auto;
@@ -404,7 +389,6 @@ img {
     border: 1px solid #ddd;
 }
 
-/* La tabla mantiene su ancho completo */
 #medidasTable {
     min-width: 1300px;
     width: max-content;
@@ -432,7 +416,6 @@ img {
     font-size: 12px;
 }
 
-/* Ajustar inputs dentro de la tabla */
 #medidasTable input,
 #medidasTable select {
     min-width: 60px;
@@ -453,16 +436,15 @@ img {
     cursor: pointer;
 }
 
-/* Para pantallas pequeñas */
 @media (max-width: 768px) {
     .table-scroll-wrapper {
         overflow-x: scroll;
     }
-    
+
     #medidasTable {
         min-width: 1200px;
     }
-    
+
     #medidasTable th,
     #medidasTable td {
         padding: 6px 4px;
@@ -470,18 +452,37 @@ img {
     }
 }
 
-/* Para impresión y PDF */
+/* ============================================
+   ESTILOS DE IMPRESIÓN / PDF
+   ============================================ */
+
 @media print {
+
+    .form-row {
+        display: block !important;
+    }
+
+    .form-row .form-group {
+        width: 100% !important;
+        margin-right: 0 !important;
+        margin-bottom: 10px !important;
+    }
+
+    .container,
+    .form-container {
+        box-shadow: none !important;
+    }
+
     .table-scroll-wrapper {
         overflow-x: visible !important;
         border: 1px solid #ddd;
     }
-    
+
     #medidasTable {
         min-width: 100%;
         width: 100%;
     }
-    
+
     #medidasTable th,
     #medidasTable td {
         border: 1px solid #000;
@@ -497,5 +498,3 @@ img {
         overflow-wrap: break-word;
     }
 }
-}
-
