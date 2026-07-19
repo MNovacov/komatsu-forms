@@ -377,6 +377,16 @@ async function submitFaultReportForm() {
 
     // Configuración para generar PDF
     const elemento = document.querySelector(".form-container");
+
+    // 🔧 EVITAR ESPACIO BLANCO: html2canvas captura relativo al scroll actual
+    // de la página. Si el usuario tiene la página scrolleada al enviar el
+    // formulario, ese desplazamiento se traduce en un espacio en blanco al
+    // inicio del PDF. Llevamos la ventana al tope antes de capturar y
+    // restauramos el scroll después.
+    const scrollXAntes = window.scrollX;
+    const scrollYAntes = window.scrollY;
+    window.scrollTo(0, 0);
+
     const opt = {
       margin: [0.3, 0.3, 0.3, 0.3],
       filename: `Informe_Falla_${document.getElementById("reportNumber").value}_${Date.now()}.pdf`,
@@ -404,6 +414,9 @@ async function submitFaultReportForm() {
     console.log("📄 Generando PDF con html2pdf...");
     const pdfBlob = await html2pdf().from(elemento).set(opt).outputPdf("blob");
     console.log("✅ PDF generado, tamaño:", pdfBlob.size, "bytes");
+
+    // Restaurar la posición de scroll original del usuario
+    window.scrollTo(scrollXAntes, scrollYAntes);
 
     // Datos para el email
     const formData = {
