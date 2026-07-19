@@ -378,6 +378,21 @@ async function submitFaultReportForm() {
     // Configuración para generar PDF
     const elemento = document.querySelector(".form-container");
 
+    // 🔧 EVITAR PÁGINA EN BLANCO: el CSS del sitio tiene
+    // ".form-section { page-break-inside: avoid; break-inside: avoid; }"
+    // permanentemente activo (no solo en @media print). Esto le indica al
+    // motor de PDF que jamás corte una .form-section a la mitad; si la
+    // primera sección no cabe completa en lo que queda de la página 1, la
+    // empuja ENTERA a la página 2, dejando casi toda la página 1 en blanco.
+    // Neutralizamos esa propiedad directamente en los elementos justo antes
+    // de capturar (y la restauramos después) para que el contenido pueda
+    // fluir con normalidad entre páginas.
+    const seccionesForm = elemento.querySelectorAll('.form-section');
+    seccionesForm.forEach((sec) => {
+      sec.style.pageBreakInside = 'auto';
+      sec.style.breakInside = 'auto';
+    });
+
     // 🔧 EVITAR ESPACIO BLANCO: html2canvas captura relativo al scroll actual
     // de la página. Si el usuario tiene la página scrolleada al enviar el
     // formulario, ese desplazamiento se traduce en un espacio en blanco al
@@ -411,11 +426,20 @@ async function submitFaultReportForm() {
     // Generar PDF
     showMessage("message", "Generando PDF...");
     console.log("📄 Generando PDF con html2pdf...");
-    const pdfBlob = await html2pdf().from(elemento).set(opt).outputPdf("blob");
-    console.log("✅ PDF generado, tamaño:", pdfBlob.size, "bytes");
+    let pdfBlob;
+    try {
+      pdfBlob = await html2pdf().from(elemento).set(opt).outputPdf("blob");
+    } finally {
+      // Restaurar la posición de scroll original del usuario
+      window.scrollTo(scrollXAntes, scrollYAntes);
 
-    // Restaurar la posición de scroll original del usuario
-    window.scrollTo(scrollXAntes, scrollYAntes);
+      // Restaurar el page-break-inside original de las secciones
+      seccionesForm.forEach((sec) => {
+        sec.style.pageBreakInside = '';
+        sec.style.breakInside = '';
+      });
+    }
+    console.log("✅ PDF generado, tamaño:", pdfBlob.size, "bytes");
 
     // Datos para el email
     const formData = {
