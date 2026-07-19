@@ -325,6 +325,14 @@ header {
 
 .form-section {
     margin-bottom: 30px;
+    page-break-inside: avoid;
+    break-inside: avoid;
+}
+
+/* La sección Información General puede continuar en otra página */
+#faultReportForm > .form-section:first-child {
+    page-break-inside: auto;
+    break-inside: auto;
 }
 
 table {
@@ -366,8 +374,7 @@ img {
     .form-container {
         box-shadow: none !important;
     }
-
-
+    
     table {
         page-break-inside: auto;
     }
