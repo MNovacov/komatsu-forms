@@ -1,4 +1,4 @@
-// fault-report.js - VERSIÓN ORIGINAL CON SOLO LA CORRECCIÓN DEL ESPACIO BLANCO
+// fault-report.js - VERSIÓN COMPLETA Y CORREGIDA
 
 // ========== FUNCIÓN PARA CARGAR UPLOADCARE ==========
 function loadUploadcareWidget() {
@@ -32,14 +32,17 @@ async function uploadPdfDirect(pdfBlob, reportNumber) {
   console.log("⬆️ Subiendo PDF directamente a Uploadcare...");
   
   try {
+    // Crear FormData
     const formData = new FormData();
     formData.append('UPLOADCARE_PUB_KEY', 'dd2580a9c669d60b5d49');
     formData.append('UPLOADCARE_STORE', '1');
     formData.append('file', pdfBlob, `Informe_Falla_${reportNumber}.pdf`);
     
+    // IMPORTANTE: Subir directamente sin widget
     const response = await fetch('https://upload.uploadcare.com/base/', {
       method: 'POST',
       body: formData,
+      // Dejar que el navegador maneje CORS
     });
     
     if (!response.ok) {
@@ -73,6 +76,7 @@ async function uploadPdfSimple(pdfBlob, reportNumber) {
     formData.append('UPLOADCARE_STORE', '1');
     formData.append('file', pdfBlob, `Informe_${reportNumber}.pdf`);
     
+    // Usar proxy CORS
     const proxyUrl = 'https://corsproxy.io/?';
     const targetUrl = 'https://upload.uploadcare.com/base/';
     
@@ -95,11 +99,12 @@ async function uploadPdfSimple(pdfBlob, reportNumber) {
   }
 }
 
-// ========== FUNCIÓN: SUBIR PDF USANDO BACKEND CON BASE64 ==========
+// ========== NUEVA FUNCIÓN: SUBIR PDF USANDO TU BACKEND CON BASE64 ==========
 async function uploadPdfUsingBackend(pdfBlob, reportNumber) {
-  console.log("🚀 Enviando PDF a backend como base64...");
+  console.log("🚀 Enviando PDF a TU backend (komatsu-api) como base64...");
   
   try {
+    // Convertir Blob a base64
     const reader = new FileReader();
     
     const base64Promise = new Promise((resolve, reject) => {
@@ -112,6 +117,7 @@ async function uploadPdfUsingBackend(pdfBlob, reportNumber) {
     
     console.log("📊 Base64 generado, tamaño:", pdfBase64.length, "caracteres");
     
+    // Enviar a TU endpoint de backend como JSON con base64
     const response = await fetch('https://komatsu-api.vercel.app/api/uploadPdf', {
       method: 'POST',
       headers: {
@@ -148,6 +154,7 @@ async function uploadPdfUsingBackend(pdfBlob, reportNumber) {
 document.addEventListener("DOMContentLoaded", function () {
   console.log("📄 Cargando formulario de informe de falla...");
   
+  // Establecer fechas por defecto
   const today = new Date().toISOString().split("T")[0];
   const dateFields = ["failureDate", "visitDate", "repairDate", "deliveryDate"];
   dateFields.forEach((id) => {
@@ -155,6 +162,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (el) el.value = today;
   });
 
+  // Generar número de reporte automático
   const reportNumber = document.getElementById("reportNumber");
   if (reportNumber && !reportNumber.value) {
     const date = new Date();
@@ -166,10 +174,12 @@ document.addEventListener("DOMContentLoaded", function () {
       .padStart(3, "0")}`;
   }
 
+  // Inicializar componentes
   initializePartsTable();
   calculateTotals();
   initializePhotoUpload();
 
+  // Configurar evento de envío del formulario
   const form = document.getElementById("faultReportForm");
   if (form) {
     form.addEventListener("submit", async function (e) {
@@ -178,6 +188,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // Configurar eventos para cálculo de totales
   document.getElementById("partsTable")?.addEventListener("input", function (e) {
     if (e.target.name === "cantidad" || e.target.name === "precioUn") {
       calculateRowTotal(e.target.closest("tr"));
@@ -331,7 +342,7 @@ function showMessage(elementId, message, isError = false) {
   setTimeout(() => el.classList.add("hidden"), 7000);
 }
 
-// ========== FUNCIÓN PRINCIPAL - SOLO CORREGIDA EL ESPACIO BLANCO ==========
+// ========== FUNCIÓN PRINCIPAL MODIFICADA (VERSIÓN CORREGIDA) ==========
 async function submitFaultReportForm() {
   console.log("=== INICIANDO ENVÍO DE INFORME ===");
   showMessage("message", "Generando PDF...");
@@ -367,7 +378,13 @@ async function submitFaultReportForm() {
     // Configuración para generar PDF
     const elemento = document.querySelector(".form-container");
 
-    // 🔧 SOLO ESTA LÍNEA ES LA CORRECCIÓN: Forzar scroll al inicio para evitar espacio blanco
+    // 🔧 EVITAR ESPACIO BLANCO: html2canvas captura relativo al scroll actual
+    // de la página. Si el usuario tiene la página scrolleada al enviar el
+    // formulario, ese desplazamiento se traduce en un espacio en blanco al
+    // inicio del PDF. Llevamos la ventana al tope antes de capturar y
+    // restauramos el scroll después.
+    const scrollXAntes = window.scrollX;
+    const scrollYAntes = window.scrollY;
     window.scrollTo(0, 0);
 
     const opt = {
@@ -379,11 +396,6 @@ async function submitFaultReportForm() {
         useCORS: true,
         logging: false,
         allowTaint: true,
-        // 🔧 ESTA ES LA CORRECCIÓN CLAVE: Forzar la posición de captura
-        y: 0,
-        scrollY: 0,
-        x: 0,
-        scrollX: 0,
       },
       jsPDF: {
         unit: "in",
@@ -392,8 +404,9 @@ async function submitFaultReportForm() {
         compress: true,
       },
       pagebreak: {
-        mode: ["avoid-all"]
-      },
+        mode: ["css"],
+        avoid: ['tr', 'img']
+       },
     };
 
     // Generar PDF
@@ -401,6 +414,9 @@ async function submitFaultReportForm() {
     console.log("📄 Generando PDF con html2pdf...");
     const pdfBlob = await html2pdf().from(elemento).set(opt).outputPdf("blob");
     console.log("✅ PDF generado, tamaño:", pdfBlob.size, "bytes");
+
+    // Restaurar la posición de scroll original del usuario
+    window.scrollTo(scrollXAntes, scrollYAntes);
 
     // Datos para el email
     const formData = {
@@ -417,13 +433,14 @@ async function submitFaultReportForm() {
 
     console.log("📋 Datos del informe:", formData);
 
-    // ========== SUBIR PDF ==========
+    // ========== SUBIR PDF (MÉTODO MEJORADO) ==========
     showMessage("message", "Subiendo PDF...");
     
     let pdfUrl;
     
+    // INTENTAR PRIMERO CON TU BACKEND (el método que SÍ funciona)
     try {
-      console.log("🔄 Intentando subir usando backend (base64)...");
+      console.log("🔄 Intentando subir usando TU backend (base64)...");
       pdfUrl = await uploadPdfUsingBackend(pdfBlob, formData.reportNumber);
       console.log("✅ PDF subido usando backend:", pdfUrl);
       
@@ -432,6 +449,7 @@ async function submitFaultReportForm() {
       showMessage("message", "Intentando método alternativo...");
       
       try {
+        // INTENTAR MÉTODO DIRECTO (por si acaso)
         console.log("🔄 Intentando subida directa...");
         pdfUrl = await uploadPdfDirect(pdfBlob, formData.reportNumber);
         console.log("✅ PDF subido directamente:", pdfUrl);
@@ -441,13 +459,14 @@ async function submitFaultReportForm() {
         showMessage("message", "Último intento con proxy...");
         
         try {
+          // ÚLTIMO INTENTO: PROXY
           console.log("🔄 Intentando con proxy CORS...");
           pdfUrl = await uploadPdfSimple(pdfBlob, formData.reportNumber);
           console.log("✅ PDF subido con proxy:", pdfUrl);
           
         } catch (proxyError) {
           console.error("💥 TODOS los métodos fallaron:", proxyError);
-          throw new Error("No se pudo subir el PDF. Verifique que tu backend esté funcionando.");
+          throw new Error("No se pudo subir el PDF. Verifique que tu backend (/api/uploadPdf) esté funcionando y accesible desde https://komatsu-api.vercel.app/api/uploadPdf");
         }
       }
     }
@@ -505,7 +524,7 @@ async function submitFaultReportForm() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        subject: `Informe de Falla | ${formData.equipmentCombined} | ${fechaFormateada}`,
+        subject: `Informe de Falla | Equipo ${document.getElementById("equipmentField").value} | ${fechaFormateada}`,
         html: htmlContent,
       }),
     });
@@ -528,17 +547,14 @@ async function submitFaultReportForm() {
   }
 }
 
-// ========== AUTO-RESIZE PARA TEXTAREA ==========
 const subjectTextarea = document.getElementById("subject");
 
-if (subjectTextarea) {
-  subjectTextarea.addEventListener("input", function () {
-    this.style.height = "auto";
-    this.style.height = this.scrollHeight + "px";
-  });
-}
+subjectTextarea.addEventListener("input", function () {
+  this.style.height = "auto";
+  this.style.height = this.scrollHeight + "px";
+});
 
-// ========== FUNCIÓN DE DEPURACIÓN ==========
+// ========== FUNCIÓN DE DEPURACIÓN (opcional) ==========
 window.debugForm = function() {
   console.log("=== DEBUG FORMULARIO ===");
   console.log("Backend URL:", 'https://komatsu-api.vercel.app/api/uploadPdf');
