@@ -470,6 +470,15 @@ async function submitFaultReportForm() {
     tempContainer.appendChild(clone);
     document.body.appendChild(tempContainer);
 
+    // 🔧 EVITAR ESPACIO BLANCO: html2canvas captura relativo al scroll actual
+    // de la página. Si el usuario tiene la página scrolleada al enviar el
+    // formulario, ese desplazamiento se traduce en un espacio en blanco al
+    // inicio del PDF. Llevamos la ventana al tope antes de capturar y
+    // restauramos el scroll después.
+    const scrollXAntes = window.scrollX;
+    const scrollYAntes = window.scrollY;
+    window.scrollTo(0, 0);
+
     // 🔧 OPCIONES DEL PDF OPTIMIZADAS
     const opt = {
       margin: [0.3, 0.5, 0.5, 0.5], // Margen superior reducido a 0.3in
@@ -485,7 +494,10 @@ async function submitFaultReportForm() {
         windowWidth: 1200,
         height: tempContainer.scrollHeight || 2000,
         windowHeight: tempContainer.scrollHeight || 2000,
+        x: 0,
         y: 0, // Empezar desde el principio
+        scrollX: 0, // Ignorar el scroll horizontal de la página (causa del espacio en blanco)
+        scrollY: 0, // Ignorar el scroll vertical de la página (causa del espacio en blanco)
       },
       jsPDF: {
         unit: "in",
@@ -511,6 +523,9 @@ async function submitFaultReportForm() {
     
     // Limpiar el contenedor temporal
     document.body.removeChild(tempContainer);
+
+    // Restaurar la posición de scroll original del usuario
+    window.scrollTo(scrollXAntes, scrollYAntes);
     
     console.log("✅ PDF generado, tamaño:", pdfBlob.size, "bytes");
 
