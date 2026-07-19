@@ -327,25 +327,31 @@ header {
    CONTROL DE SALTOS DE PÁGINA PARA PDF
    ============================================ */
 
-/* Las secciones pueden dividirse entre páginas */
+/* Por defecto, cada sección se mantiene completa */
 .form-section {
-    page-break-inside: auto;
-    break-inside: auto;
-}
-
-/* Evitar cortar filas completas */
-.form-row {
     page-break-inside: avoid;
     break-inside: avoid;
 }
 
-/* Evitar cortar campos completos */
+/* SOLO Información General puede dividirse */
+#faultReportForm > .form-section:first-child {
+    page-break-inside: auto;
+    break-inside: auto;
+}
+
+/* Cada campo se mantiene completo */
 .form-group {
     page-break-inside: avoid;
     break-inside: avoid;
 }
 
-/* Evitar que el título quede solo al final de una página */
+/* Cada fila se mantiene completa */
+.form-row {
+    page-break-inside: avoid;
+    break-inside: avoid;
+}
+
+/* El título debe mantenerse con su sección */
 .form-section h3 {
     page-break-after: avoid;
     break-after: avoid;
