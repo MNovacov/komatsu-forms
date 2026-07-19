@@ -494,10 +494,7 @@ async function submitFaultReportForm() {
         windowWidth: 1200,
         height: tempContainer.scrollHeight || 2000,
         windowHeight: tempContainer.scrollHeight || 2000,
-        x: 0,
         y: 0, // Empezar desde el principio
-        scrollX: 0, // Ignorar el scroll horizontal de la página (causa del espacio en blanco)
-        scrollY: 0, // Ignorar el scroll vertical de la página (causa del espacio en blanco)
       },
       jsPDF: {
         unit: "in",
