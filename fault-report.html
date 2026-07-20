@@ -401,6 +401,74 @@
                         <textarea id="conclusion" name="conclusion"></textarea>
                     </div>
                 </div>
+
+                <div class="form-section">
+                    <h3>5. Avance / Carta Gantt (Curva S)</h3>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="ganttTituloCurva">Título del Gráfico</label>
+                            <input type="text" id="ganttTituloCurva" name="ganttTituloCurva" value="PA215 - MP 1500 HRS + BKL">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Puntos de Avance General (Planificado vs Real)</label>
+                        <table class="table" id="ganttCurveTable">
+                            <thead>
+                                <tr>
+                                    <th style="width:40%;">Fecha/Hora</th>
+                                    <th>% Planificado</th>
+                                    <th>% Real</th>
+                                    <th style="width:40px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                        <button type="button" class="btn-secondary" onclick="addGanttCurvePoint()">+ Agregar Punto</button>
+                    </div>
+
+                    <div class="form-group" style="text-align:center;">
+                        <canvas id="ganttCurveChart" width="900" height="320" style="max-width:100%; border:1px solid #ddd; border-radius:4px; background:#ffffff;"></canvas>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Control de Tareas</label>
+                        <table class="table" id="ganttTasksTable">
+                            <thead>
+                                <tr>
+                                    <th>Equipo</th>
+                                    <th>Unidad / Tarea Principal</th>
+                                    <th>Día/Turno</th>
+                                    <th>% Avance Plan</th>
+                                    <th>% Avance Real</th>
+                                    <th>% Desviación</th>
+                                    <th>Observación Principal</th>
+                                    <th style="width:40px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                        <button type="button" class="btn-secondary" onclick="addGanttTaskRow()">+ Agregar Tarea</button>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tareas Ejecutadas y Observaciones</label>
+                        <table class="table" id="ganttExecTable">
+                            <thead>
+                                <tr>
+                                    <th style="width:15%;">Día/Turno</th>
+                                    <th style="width:42%;">Tareas Ejecutadas</th>
+                                    <th style="width:43%;">Observaciones</th>
+                                    <th style="width:40px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                        <button type="button" class="btn-secondary" onclick="addGanttExecRow()">+ Agregar Fila</button>
+                    </div>
+                </div>
+
                 <div class="form-section">
                     <h3>Set Fotográfico</h3>
                     <div class="photo-section">
@@ -421,6 +489,7 @@
                         <input type="file" id="photoUpload" accept="image/*" style="display: none;">
                     </div>
                 </div>
+
 
                 <div class="form-section">
                     <div class="form-row">
