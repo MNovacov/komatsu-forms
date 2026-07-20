@@ -178,6 +178,7 @@ document.addEventListener("DOMContentLoaded", function () {
   initializePartsTable();
   calculateTotals();
   initializePhotoUpload();
+  initializeGanttSection();
 
   // Configurar evento de envío del formulario
   const form = document.getElementById("faultReportForm");
@@ -251,6 +252,253 @@ function calculateTotals() {
   document.getElementById("totalAmount").textContent = `$ ${new Intl.NumberFormat(
     "es-CL"
   ).format(totalAmount)}`;
+}
+
+// ========== AVANCE / CARTA GANTT (CURVA S) ==========
+
+function initializeGanttSection() {
+  const curveData = [
+    { fecha: "26-05-26 13:00", plan: 0, real: 0 },
+    { fecha: "27-05-26 07:00", plan: 14, real: 14 },
+    { fecha: "27-05-26 19:00", plan: 44, real: 44 },
+    { fecha: "28-05-26 07:00", plan: 70, real: "" },
+    { fecha: "28-05-26 19:00", plan: 91, real: "" },
+    { fecha: "29-05-26 07:00", plan: 100, real: "" },
+  ];
+  curveData.forEach((pt) => addGanttCurvePoint(pt));
+
+  addGanttTaskRow({
+    equipo: "PA215",
+    unidad: "MP 1500 HRS + BKL",
+    diaTurno: "27/05 TURNO DÍA",
+    plan: 44,
+    real: 44,
+    observacion:
+      "Equipo ingresa a MP con 39,6 horas de desviación respecto a lo planificado. Esta desviación se debe a que equipo 219 en MP venía desfasado de plan semana 21, por lo que se entregó el 25/05 turno B",
+  });
+
+  addGanttExecRow({
+    diaTurno: "27/05 TURNO DÍA",
+    tareas:
+      "Se realiza bkl cambio filtro de retorno y drenaje sistema hidráulico\nCambio aceite motor diesel avance 80% continuar con relleno tk reserva de aceites motores.\nSe rellena con aceite carcasa de bombas principales x08 100%\nSe avanza en puntos de pauta MP",
+    observaciones:
+      "Desde 12:00 hasta 19:00 se destinan 2 MP para apoyo traslado pala 219 desde fase 35 hacia fase 362\nDesde 13:30 hasta 16:00 se destinan 2 MP para traslado de recursos a patio MP pala 215, grúa horquilla y alza hombre en cama baja",
+  });
+
+  const tituloInput = document.getElementById("ganttTituloCurva");
+  if (tituloInput) tituloInput.addEventListener("input", drawGanttCurveChart);
+
+  drawGanttCurveChart();
+}
+
+// --- Tabla de puntos de la curva S ---
+function addGanttCurvePoint(data = {}) {
+  const tbody = document.querySelector("#ganttCurveTable tbody");
+  const row = document.createElement("tr");
+  row.innerHTML = `
+    <td><input type="text" name="ganttFecha" class="table-input" placeholder="dd-mm-aa hh:mm" value="${data.fecha || ""}"></td>
+    <td><input type="number" name="ganttPlan" class="table-input" style="text-align:center;" min="0" max="100" value="${data.plan ?? ""}"></td>
+    <td><input type="number" name="ganttReal" class="table-input" style="text-align:center;" min="0" max="100" value="${data.real ?? ""}"></td>
+    <td><button type="button" class="btn-remove" onclick="removeGanttCurvePoint(this)">×</button></td>
+  `;
+  tbody.appendChild(row);
+
+  row.querySelectorAll("input").forEach((input) => {
+    input.addEventListener("input", drawGanttCurveChart);
+  });
+}
+
+function removeGanttCurvePoint(btn) {
+  btn.closest("tr").remove();
+  drawGanttCurveChart();
+}
+
+function collectGanttCurvePoints() {
+  const rows = document.querySelectorAll("#ganttCurveTable tbody tr");
+  const points = [];
+  rows.forEach((row) => {
+    const fecha = row.querySelector('[name="ganttFecha"]').value.trim();
+    const planStr = row.querySelector('[name="ganttPlan"]').value.trim();
+    const realStr = row.querySelector('[name="ganttReal"]').value.trim();
+    points.push({
+      fecha,
+      plan: planStr === "" ? null : parseFloat(planStr),
+      real: realStr === "" ? null : parseFloat(realStr),
+    });
+  });
+  return points;
+}
+
+// --- Dibujo del gráfico de curva S (canvas nativo, sin dependencias externas) ---
+function drawGanttCurveChart() {
+  const canvas = document.getElementById("ganttCurveChart");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  const w = canvas.width;
+  const h = canvas.height;
+
+  ctx.clearRect(0, 0, w, h);
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, w, h);
+
+  const points = collectGanttCurvePoints();
+  const tituloEl = document.getElementById("ganttTituloCurva");
+  const titulo = tituloEl ? tituloEl.value : "";
+
+  ctx.fillStyle = "#333333";
+  ctx.font = "bold 14px Arial";
+  ctx.textAlign = "center";
+  ctx.fillText(titulo, w / 2, 22);
+
+  // Leyenda
+  ctx.font = "11px Arial";
+  ctx.textAlign = "left";
+  ctx.fillStyle = "#0033A0";
+  ctx.fillRect(w - 160, 32, 12, 3);
+  ctx.fillStyle = "#333333";
+  ctx.fillText("% Planificado", w - 144, 38);
+  ctx.fillStyle = "#c0392b";
+  ctx.fillRect(w - 160, 48, 12, 3);
+  ctx.fillStyle = "#333333";
+  ctx.fillText("% Real", w - 144, 54);
+
+  if (points.length === 0) return;
+
+  const marginLeft = 55;
+  const marginRight = 30;
+  const marginTop = 65;
+  const marginBottom = 55;
+  const plotW = w - marginLeft - marginRight;
+  const plotH = h - marginTop - marginBottom;
+
+  // Ejes
+  ctx.strokeStyle = "#cccccc";
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(marginLeft, marginTop);
+  ctx.lineTo(marginLeft, marginTop + plotH);
+  ctx.lineTo(marginLeft + plotW, marginTop + plotH);
+  ctx.stroke();
+
+  // Líneas guía y etiquetas del eje Y (0-100%)
+  ctx.font = "10px Arial";
+  ctx.fillStyle = "#666666";
+  ctx.textAlign = "right";
+  for (let p = 0; p <= 100; p += 10) {
+    const y = marginTop + plotH - (p / 100) * plotH;
+    ctx.strokeStyle = "#f0f0f0";
+    ctx.beginPath();
+    ctx.moveTo(marginLeft, y);
+    ctx.lineTo(marginLeft + plotW, y);
+    ctx.stroke();
+    ctx.fillText(p + "%", marginLeft - 8, y + 3);
+  }
+
+  const n = points.length;
+  const stepX = n > 1 ? plotW / (n - 1) : 0;
+  const xAt = (i) => marginLeft + stepX * i;
+  const yAt = (val) => marginTop + plotH - (val / 100) * plotH;
+
+  // Etiquetas del eje X (fechas), rotadas para que no se encimen
+  ctx.font = "9px Arial";
+  ctx.fillStyle = "#666666";
+  points.forEach((pt, i) => {
+    const x = xAt(i);
+    ctx.save();
+    ctx.translate(x, marginTop + plotH + 14);
+    ctx.rotate(-Math.PI / 6);
+    ctx.textAlign = "right";
+    ctx.fillText(pt.fecha, 0, 0);
+    ctx.restore();
+  });
+
+  function drawSeries(key, color) {
+    const seriesPoints = points
+      .map((pt, i) => ({ i, val: pt[key] }))
+      .filter((p) => p.val !== null && !isNaN(p.val));
+    if (seriesPoints.length === 0) return;
+
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    seriesPoints.forEach((p, idx) => {
+      const x = xAt(p.i);
+      const y = yAt(p.val);
+      if (idx === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+
+    ctx.fillStyle = color;
+    ctx.font = "bold 10px Arial";
+    ctx.textAlign = "center";
+    seriesPoints.forEach((p) => {
+      const x = xAt(p.i);
+      const y = yAt(p.val);
+      ctx.beginPath();
+      ctx.arc(x, y, 2.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillText(p.val + "%", x, y - 8);
+    });
+  }
+
+  drawSeries("plan", "#0033A0");
+  drawSeries("real", "#c0392b");
+}
+
+// --- Tabla de control de tareas ---
+function addGanttTaskRow(data = {}) {
+  const tbody = document.querySelector("#ganttTasksTable tbody");
+  const row = document.createElement("tr");
+  row.innerHTML = `
+    <td><input type="text" name="ganttEquipo" class="table-input" value="${data.equipo || ""}"></td>
+    <td><input type="text" name="ganttUnidad" class="table-input" value="${data.unidad || ""}"></td>
+    <td><input type="text" name="ganttDiaTurno" class="table-input" value="${data.diaTurno || ""}"></td>
+    <td><input type="number" name="ganttPlanTarea" class="table-input" style="text-align:center;" min="0" max="100" value="${data.plan ?? ""}"></td>
+    <td><input type="number" name="ganttRealTarea" class="table-input" style="text-align:center;" min="0" max="100" value="${data.real ?? ""}"></td>
+    <td style="text-align:center;"><span name="ganttDesviacion">-</span></td>
+    <td><textarea name="ganttObservacion" class="table-input" rows="3">${data.observacion || ""}</textarea></td>
+    <td><button type="button" class="btn-remove" onclick="removeGanttRow(this)">×</button></td>
+  `;
+  tbody.appendChild(row);
+
+  const planInput = row.querySelector('[name="ganttPlanTarea"]');
+  const realInput = row.querySelector('[name="ganttRealTarea"]');
+  const recalc = () => calcGanttDesviacion(row);
+  planInput.addEventListener("input", recalc);
+  realInput.addEventListener("input", recalc);
+  recalc();
+}
+
+function calcGanttDesviacion(row) {
+  const plan = parseFloat(row.querySelector('[name="ganttPlanTarea"]').value);
+  const real = parseFloat(row.querySelector('[name="ganttRealTarea"]').value);
+  const span = row.querySelector('[name="ganttDesviacion"]');
+  if (isNaN(plan) || isNaN(real)) {
+    span.textContent = "-";
+    return;
+  }
+  const desv = real - plan;
+  const signo = desv > 0 ? "+" : "";
+  const color = desv < 0 ? "#dc3545" : "#28a745";
+  span.innerHTML = `<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${color};margin-right:4px;"></span>${signo}${desv}%`;
+}
+
+function removeGanttRow(btn) {
+  btn.closest("tr").remove();
+}
+
+// --- Tabla de tareas ejecutadas / observaciones ---
+function addGanttExecRow(data = {}) {
+  const tbody = document.querySelector("#ganttExecTable tbody");
+  const row = document.createElement("tr");
+  row.innerHTML = `
+    <td><input type="text" name="ganttExecDiaTurno" class="table-input" value="${data.diaTurno || ""}"></td>
+    <td><textarea name="ganttExecTareas" class="table-input" rows="4">${data.tareas || ""}</textarea></td>
+    <td><textarea name="ganttExecObs" class="table-input" rows="4">${data.observaciones || ""}</textarea></td>
+    <td><button type="button" class="btn-remove" onclick="removeGanttRow(this)">×</button></td>
+  `;
+  tbody.appendChild(row);
 }
 
 // ========== FUNCIONES PARA FOTOS ==========
@@ -378,6 +626,21 @@ async function submitFaultReportForm() {
     // Configuración para generar PDF
     const elemento = document.querySelector(".form-container");
 
+    // 🔧 EVITAR PÁGINA EN BLANCO: el CSS del sitio tiene
+    // ".form-section { page-break-inside: avoid; break-inside: avoid; }"
+    // permanentemente activo (no solo en @media print). Esto le indica al
+    // motor de PDF que jamás corte una .form-section a la mitad; si la
+    // primera sección no cabe completa en lo que queda de la página 1, la
+    // empuja ENTERA a la página 2, dejando casi toda la página 1 en blanco.
+    // Neutralizamos esa propiedad directamente en los elementos justo antes
+    // de capturar (y la restauramos después) para que el contenido pueda
+    // fluir con normalidad entre páginas.
+    const seccionesForm = elemento.querySelectorAll('.form-section');
+    seccionesForm.forEach((sec) => {
+      sec.style.pageBreakInside = 'auto';
+      sec.style.breakInside = 'auto';
+    });
+
     // 🔧 EVITAR ESPACIO BLANCO: html2canvas captura relativo al scroll actual
     // de la página. Si el usuario tiene la página scrolleada al enviar el
     // formulario, ese desplazamiento se traduce en un espacio en blanco al
@@ -404,19 +667,27 @@ async function submitFaultReportForm() {
         compress: true,
       },
       pagebreak: {
-        mode: ["css"],
-        avoid: ["tr", "img"]
-      },
+        mode: ["avoid-all"]
+       },
     };
 
     // Generar PDF
     showMessage("message", "Generando PDF...");
     console.log("📄 Generando PDF con html2pdf...");
-    const pdfBlob = await html2pdf().from(elemento).set(opt).outputPdf("blob");
-    console.log("✅ PDF generado, tamaño:", pdfBlob.size, "bytes");
+    let pdfBlob;
+    try {
+      pdfBlob = await html2pdf().from(elemento).set(opt).outputPdf("blob");
+    } finally {
+      // Restaurar la posición de scroll original del usuario
+      window.scrollTo(scrollXAntes, scrollYAntes);
 
-    // Restaurar la posición de scroll original del usuario
-    window.scrollTo(scrollXAntes, scrollYAntes);
+      // Restaurar el page-break-inside original de las secciones
+      seccionesForm.forEach((sec) => {
+        sec.style.pageBreakInside = '';
+        sec.style.breakInside = '';
+      });
+    }
+    console.log("✅ PDF generado, tamaño:", pdfBlob.size, "bytes");
 
     // Datos para el email
     const formData = {
