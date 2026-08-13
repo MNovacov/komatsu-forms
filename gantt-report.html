@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avance / Carta Gantt (Curva S) - Komatsu</title>
+    <link rel="stylesheet" href="css/style.css">
+
+    <link rel="icon" href="/public/favicon.ico" type="image/x-icon" />
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+        }
+
+        .logo h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .form-container {
+            margin-top: 20px;
+        }
+
+        .form-header {
+            background-color: #0033A0;
+            color: white;
+            padding: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+            border: 1px solid #ddd;
+            padding: 15px;
+        }
+
+        .form-section h3 {
+            margin-top: 0;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            flex: 1;
+            min-width: 200px;
+            margin-right: 15px;
+            margin-bottom: 10px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .form-group textarea {
+            resize: none;
+            min-height: 100px;
+            overflow: hidden;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+        }
+
+        .table th, .table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .table th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+
+        .form-actions {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background-color: #00257a;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0 10px;
+        }
+
+        .btn:hover {
+            background-color: #555;
+        }
+
+        .btn-back {
+            background-color: #666;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #message {
+            padding: 12px 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        #message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        #message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <header>
+            <div class="logo">
+                <h1>KOMATSU</h1>
+            </div>
+        </header>
+
+        <div class="form-container">
+
+            <div class="form-header">
+                <h2>AVANCE / CARTA GANTT (CURVA S)</h2>
+            </div>
+
+            <form id="ganttReportForm">
+
+                <div class="form-section">
+                    <h3>Identificación</h3>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="ganttEquipoRef">Equipo</label>
+                            <input type="text" id="ganttEquipoRef" name="ganttEquipoRef" placeholder="Ej: PA215 - 34245">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ganttFechaRef">Fecha</label>
+                            <input type="date" id="ganttFechaRef" name="ganttFechaRef">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="ganttTituloCurva">Título del Gráfico</label>
+                            <input type="text" id="ganttTituloCurva" name="ganttTituloCurva" value="PA215 - MP 1500 HRS + BKL">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Puntos de Avance General (Planificado vs Real)</label>
+                        <table class="table" id="ganttCurveTable">
+                            <thead>
+                                <tr>
+                                    <th style="width:40%;">Fecha/Hora</th>
+                                    <th>% Planificado</th>
+                                    <th>% Real</th>
+                                    <th style="width:40px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                        <button type="button" class="btn-secondary" onclick="addGanttCurvePoint()">+ Agregar Punto</button>
+                    </div>
+
+                    <div class="form-group" style="text-align:center;">
+                        <canvas id="ganttCurveChart" width="900" height="320" style="max-width:100%; border:1px solid #ddd; border-radius:4px; background:#ffffff;"></canvas>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Control de Tareas</label>
+                        <table class="table" id="ganttTasksTable">
+                            <thead>
+                                <tr>
+                                    <th>Equipo</th>
+                                    <th>Unidad / Tarea Principal</th>
+                                    <th>Día/Turno</th>
+                                    <th>% Avance Plan</th>
+                                    <th>% Avance Real</th>
+                                    <th>% Desviación</th>
+                                    <th>Observación Principal</th>
+                                    <th style="width:40px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                        <button type="button" class="btn-secondary" onclick="addGanttTaskRow()">+ Agregar Tarea</button>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tareas Ejecutadas y Observaciones</label>
+                        <table class="table" id="ganttExecTable">
+                            <thead>
+                                <tr>
+                                    <th style="width:15%;">Día/Turno</th>
+                                    <th style="width:42%;">Tareas Ejecutadas</th>
+                                    <th style="width:43%;">Observaciones</th>
+                                    <th style="width:40px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                        <button type="button" class="btn-secondary" onclick="addGanttExecRow()">+ Agregar Fila</button>
+                    </div>
+                </div>
+
+                <div id="message" class="hidden"></div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-back" onclick="location.href='index.html'">Volver al Menú</button>
+                    <button type="submit" class="btn">Enviar Formulario</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+    <script src="js/gantt-report.js"></script>
+
+</body>
+</html>

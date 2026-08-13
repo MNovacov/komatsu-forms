@@ -65,6 +65,39 @@
             background-color: #555;
         }
 
+        .form-group textarea {
+            resize: none;
+            overflow: hidden;
+        }
+
+        .photo-section {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .photo-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .photo-placeholder {
+            width: 150px;
+            height: 150px;
+            border: 1px dashed #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f9f9f9;
+            cursor: pointer;
+        }
+
+        .photo-placeholder:hover {
+            background-color: #f0f0f0;
+        }
+
         
 
         
@@ -189,23 +222,25 @@
                 <div class="form-section">
                     <h3>Medidas de Desgaste</h3>
 
-                    <table class="table" id="medidasTable">
-                        <thead>
-                            <tr>
-                                <th>Identif. Fig N°1</th>
-                                <th>Medida desde Centro de Perno a Borde de Cuchilla Mínima (mm)</th>
-                                <th>Medida tomada Chequeo durante tomada</th>
-                                <th>Proyección de desgaste Estimado (mm)</th>
-                                <th>Proyección de desgaste estimado %</th>
-                                <th>Promedio de desgaste Real %</th>
-                                <th>Cabeza de Perno con Desgaste (Delante)</th>
-                                <th>Cuchilla desgastada Soporte de deslizadera</th>
-                                <th>Condición de Pernos y Tuercas (Atrás)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+                    <div class="table-scroll-wrapper">
+                        <table class="table" id="medidasTable">
+                            <thead>
+                                <tr>
+                                    <th>Identif. Fig N°1</th>
+                                    <th>Medida desde Centro de Perno a Borde de Cuchilla Mínima (mm)</th>
+                                    <th>Medida tomada Chequeo durante tomada</th>
+                                    <th>Proyección de desgaste Estimado (mm)</th>
+                                    <th>Proyección de desgaste estimado %</th>
+                                    <th>Promedio de desgaste Real %</th>
+                                    <th>Cabeza de Perno con Desgaste (Delante)</th>
+                                    <th>Cuchilla desgastada Soporte de deslizadera</th>
+                                    <th>Condición de Pernos y Tuercas (Atrás)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 
                 <div class="form-row">
@@ -234,6 +269,27 @@
                     <div class="form-group">
                         <label for="observaciones">Observaciones</label>
                         <textarea id="observaciones" name="observaciones" rows="4"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Set Fotográfico</h3>
+                    <div class="photo-section">
+                        <div class="photo-container">
+                            <div class="photo-placeholder" onclick="addPhoto(this)">
+                                <span>+ Agregar Foto 1</span>
+                            </div>
+                            <div class="photo-placeholder" onclick="addPhoto(this)">
+                                <span>+ Agregar Foto 2</span>
+                            </div>
+                            <div class="photo-placeholder" onclick="addPhoto(this)">
+                                <span>+ Agregar Foto 3</span>
+                            </div>
+                            <div class="photo-placeholder" onclick="addPhoto(this)">
+                                <span>+ Agregar Foto 4</span>
+                            </div>
+                        </div>
+                        <input type="file" id="photoUpload" accept="image/*" style="display: none;">
                     </div>
                 </div>
 

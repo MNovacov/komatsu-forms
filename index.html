@@ -47,6 +47,27 @@
             box-shadow: 0 0 10px rgba(0,0,0,0.2);
             transform: translateY(-3px);
         }
+        .form-option-disabled {
+            position: relative;
+            cursor: not-allowed;
+            opacity: 0.6;
+            filter: grayscale(60%);
+        }
+        .form-option-disabled:hover {
+            box-shadow: none;
+            transform: none;
+        }
+        .coming-soon-badge {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 3px 10px;
+            font-size: 0.75em;
+            font-weight: bold;
+            color: #ffffff;
+            background-color: #6c757d;
+            border-radius: 12px;
+            letter-spacing: 0.5px;
+        }
         .option-icon img {
             width: 80px;
             height: 80px;
@@ -150,6 +171,23 @@
                             <p>Formulario para WD900-3</p>
                         </div>
                     </div>
+                </div>
+
+                <div class="form-option" onclick="location.href='gantt-report.html'">
+                    <div class="option-icon">
+                        <img src="/public/informe.png" alt="Carta Gantt Icon" />
+                    </div>
+                    <h3>Avance / Carta Gantt (Curva S)</h3>
+                    <p>Control de avance planificado vs real y curva S</p>
+                </div>
+
+                <div class="form-option form-option-disabled" title="Próximamente disponible">
+                    <div class="option-icon">
+                        <img src="/public/inspeccion.png" alt="Inspección de Sistema de Engrase Icon" />
+                    </div>
+                    <h3>Inspección de Sistema de Engrase</h3>
+                    <p>Formulario de inspección del sistema de engrase</p>
+                    <span class="coming-soon-badge">Próximamente</span>
                 </div>
             </div>
         </main>
