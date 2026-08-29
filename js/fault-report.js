@@ -555,7 +555,8 @@ async function submitFaultReportForm() {
       // casi toda la página 1 en blanco. Usando "css" se respeta la regla
       // real y el contenido fluye de forma continua.
       pagebreak: {
-        mode: ["css"]
+        mode: ["css"],
+        before: ".pdf-page-start"
        },
     };
 

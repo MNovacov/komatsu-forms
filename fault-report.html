@@ -95,8 +95,13 @@
 
         /* 🔧 Fuerza que cada una de estas secciones empiece en una página
            nueva del PDF, para que nunca se corte texto a la mitad. */
+        /* El salto de página real se maneja desde JS con
+           opt.pagebreak.before = ".pdf-page-start" (ver fault-report.js).
+           No declaramos page-break-before aquí porque, combinado con el
+           modo "css" de html2pdf, duplicaba el salto y dejaba una página
+           completamente en blanco. La clase se mantiene solo como
+           selector/marcador para JS. */
         .pdf-page-start {
-            page-break-before: always;
         }
 
         /* 🔧 "Información General" es la única sección que puede partirse
