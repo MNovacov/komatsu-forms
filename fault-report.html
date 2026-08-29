@@ -92,6 +92,13 @@
             border-bottom: 1px solid #ddd;
             padding-bottom: 5px;
         }
+
+        /* 🔧 Fuerza que cada una de estas secciones empiece en una página
+           nueva del PDF, para que nunca se corte texto a la mitad. */
+        .pdf-page-start {
+            page-break-before: always;
+            break-before: page;
+        }
         
         .form-row {
             display: flex;
@@ -375,28 +382,28 @@
                     </div>
                 </div>
 
-                <div class="form-section">
+                <div class="form-section pdf-page-start">
                     <h3>1. Título del Informe</h3>
                     <div class="form-group">
                         <textarea id="reportTitle" name="reportTitle"></textarea>
                     </div>
                 </div>
 
-                <div class="form-section">
+                <div class="form-section pdf-page-start">
                     <h3>2. Descripción de la Falla</h3>
                     <div class="form-group">
                         <textarea id="failureDescription" name="failureDescription"></textarea>
                     </div>
                 </div>
 
-                <div class="form-section">
+                <div class="form-section pdf-page-start">
                     <h3>3. Evaluación y Análisis Técnico</h3>
                     <div class="form-group">
                         <textarea id="technicalAnalysis" name="technicalAnalysis"></textarea>
                     </div>
                 </div>
 
-                <div class="form-section">
+                <div class="form-section pdf-page-start">
                     <h3>4. Conclusión</h3>
                     <div class="form-group">
                         <textarea id="conclusion" name="conclusion"></textarea>
