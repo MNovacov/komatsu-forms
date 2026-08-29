@@ -385,6 +385,138 @@ function restoreTextareasAfterCapture(replacements) {
   });
 }
 
+// ========== ARMADO MANUAL DEL PDF (SIN "pagebreak" AUTOMÁTICO) ==========
+
+// Captura un grupo de elementos (clonados) como una sola imagen (canvas),
+// renderizados fuera de pantalla con el mismo ancho que el formulario real.
+async function capturarElementosComoCanvas(elementos, anchoPx) {
+  const html2canvasFn = window.html2canvas;
+  if (typeof html2canvasFn !== "function") {
+    throw new Error("html2canvas no está disponible (revisa que html2pdf.bundle.min.js haya cargado).");
+  }
+
+  const wrapper = document.createElement("div");
+  wrapper.style.position = "absolute";
+  wrapper.style.left = "-9999px";
+  wrapper.style.top = "0";
+  wrapper.style.width = `${anchoPx}px`;
+  wrapper.style.backgroundColor = "#ffffff";
+
+  elementos.filter(Boolean).forEach((el) => wrapper.appendChild(el.cloneNode(true)));
+  document.body.appendChild(wrapper);
+
+  try {
+    const canvas = await html2canvasFn(wrapper, {
+      scale: 2,
+      useCORS: true,
+      allowTaint: true,
+      logging: false,
+      backgroundColor: "#ffffff",
+      windowWidth: anchoPx,
+    });
+    return canvas;
+  } finally {
+    document.body.removeChild(wrapper);
+  }
+}
+
+// Agrega un canvas (imagen de una sección) al PDF, empezando siempre en
+// página nueva (salvo el primer grupo, que usa la página 1 ya existente).
+// Si la sección es más alta que una página, la reparte en varias páginas
+// cortando la imagen en franjas horizontales — sin depender de ninguna
+// detección automática de "dónde cortar".
+function agregarGrupoAlPdf(pdf, canvas, marginIn, pageWidthIn, pageHeightIn, esPrimerGrupo) {
+  const anchoUtilIn = pageWidthIn - marginIn * 2;
+  const altoUtilIn = pageHeightIn - marginIn * 2;
+  const pxPorPulgada = canvas.width / anchoUtilIn;
+  const altoTotalIn = canvas.height / pxPorPulgada;
+
+  let restanteIn = altoTotalIn;
+  let renderizadoPx = 0;
+  let esPrimeraFranja = true;
+
+  while (restanteIn > 0.01) {
+    if (!esPrimerGrupo || !esPrimeraFranja) {
+      pdf.addPage();
+    }
+
+    const franjaAltoIn = Math.min(altoUtilIn, restanteIn);
+    const franjaAltoPx = Math.max(1, Math.round(franjaAltoIn * pxPorPulgada));
+
+    const franjaCanvas = document.createElement("canvas");
+    franjaCanvas.width = canvas.width;
+    franjaCanvas.height = franjaAltoPx;
+    const ctx = franjaCanvas.getContext("2d");
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, franjaCanvas.width, franjaCanvas.height);
+    ctx.drawImage(
+      canvas,
+      0, renderizadoPx, canvas.width, franjaAltoPx,
+      0, 0, canvas.width, franjaAltoPx
+    );
+
+    const imgData = franjaCanvas.toDataURL("image/jpeg", 0.95);
+    pdf.addImage(imgData, "JPEG", marginIn, marginIn, anchoUtilIn, franjaAltoIn);
+
+    renderizadoPx += franjaAltoPx;
+    restanteIn -= franjaAltoIn;
+    esPrimeraFranja = false;
+  }
+}
+
+// Arma el PDF completo: agrupa el contenido del informe en bloques que
+// deben quedar cada uno en su propia página (encabezado + Información
+// General; luego cada sección numerada 1-4; luego todo lo que sigue
+// después de "4. Conclusión" fluyendo normalmente), captura cada bloque
+// por separado, y los va agregando al PDF página por página.
+async function generarPdfPorSecciones(elemento) {
+  const jsPDFCtor = (window.jspdf && window.jspdf.jsPDF) || window.jsPDF;
+  if (typeof jsPDFCtor !== "function") {
+    throw new Error("jsPDF no está disponible (revisa que html2pdf.bundle.min.js haya cargado).");
+  }
+
+  const formEl = document.getElementById("faultReportForm");
+  const headerEl = document.querySelector(".form-header");
+  const infoGeneralEl = formEl.querySelector(":scope > .form-section:first-child");
+  const seccionesForzadas = Array.from(
+    formEl.querySelectorAll(":scope > .form-section.pdf-page-start")
+  );
+
+  const grupos = [];
+  grupos.push([headerEl, infoGeneralEl]);
+  seccionesForzadas.forEach((sec) => grupos.push([sec]));
+
+  const ultimaForzada = seccionesForzadas[seccionesForzadas.length - 1];
+  if (ultimaForzada) {
+    const restantes = [];
+    let sib = ultimaForzada.nextElementSibling;
+    while (sib) {
+      restantes.push(sib);
+      sib = sib.nextElementSibling;
+    }
+    if (restantes.length > 0) grupos.push(restantes);
+  }
+
+  const pdf = new jsPDFCtor({
+    unit: "in",
+    format: "a4",
+    orientation: "portrait",
+    compress: true,
+  });
+  const pageWidthIn = pdf.internal.pageSize.getWidth();
+  const pageHeightIn = pdf.internal.pageSize.getHeight();
+  const marginIn = 0.3;
+
+  const anchoPx = Math.round(elemento.getBoundingClientRect().width) || 1000;
+
+  for (let i = 0; i < grupos.length; i++) {
+    const canvas = await capturarElementosComoCanvas(grupos[i], anchoPx);
+    agregarGrupoAlPdf(pdf, canvas, marginIn, pageWidthIn, pageHeightIn, i === 0);
+  }
+
+  return pdf.output("blob");
+}
+
 // ========== FUNCIONES PARA FOTOS ==========
 let currentPlaceholder = null;
 
@@ -530,42 +662,20 @@ async function submitFaultReportForm() {
     const scrollYAntes = window.scrollY;
     window.scrollTo(0, 0);
 
-    const opt = {
-      margin: [0.3, 0.3, 0.3, 0.3],
-      filename: `Informe_Falla_${document.getElementById("reportNumber").value}_${Date.now()}.pdf`,
-      image: { type: "jpeg", quality: 1 },
-      html2canvas: {
-        scale: 2,
-        useCORS: true,
-        logging: false,
-        allowTaint: true,
-      },
-      jsPDF: {
-        unit: "in",
-        format: "a4",
-        orientation: "portrait",
-        compress: true,
-      },
-      // 🔧 EVITAR PÁGINA EN BLANCO: "avoid-all" ignora las reglas de
-      // page-break-inside definidas en el CSS del sitio (que ya están
-      // pensadas a propósito: la sección "Información General" puede
-      // dividirse entre páginas, pero el resto de secciones no). Con
-      // "avoid-all", si "Información General" no cabía completa en lo que
-      // quedaba de la página 1, se empujaba ENTERA a la página 2, dejando
-      // casi toda la página 1 en blanco. Usando "css" se respeta la regla
-      // real y el contenido fluye de forma continua.
-      pagebreak: {
-        mode: ["avoid-all"],
-        before: ".pdf-page-start"
-       },
-    };
-
     // Generar PDF
     showMessage("message", "Generando PDF...");
-    console.log("📄 Generando PDF con html2pdf...");
+    console.log("📄 Generando PDF (armado manual, página por página)...");
     let pdfBlob;
     try {
-      pdfBlob = await html2pdf().from(elemento).set(opt).outputPdf("blob");
+      // 🔧 DEJAMOS DE USAR EL "pagebreak" AUTOMÁTICO DE html2pdf:
+      // después de varias vueltas, quedó claro que su detección de saltos
+      // de página (ya sea vía CSS o vía el selector "before") a veces
+      // inserta una página en blanco de más cuando el contenido anterior
+      // termina cerca del borde de una página. En vez de seguir ajustando
+      // esa caja negra, armamos el PDF nosotros mismos: capturamos cada
+      // sección por separado como una imagen y las vamos poniendo en
+      // páginas nuevas a mano. Así el resultado es 100% predecible.
+      pdfBlob = await generarPdfPorSecciones(elemento);
     } finally {
       // Restaurar los textarea reemplazados por div durante la captura
       restoreTextareasAfterCapture(textareaReplacements);
