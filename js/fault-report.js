@@ -385,162 +385,6 @@ function restoreTextareasAfterCapture(replacements) {
   });
 }
 
-// ========== ARMADO MANUAL DEL PDF (SIN "pagebreak" AUTOMÁTICO) ==========
-//
-// 🔧 Nota importante: html2pdf.bundle.min.js empaqueta html2canvas y jsPDF
-// por dentro (con webpack) y NO los deja disponibles como variables
-// globales sueltas (window.html2canvas / window.jsPDF no existen). Por eso
-// usamos la propia API en cadena de html2pdf para sacar esos objetos:
-//   html2pdf().from(el).toCanvas().get('canvas')  -> canvas de un elemento
-//   html2pdf().from(el).toPdf().get('pdf')        -> objeto jsPDF real
-// Así conseguimos control manual total sin depender de globales que este
-// bundle no expone.
-
-// Crea un contenedor fuera de pantalla con clones de los elementos dados,
-// con el mismo ancho que el formulario real (para que el texto se ajuste
-// igual que en pantalla).
-function crearWrapperOffscreen(elementos, anchoPx) {
-  const wrapper = document.createElement("div");
-  wrapper.style.position = "absolute";
-  wrapper.style.left = "-9999px";
-  wrapper.style.top = "0";
-  wrapper.style.width = `${anchoPx}px`;
-  wrapper.style.backgroundColor = "#ffffff";
-  elementos.filter(Boolean).forEach((el) => wrapper.appendChild(el.cloneNode(true)));
-  return wrapper;
-}
-
-// Captura un grupo de elementos como una sola imagen (canvas), usando el
-// propio motor interno de html2pdf (sin necesitar html2canvas global).
-async function capturarGrupoComoCanvas(elementos, anchoPx, html2canvasOpts) {
-  const wrapper = crearWrapperOffscreen(elementos, anchoPx);
-  document.body.appendChild(wrapper);
-  try {
-    const canvas = await html2pdf()
-      .set({ html2canvas: html2canvasOpts })
-      .from(wrapper)
-      .toCanvas()
-      .get("canvas");
-    return canvas;
-  } finally {
-    document.body.removeChild(wrapper);
-  }
-}
-
-// Agrega un canvas (imagen de una sección) al PDF, siempre empezando en una
-// página nueva. Si la sección es más alta que una página, la reparte en
-// varias páginas cortando la imagen en franjas horizontales — sin depender
-// de ninguna detección automática de "dónde cortar".
-function agregarGrupoAlPdf(pdf, canvas, marginIn, pageWidthIn, pageHeightIn) {
-  const anchoUtilIn = pageWidthIn - marginIn * 2;
-  const altoUtilIn = pageHeightIn - marginIn * 2;
-  const pxPorPulgada = canvas.width / anchoUtilIn;
-  const altoTotalIn = canvas.height / pxPorPulgada;
-
-  let restanteIn = altoTotalIn;
-  let renderizadoPx = 0;
-
-  while (restanteIn > 0.01) {
-    pdf.addPage();
-
-    const franjaAltoIn = Math.min(altoUtilIn, restanteIn);
-    const franjaAltoPx = Math.max(1, Math.round(franjaAltoIn * pxPorPulgada));
-
-    const franjaCanvas = document.createElement("canvas");
-    franjaCanvas.width = canvas.width;
-    franjaCanvas.height = franjaAltoPx;
-    const ctx = franjaCanvas.getContext("2d");
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(0, 0, franjaCanvas.width, franjaCanvas.height);
-    ctx.drawImage(
-      canvas,
-      0, renderizadoPx, canvas.width, franjaAltoPx,
-      0, 0, canvas.width, franjaAltoPx
-    );
-
-    const imgData = franjaCanvas.toDataURL("image/jpeg", 0.95);
-    pdf.addImage(imgData, "JPEG", marginIn, marginIn, anchoUtilIn, franjaAltoIn);
-
-    renderizadoPx += franjaAltoPx;
-    restanteIn -= franjaAltoIn;
-  }
-}
-
-// Arma el PDF completo: agrupa el contenido del informe en bloques que
-// deben quedar cada uno en su propia página (encabezado + Información
-// General; luego cada sección numerada 1-4; luego todo lo que sigue
-// después de "4. Conclusión" fluyendo normalmente), captura cada bloque
-// por separado, y los va agregando al PDF página por página.
-async function generarPdfPorSecciones(elemento) {
-  const formEl = document.getElementById("faultReportForm");
-  const headerEl = document.querySelector(".form-header");
-  const infoGeneralEl = formEl.querySelector(":scope > .form-section:first-child");
-  const seccionesForzadas = Array.from(
-    formEl.querySelectorAll(":scope > .form-section.pdf-page-start")
-  );
-
-  const grupos = [];
-  grupos.push([headerEl, infoGeneralEl]);
-  seccionesForzadas.forEach((sec) => grupos.push([sec]));
-
-  const ultimaForzada = seccionesForzadas[seccionesForzadas.length - 1];
-  if (ultimaForzada) {
-    const restantes = [];
-    let sib = ultimaForzada.nextElementSibling;
-    while (sib) {
-      restantes.push(sib);
-      sib = sib.nextElementSibling;
-    }
-    if (restantes.length > 0) grupos.push(restantes);
-  }
-
-  const marginIn = 0.3;
-  const anchoPx = Math.round(elemento.getBoundingClientRect().width) || 1000;
-  const html2canvasOpts = {
-    scale: 2,
-    useCORS: true,
-    allowTaint: true,
-    logging: false,
-    backgroundColor: "#ffffff",
-    windowWidth: anchoPx,
-  };
-
-  // Primer grupo (encabezado + Información General): lo procesamos con el
-  // pipeline normal de html2pdf, aislado (sin las demás secciones
-  // alrededor), y de ahí sacamos el objeto jsPDF real ya con la página 1
-  // lista, vía .get('pdf').
-  const wrapperG1 = crearWrapperOffscreen(grupos[0], anchoPx);
-  document.body.appendChild(wrapperG1);
-  let pdf;
-  try {
-    pdf = await html2pdf()
-      .set({
-        margin: [marginIn, marginIn, marginIn, marginIn],
-        image: { type: "jpeg", quality: 1 },
-        html2canvas: html2canvasOpts,
-        jsPDF: { unit: "in", format: "a4", orientation: "portrait", compress: true },
-        pagebreak: { mode: ["avoid-all"] },
-      })
-      .from(wrapperG1)
-      .toPdf()
-      .get("pdf");
-  } finally {
-    document.body.removeChild(wrapperG1);
-  }
-
-  const pageWidthIn = pdf.internal.pageSize.getWidth();
-  const pageHeightIn = pdf.internal.pageSize.getHeight();
-
-  // Resto de los grupos: cada uno se captura por separado como imagen y se
-  // agrega a mano, siempre en página nueva.
-  for (let i = 1; i < grupos.length; i++) {
-    const canvas = await capturarGrupoComoCanvas(grupos[i], anchoPx, html2canvasOpts);
-    agregarGrupoAlPdf(pdf, canvas, marginIn, pageWidthIn, pageHeightIn);
-  }
-
-  return pdf.output("blob");
-}
-
 // ========== FUNCIONES PARA FOTOS ==========
 let currentPlaceholder = null;
 
@@ -686,20 +530,41 @@ async function submitFaultReportForm() {
     const scrollYAntes = window.scrollY;
     window.scrollTo(0, 0);
 
+    const opt = {
+      margin: [0.3, 0.3, 0.3, 0.3],
+      filename: `Informe_Falla_${document.getElementById("reportNumber").value}_${Date.now()}.pdf`,
+      image: { type: "jpeg", quality: 1 },
+      html2canvas: {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        allowTaint: true,
+      },
+      jsPDF: {
+        unit: "in",
+        format: "a4",
+        orientation: "portrait",
+        compress: true,
+      },
+      // 🔧 EVITAR PÁGINA EN BLANCO: "avoid-all" ignora las reglas de
+      // page-break-inside definidas en el CSS del sitio (que ya están
+      // pensadas a propósito: la sección "Información General" puede
+      // dividirse entre páginas, pero el resto de secciones no). Con
+      // "avoid-all", si "Información General" no cabía completa en lo que
+      // quedaba de la página 1, se empujaba ENTERA a la página 2, dejando
+      // casi toda la página 1 en blanco. Usando "css" se respeta la regla
+      // real y el contenido fluye de forma continua.
+      pagebreak: {
+        mode: ["css", "legacy"]
+       },
+    };
+
     // Generar PDF
     showMessage("message", "Generando PDF...");
-    console.log("📄 Generando PDF (armado manual, página por página)...");
+    console.log("📄 Generando PDF con html2pdf...");
     let pdfBlob;
     try {
-      // 🔧 DEJAMOS DE USAR EL "pagebreak" AUTOMÁTICO DE html2pdf:
-      // después de varias vueltas, quedó claro que su detección de saltos
-      // de página (ya sea vía CSS o vía el selector "before") a veces
-      // inserta una página en blanco de más cuando el contenido anterior
-      // termina cerca del borde de una página. En vez de seguir ajustando
-      // esa caja negra, armamos el PDF nosotros mismos: capturamos cada
-      // sección por separado como una imagen y las vamos poniendo en
-      // páginas nuevas a mano. Así el resultado es 100% predecible.
-      pdfBlob = await generarPdfPorSecciones(elemento);
+      pdfBlob = await html2pdf().from(elemento).set(opt).outputPdf("blob");
     } finally {
       // Restaurar los textarea reemplazados por div durante la captura
       restoreTextareasAfterCapture(textareaReplacements);
