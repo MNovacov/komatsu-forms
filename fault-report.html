@@ -99,6 +99,26 @@
             page-break-before: always;
             break-before: page;
         }
+
+        /* 🔧 "Información General" es la única sección que puede partirse
+           entre páginas (para no forzar toda la sección a la página 2).
+           Está apenas más alta que una página, así que se le escapaba un
+           pedacito suelto a la página 2, dejando el resto de esa página en
+           blanco antes del salto forzado de "1. Título del Informe".
+           La compactamos un poco para que quepa completa en la página 1. */
+        #faultReportForm > .form-section:first-child .form-group {
+            margin-bottom: 10px;
+        }
+
+        #faultReportForm > .form-section:first-child .form-group label {
+            margin-bottom: 3px;
+        }
+
+        #faultReportForm > .form-section:first-child input,
+        #faultReportForm > .form-section:first-child select,
+        #faultReportForm > .form-section:first-child textarea {
+            padding: 6px;
+        }
         
         .form-row {
             display: flex;
