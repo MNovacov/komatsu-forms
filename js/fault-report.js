@@ -386,46 +386,52 @@ function restoreTextareasAfterCapture(replacements) {
 }
 
 // ========== ARMADO MANUAL DEL PDF (SIN "pagebreak" AUTOMÁTICO) ==========
+//
+// 🔧 Nota importante: html2pdf.bundle.min.js empaqueta html2canvas y jsPDF
+// por dentro (con webpack) y NO los deja disponibles como variables
+// globales sueltas (window.html2canvas / window.jsPDF no existen). Por eso
+// usamos la propia API en cadena de html2pdf para sacar esos objetos:
+//   html2pdf().from(el).toCanvas().get('canvas')  -> canvas de un elemento
+//   html2pdf().from(el).toPdf().get('pdf')        -> objeto jsPDF real
+// Así conseguimos control manual total sin depender de globales que este
+// bundle no expone.
 
-// Captura un grupo de elementos (clonados) como una sola imagen (canvas),
-// renderizados fuera de pantalla con el mismo ancho que el formulario real.
-async function capturarElementosComoCanvas(elementos, anchoPx) {
-  const html2canvasFn = window.html2canvas;
-  if (typeof html2canvasFn !== "function") {
-    throw new Error("html2canvas no está disponible (revisa que html2pdf.bundle.min.js haya cargado).");
-  }
-
+// Crea un contenedor fuera de pantalla con clones de los elementos dados,
+// con el mismo ancho que el formulario real (para que el texto se ajuste
+// igual que en pantalla).
+function crearWrapperOffscreen(elementos, anchoPx) {
   const wrapper = document.createElement("div");
   wrapper.style.position = "absolute";
   wrapper.style.left = "-9999px";
   wrapper.style.top = "0";
   wrapper.style.width = `${anchoPx}px`;
   wrapper.style.backgroundColor = "#ffffff";
-
   elementos.filter(Boolean).forEach((el) => wrapper.appendChild(el.cloneNode(true)));
-  document.body.appendChild(wrapper);
+  return wrapper;
+}
 
+// Captura un grupo de elementos como una sola imagen (canvas), usando el
+// propio motor interno de html2pdf (sin necesitar html2canvas global).
+async function capturarGrupoComoCanvas(elementos, anchoPx, html2canvasOpts) {
+  const wrapper = crearWrapperOffscreen(elementos, anchoPx);
+  document.body.appendChild(wrapper);
   try {
-    const canvas = await html2canvasFn(wrapper, {
-      scale: 2,
-      useCORS: true,
-      allowTaint: true,
-      logging: false,
-      backgroundColor: "#ffffff",
-      windowWidth: anchoPx,
-    });
+    const canvas = await html2pdf()
+      .set({ html2canvas: html2canvasOpts })
+      .from(wrapper)
+      .toCanvas()
+      .get("canvas");
     return canvas;
   } finally {
     document.body.removeChild(wrapper);
   }
 }
 
-// Agrega un canvas (imagen de una sección) al PDF, empezando siempre en
-// página nueva (salvo el primer grupo, que usa la página 1 ya existente).
-// Si la sección es más alta que una página, la reparte en varias páginas
-// cortando la imagen en franjas horizontales — sin depender de ninguna
-// detección automática de "dónde cortar".
-function agregarGrupoAlPdf(pdf, canvas, marginIn, pageWidthIn, pageHeightIn, esPrimerGrupo) {
+// Agrega un canvas (imagen de una sección) al PDF, siempre empezando en una
+// página nueva. Si la sección es más alta que una página, la reparte en
+// varias páginas cortando la imagen en franjas horizontales — sin depender
+// de ninguna detección automática de "dónde cortar".
+function agregarGrupoAlPdf(pdf, canvas, marginIn, pageWidthIn, pageHeightIn) {
   const anchoUtilIn = pageWidthIn - marginIn * 2;
   const altoUtilIn = pageHeightIn - marginIn * 2;
   const pxPorPulgada = canvas.width / anchoUtilIn;
@@ -433,12 +439,9 @@ function agregarGrupoAlPdf(pdf, canvas, marginIn, pageWidthIn, pageHeightIn, esP
 
   let restanteIn = altoTotalIn;
   let renderizadoPx = 0;
-  let esPrimeraFranja = true;
 
   while (restanteIn > 0.01) {
-    if (!esPrimerGrupo || !esPrimeraFranja) {
-      pdf.addPage();
-    }
+    pdf.addPage();
 
     const franjaAltoIn = Math.min(altoUtilIn, restanteIn);
     const franjaAltoPx = Math.max(1, Math.round(franjaAltoIn * pxPorPulgada));
@@ -460,7 +463,6 @@ function agregarGrupoAlPdf(pdf, canvas, marginIn, pageWidthIn, pageHeightIn, esP
 
     renderizadoPx += franjaAltoPx;
     restanteIn -= franjaAltoIn;
-    esPrimeraFranja = false;
   }
 }
 
@@ -470,11 +472,6 @@ function agregarGrupoAlPdf(pdf, canvas, marginIn, pageWidthIn, pageHeightIn, esP
 // después de "4. Conclusión" fluyendo normalmente), captura cada bloque
 // por separado, y los va agregando al PDF página por página.
 async function generarPdfPorSecciones(elemento) {
-  const jsPDFCtor = (window.jspdf && window.jspdf.jsPDF) || window.jsPDF;
-  if (typeof jsPDFCtor !== "function") {
-    throw new Error("jsPDF no está disponible (revisa que html2pdf.bundle.min.js haya cargado).");
-  }
-
   const formEl = document.getElementById("faultReportForm");
   const headerEl = document.querySelector(".form-header");
   const infoGeneralEl = formEl.querySelector(":scope > .form-section:first-child");
@@ -497,21 +494,48 @@ async function generarPdfPorSecciones(elemento) {
     if (restantes.length > 0) grupos.push(restantes);
   }
 
-  const pdf = new jsPDFCtor({
-    unit: "in",
-    format: "a4",
-    orientation: "portrait",
-    compress: true,
-  });
+  const marginIn = 0.3;
+  const anchoPx = Math.round(elemento.getBoundingClientRect().width) || 1000;
+  const html2canvasOpts = {
+    scale: 2,
+    useCORS: true,
+    allowTaint: true,
+    logging: false,
+    backgroundColor: "#ffffff",
+    windowWidth: anchoPx,
+  };
+
+  // Primer grupo (encabezado + Información General): lo procesamos con el
+  // pipeline normal de html2pdf, aislado (sin las demás secciones
+  // alrededor), y de ahí sacamos el objeto jsPDF real ya con la página 1
+  // lista, vía .get('pdf').
+  const wrapperG1 = crearWrapperOffscreen(grupos[0], anchoPx);
+  document.body.appendChild(wrapperG1);
+  let pdf;
+  try {
+    pdf = await html2pdf()
+      .set({
+        margin: [marginIn, marginIn, marginIn, marginIn],
+        image: { type: "jpeg", quality: 1 },
+        html2canvas: html2canvasOpts,
+        jsPDF: { unit: "in", format: "a4", orientation: "portrait", compress: true },
+        pagebreak: { mode: ["avoid-all"] },
+      })
+      .from(wrapperG1)
+      .toPdf()
+      .get("pdf");
+  } finally {
+    document.body.removeChild(wrapperG1);
+  }
+
   const pageWidthIn = pdf.internal.pageSize.getWidth();
   const pageHeightIn = pdf.internal.pageSize.getHeight();
-  const marginIn = 0.3;
 
-  const anchoPx = Math.round(elemento.getBoundingClientRect().width) || 1000;
-
-  for (let i = 0; i < grupos.length; i++) {
-    const canvas = await capturarElementosComoCanvas(grupos[i], anchoPx);
-    agregarGrupoAlPdf(pdf, canvas, marginIn, pageWidthIn, pageHeightIn, i === 0);
+  // Resto de los grupos: cada uno se captura por separado como imagen y se
+  // agrega a mano, siempre en página nueva.
+  for (let i = 1; i < grupos.length; i++) {
+    const canvas = await capturarGrupoComoCanvas(grupos[i], anchoPx, html2canvasOpts);
+    agregarGrupoAlPdf(pdf, canvas, marginIn, pageWidthIn, pageHeightIn);
   }
 
   return pdf.output("blob");
