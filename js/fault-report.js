@@ -356,7 +356,7 @@ function replaceTextareasWithDivsForCapture(container) {
     div.textContent = wrapTextToWidth(textarea.value, contentWidthPx, font);
     div.className = textarea.className;
     div.style.cssText = `
-      width: ${cs.width};
+      width: 100%;
       min-height: ${cs.minHeight};
       padding: ${cs.padding};
       border: ${cs.border};
@@ -366,7 +366,7 @@ function replaceTextareasWithDivsForCapture(container) {
       line-height: ${cs.lineHeight};
       color: ${cs.color};
       background-color: ${cs.backgroundColor};
-      box-sizing: ${cs.boxSizing};
+      box-sizing: border-box;
       white-space: pre-wrap;
       overflow-wrap: break-word;
       word-break: break-word;
@@ -546,16 +546,12 @@ async function submitFaultReportForm() {
         orientation: "portrait",
         compress: true,
       },
-      // 🔧 EVITAR PÁGINA EN BLANCO: "avoid-all" ignora las reglas de
-      // page-break-inside definidas en el CSS del sitio (que ya están
-      // pensadas a propósito: la sección "Información General" puede
-      // dividirse entre páginas, pero el resto de secciones no). Con
-      // "avoid-all", si "Información General" no cabía completa en lo que
-      // quedaba de la página 1, se empujaba ENTERA a la página 2, dejando
-      // casi toda la página 1 en blanco. Usando "css" se respeta la regla
-      // real y el contenido fluye de forma continua.
+      // 🔧 Modo simple y estable: "avoid-all" solo evita cortes feos en
+      // filas de tabla e imágenes, sin leer ninguna regla de page-break del
+      // CSS ni forzar saltos de página. Es la configuración que genera el
+      // PDF de forma confiable.
       pagebreak: {
-        mode: ["css", "legacy"]
+        mode: ["avoid-all"]
        },
     };
 
