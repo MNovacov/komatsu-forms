@@ -247,7 +247,7 @@ function replaceTextareasWithDivsForCapture(container) {
     div.textContent = wrapTextToWidth(textarea.value, contentWidthPx, font);
     div.className = textarea.className;
     div.style.cssText = `
-      width: ${cs.width};
+      width: 100%;
       min-height: ${cs.minHeight};
       padding: ${cs.padding};
       border: ${cs.border};
@@ -257,7 +257,7 @@ function replaceTextareasWithDivsForCapture(container) {
       line-height: ${cs.lineHeight};
       color: ${cs.color};
       background-color: ${cs.backgroundColor};
-      box-sizing: ${cs.boxSizing};
+      box-sizing: border-box;
       white-space: pre-wrap;
       overflow-wrap: break-word;
       word-break: break-word;
@@ -406,8 +406,8 @@ async function submitGetInspectionForm() {
         compress: true
       },
       pagebreak: {
-        mode: ['css', 'legacy'],
-        avoid: ['.form-section', 'tr', 'img', '.table-scroll-wrapper']
+        mode: ['avoid-all'],
+        avoid: ['.table-scroll-wrapper']
       }
     };
 
