@@ -203,7 +203,7 @@ function resizeImageToDataUrl(file, maxSide) {
 // Valores actuales del formulario, por id (los clones no conservan lo escrito).
 function collectValues() {
   const values = {};
-  document.querySelectorAll("#paper input, #paper textarea").forEach((el) => {
+  document.querySelectorAll("#paper input, #paper textarea, #paper select").forEach((el) => {
     if (!el.id) return;
     values[el.id] = { value: el.value, checked: el.checked };
   });
@@ -257,7 +257,7 @@ function wrapLines(text, maxWidthPx, font) {
 function fieldsToText(block, values) {
   block.querySelectorAll("datalist").forEach((d) => d.remove());
 
-  block.querySelectorAll("input, textarea").forEach((ctrl) => {
+  block.querySelectorAll("input, textarea, select").forEach((ctrl) => {
     const v = values[ctrl.id] || { value: "", checked: false };
 
     if (ctrl.type === "checkbox") {
