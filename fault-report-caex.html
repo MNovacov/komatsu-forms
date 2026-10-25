@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informe de Falla Caex - Komatsu</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="/public/favicon.ico" type="image/x-icon" />
+
+    <style>
+        /* =====================================================================
+           FORMATO "INFORME DE FALLA" (réplica del Word "Formato Informe de
+           Falla 2.0"): encabezado Komatsu + 12 secciones numeradas.
+           Los mismos estilos se usan en pantalla y en el PDF.
+           ===================================================================== */
+
+        body { background: #e9ecf1; }
+
+        /* ---------- Hoja (pantalla) ---------- */
+        .paper {
+            max-width: 816px;
+            margin: 20px auto;
+            background: #fff;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, .18);
+            padding: 34px 0 26px;
+            color: #000;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .paper .hdr { width: 749px; max-width: calc(100% - 20px); margin: 0 auto; }
+        .paper .doc-body { width: 691px; max-width: calc(100% - 24px); margin: 36px auto 0; }
+
+        /* ---------- Encabezado ---------- */
+        .hdr {
+            border-collapse: collapse;
+            table-layout: fixed;
+            border: 2px solid #000;
+            font-family: "Arial Narrow", "Liberation Sans Narrow", Arial, Helvetica, sans-serif;
+            color: #000;
+        }
+        .hdr td { border: 1px solid #000; padding: 0 4px; height: 36px; vertical-align: middle; }
+        .hdr .h-logo { background: #fff; vertical-align: top; padding: 20px 0 0 8px; }
+        .hdr .h-logo img { display: block; width: 181px; max-width: 92%; height: auto; }
+        .hdr .h-title {
+            background: #1f497d; color: #fff; text-align: center; vertical-align: middle;
+            font-weight: bold;
+        }
+        .hdr .h-title .t1 { font-size: 21px; line-height: 26px; }
+        .hdr .h-title .t2 { font-size: 18px; line-height: 26px; }
+        .hdr .h-k { font-size: 15px; text-align: left; padding-left: 5px; }
+        .hdr .h-v { font-size: 12px; text-align: center; font-family: Arial, Helvetica, sans-serif; }
+        .hdr .h-page { font-size: 14px; }
+
+        /* ---------- Secciones ---------- */
+        .sec {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            margin: 0 0 14px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 13.33px;
+            color: #000;
+        }
+        .sec td, .sec th {
+            border: 1px solid #000;
+            padding: 0 4px;
+            vertical-align: middle;
+            line-height: 16px;
+            text-align: left;
+        }
+        .sec .sec-title {
+            background: #002060; color: #fff; font-size: 14.67px; font-weight: bold;
+            height: 29px; padding-left: 30px; border-color: #002060;
+        }
+        .sec .sec-title .n { display: inline-block; min-width: 26px; }
+        .sec .lbl { font-weight: bold; }
+        .sec .c { text-align: center; }
+        .sec .colhead { font-weight: bold; text-align: center; }
+        .sec .cap { background: #d9d9d9; text-align: center; height: 17px; font-weight: normal; }
+        .sec .txt { padding: 2px 4px; vertical-align: top; }
+
+        /* Campos (pantalla) */
+        .sec input[type="text"], .sec input[type="date"], .sec textarea, .sec select {
+            width: 100%;
+            border: 0;
+            background: transparent;
+            font: inherit;
+            color: #000;
+            padding: 3px 0;
+            margin: 0;
+            outline: none;
+            border-radius: 0;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        .sec .c input[type="text"] { text-align: center; }
+        .sec textarea { resize: none; overflow: hidden; min-height: 44px; display: block; line-height: 16px; }
+        .sec input::placeholder, .sec textarea::placeholder { color: #8b8f98; }
+        /* Menús desplegables (Faena, Posición): flecha visible en pantalla; en el PDF se convierten a texto */
+        .sec select {
+            cursor: pointer;
+            padding-right: 18px;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M0 0l5 6 5-6z' fill='%23666'/></svg>");
+            background-repeat: no-repeat;
+            background-position: right 4px center;
+            text-overflow: ellipsis;
+        }
+        .sec select:required:invalid { color: #8b8f98; }
+        .sec .c select { text-align: center; text-align-last: center; padding-left: 14px; }
+        .sec select option { color: #000; }
+
+        .sec input:focus, .sec textarea:focus { background: #eef4ff; }
+        .sec input[type="checkbox"] { width: 16px; height: 16px; margin: 0; cursor: pointer; }
+        .sec td.c .cbwrap { display: block; padding: 3px 0; }
+
+        /* Valor convertido a texto (solo al generar el PDF) */
+        .pdfv .ln { white-space: pre; min-height: 16px; line-height: 16px; }
+        .cb { display: inline-block; width: 13px; height: 13px; border: 1px solid #000; line-height: 11px;
+              font-size: 11px; font-weight: bold; text-align: center; vertical-align: middle; }
+
+        /* Fotos */
+        .ph { padding: 0; }
+        .ph-box {
+            position: relative;
+            display: flex; align-items: center; justify-content: center;
+            background: #e9effb;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        .ph-box.has-img { background: #fff; }
+        .ph-box img { display: block; max-width: 96%; max-height: 96%; }
+        .ph-box .ph-hint { color: #5b6b8c; font-size: 13px; text-align: center; padding: 6px; pointer-events: none; }
+        .ph-box .ph-del {
+            position: absolute; top: 5px; right: 5px; width: 22px; height: 22px; border: 0; border-radius: 50%;
+            background: rgba(0,0,0,.72); color: #fff; font-size: 15px; line-height: 20px; cursor: pointer; padding: 0;
+        }
+        .pdf-root .ph-box { background: transparent; cursor: default; }
+
+        /* ---------- Hoja del PDF (se arma fuera de pantalla) ---------- */
+        .pdf-root { position: absolute; left: -12000px; top: 0; width: 816px; background: #fff; }
+        .pdf-page { position: relative; width: 816px; height: 1056px; overflow: hidden; background: #fff;
+                    font-family: Arial, Helvetica, sans-serif; color: #000; }
+        .pdf-page .hdr { position: absolute; left: 34px; top: 38px; width: 749px; }
+        .pdf-page .pdf-body { position: absolute; left: 66px; top: 185px; width: 691px; }
+
+        /* ---------- Botones / mensajes ---------- */
+        .actions { text-align: center; margin: 0 auto 40px; padding: 10px; }
+        .actions .btn { padding: 12px 25px; margin: 6px; font-size: 16px; font-weight: bold; }
+        #message {
+            max-width: 691px; margin: 0 auto 10px; padding: 12px 15px; border-radius: 5px;
+            text-align: center; font-weight: bold;
+        }
+        #message.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        #message.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        #message.hidden { display: none; }
+
+        /* ---------- Pantallas angostas / táctiles ---------- */
+        @media (max-width: 720px) {
+            body { background: #fff; }
+            .paper { margin: 0; box-shadow: none; padding: 10px 0 10px; }
+            .paper .hdr { max-width: calc(100% - 16px); }
+            .paper .hdr .h-logo { padding: 8px 0 0 4px; }
+            .paper .hdr .h-logo img { width: 90%; }
+            .paper .hdr td { height: 28px; }
+            .paper .hdr .h-title .t1 { font-size: 14px; line-height: 18px; }
+            .paper .hdr .h-title .t2 { font-size: 12px; line-height: 18px; }
+            .paper .hdr col:nth-child(1) { width: 24% !important; }
+            .paper .hdr col:nth-child(2) { width: 36% !important; }
+            .paper .hdr col:nth-child(3) { width: 18% !important; }
+            .paper .hdr col:nth-child(4) { width: 22% !important; }
+            .paper .hdr .h-k { font-size: 11px; padding-left: 3px; }
+            .paper .hdr .h-v { font-size: 9px; padding: 0 2px; }
+            .paper .doc-body { margin-top: 16px; max-width: calc(100% - 16px); }
+
+            .paper .sec input[type="text"], .paper .sec input[type="date"], .paper .sec select { padding: 8px 0; font-size: 16px; }
+            .paper .sec textarea { font-size: 16px; padding: 6px 0; }
+            .paper .sec .lbl { font-size: 12px; }
+
+            /* Tablas de 5 columnas: cada celda pasa a ser un renglón con su título */
+            .paper .sec.stack tr.colhead-row { display: none; }
+            .paper .sec.stack tr, .paper .sec.stack td { display: block; width: 100%; }
+            .paper .sec.stack colgroup { display: none; }
+            .paper .sec.stack td[data-label]::before {
+                content: attr(data-label); display: block; font-weight: bold; font-size: 11px;
+                color: #333; padding-top: 4px;
+            }
+            .paper .sec.stack td.c { text-align: left; }
+            .paper .sec.stack .c input[type="text"] { text-align: left; }
+            .paper .sec.stack .c select { text-align: left; text-align-last: left; padding-left: 0; }
+            .paper .sec.stack .sec-title { display: block; }
+            .paper .sec.stack tr.checks td { display: inline-block; width: 19%; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="paper" id="paper">
+
+        <!-- ENCABEZADO (se repite en cada página del PDF) -->
+        <table class="hdr" id="docHeader">
+            <colgroup>
+                <col style="width:28.8%"><col style="width:50.2%"><col style="width:8.6%"><col style="width:12.4%">
+            </colgroup>
+            <tr>
+                <td class="h-logo" rowspan="3"><img src="data:image/png;base64,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" alt="Komatsu"></td>
+                <td class="h-title" rowspan="3">
+                    <div class="t1">INFORME DE FALLA</div>
+                    <div class="t2">Komatsu Chile S. A</div>
+                </td>
+                <td class="h-k">Versión:</td>
+                <td class="h-v">01 / 2025</td>
+            </tr>
+            <tr>
+                <td class="h-k">Depto.</td>
+                <td class="h-v">GIM.EM.CC</td>
+            </tr>
+            <tr>
+                <td class="h-k">Página</td>
+                <td class="h-v h-page">1</td>
+            </tr>
+        </table>
+
+        <form id="faultReportForm" autocomplete="off" novalidate>
+        <div class="doc-body" id="docSections">
+
+            <!-- 1. DATOS GENERALES -->
+            <table class="sec" id="sec1">
+                <colgroup><col style="width:24.7%"><col></colgroup>
+                <tr><th class="sec-title" colspan="2"><span class="n">1.</span>Datos Generales</th></tr>
+                <tr><td class="lbl">Faena</td>
+                    <td><select id="faena" required><option value="" selected hidden>Indique Faena</option><option value="">Elija un elemento.</option><option value="Collahuasi">Collahuasi</option><option value="Quebrada Blanca">Quebrada Blanca</option><option value="Sierra Gorda">Sierra Gorda</option><option value="Lomas Bayas">Lomas Bayas</option><option value="Antucoya">Antucoya</option><option value="Gaby">Gaby</option><option value="Esperanza">Esperanza</option><option value="Radomiro Tomic">Radomiro Tomic</option><option value="Ministro Hales">Ministro Hales</option><option value="Cerro Norte Negro">Cerro Norte Negro</option><option value="Los Pelambres">Los Pelambres</option><option value="Andina">Andina</option><option value="Caserones">Caserones</option><option value="Rajo Inca">Rajo Inca</option></select></td></tr>
+                <tr><td class="lbl">N° Equipo</td>
+                    <td><input type="text" id="nEquipo" placeholder="Indicar N° de Equipo"></td></tr>
+                <tr><td class="lbl">Modelo Equipo</td>
+                    <td><input type="text" id="modeloEquipo" placeholder="Indique modelo de equipo"></td></tr>
+                <tr><td class="lbl">Horómetro Equipo</td>
+                    <td><input type="text" id="horometroEquipo" placeholder="Indicar Horómetro" inputmode="decimal"></td></tr>
+                <tr><td class="lbl">Número de Serie Equipo</td>
+                    <td><input type="text" id="serieEquipo" placeholder="Indicar número de serie de equipo"></td></tr>
+                <tr><td class="lbl">Modelo de motor Diesel</td>
+                    <td><input type="text" id="modeloMotor" placeholder="Indicar modelo de Motor Diesel ej. QSKxxxx"></td></tr>
+                <tr><td class="lbl">N° Serie motor Diesel</td>
+                    <td><input type="text" id="serieMotor" placeholder="Indicar número de serie Motor Diesel"></td></tr>
+                <tr><td class="lbl">Fecha de Informe</td>
+                    <td><input type="date" id="fechaInforme"></td></tr>
+                <tr><td class="lbl">Fecha de Falla</td>
+                    <td><input type="date" id="fechaFalla"></td></tr>
+                <tr><td class="lbl">Informe Realizado Por:</td>
+                    <td><input type="text" id="realizadoPor" placeholder="Nombre y Apellido"></td></tr>
+            </table>
+
+            <!-- 2. DATOS DE COMPONENTE SALIENTE -->
+            <table class="sec stack" id="sec2">
+                <colgroup>
+                    <col style="width:20.6%"><col style="width:16.4%"><col style="width:23.3%"><col style="width:21.9%"><col style="width:17.8%">
+                </colgroup>
+                <tr><th class="sec-title" colspan="5"><span class="n">2.</span>Datos de Componente Saliente</th></tr>
+                <tr class="colhead-row">
+                    <td class="colhead">Componente</td><td class="colhead">Posición</td>
+                    <td class="colhead">Horómetro Componente</td><td class="colhead">Número de Serie Componente</td>
+                    <td class="colhead">%TBO</td>
+                </tr>
+                <tr>
+                    <td class="c" data-label="Componente"><input type="text" id="compSalComponente" placeholder="Indique Componente"></td>
+                    <td class="c" data-label="Posición"><select id="compSalPosicion" required><option value="" selected hidden>Indique posición</option><option value="">Elija un elemento.</option><option value="Derecho">Derecho</option><option value="Izquierdo">Izquierdo</option><option value="Central">Central</option><option value="No Aplica">No Aplica</option></select></td>
+                    <td class="c" data-label="Horómetro Componente"><input type="text" id="compSalHorometro" placeholder="Indicar horómetro del componente"></td>
+                    <td class="c" data-label="Número de Serie Componente"><input type="text" id="compSalSerie" placeholder="Indicar número de serie del componente"></td>
+                    <td class="c" data-label="%TBO"><input type="text" id="compSalTbo" placeholder="Indicar % de TBO del componente"></td>
+                </tr>
+            </table>
+
+            <!-- 3. DATOS DE COMPONENTE ENTRANTE -->
+            <table class="sec stack" id="sec3">
+                <colgroup>
+                    <col style="width:20.6%"><col style="width:17.8%"><col style="width:20.5%"><col style="width:23.3%"><col style="width:17.8%">
+                </colgroup>
+                <tr><th class="sec-title" colspan="5"><span class="n">3.</span>Datos de Componente Entrante</th></tr>
+                <tr class="colhead-row">
+                    <td class="colhead">Componente</td><td class="colhead">Posición</td>
+                    <td class="colhead">Número de parte</td><td class="colhead" colspan="2">Número de Serie Componente</td>
+                </tr>
+                <tr>
+                    <td class="c" data-label="Componente"><input type="text" id="compEntComponente" placeholder="Indique Componente"></td>
+                    <td class="c" data-label="Posición"><select id="compEntPosicion" required><option value="" selected hidden>Indique posición</option><option value="">Elija un elemento.</option><option value="Derecho">Derecho</option><option value="Izquierdo">Izquierdo</option><option value="Central">Central</option><option value="No Aplica">No Aplica</option></select></td>
+                    <td class="c" data-label="Número de parte"><input type="text" id="compEntParte" placeholder="Indicar N° de parte del componente"></td>
+                    <td class="c" colspan="2" data-label="Número de Serie Componente"><input type="text" id="compEntSerie" placeholder="Indicar número de serie del componente"></td>
+                </tr>
+            </table>
+
+            <!-- 4. DESCARGA DE DATOS DE FALLA -->
+            <table class="sec stack" id="sec4">
+                <colgroup>
+                    <col style="width:20.6%"><col style="width:17.8%"><col style="width:20.5%"><col style="width:23.3%"><col style="width:17.8%">
+                </colgroup>
+                <tr><th class="sec-title" colspan="5"><span class="n">4.</span>Descarga de Datos de Falla</th></tr>
+                <tr class="colhead-row">
+                    <td class="colhead">PSC/TCI</td><td class="colhead">DSC</td><td class="colhead">VHMS / KOMTRAX</td>
+                    <td class="colhead">PLM</td><td class="colhead">OTROS</td>
+                </tr>
+                <tr class="checks">
+                    <td class="c" data-label="PSC/TCI"><span class="cbwrap"><input type="checkbox" id="descPsc"></span></td>
+                    <td class="c" data-label="DSC"><span class="cbwrap"><input type="checkbox" id="descDsc"></span></td>
+                    <td class="c" data-label="VHMS / KOMTRAX"><span class="cbwrap"><input type="checkbox" id="descVhms"></span></td>
+                    <td class="c" data-label="PLM"><span class="cbwrap"><input type="checkbox" id="descPlm"></span></td>
+                    <td class="c" data-label="OTROS"><span class="cbwrap"><input type="checkbox" id="descOtros"></span></td>
+                </tr>
+            </table>
+
+            <!-- 5. MODO DE FALLA APARENTE -->
+            <table class="sec sec-text" id="sec5">
+                <tr><th class="sec-title"><span class="n">5.</span>Modo de Falla Aparente</th></tr>
+                <tr><td class="txt"><textarea id="modoFalla" rows="2" placeholder="Indique modo de falla aparente"></textarea></td></tr>
+            </table>
+
+            <!-- 6. FOTOGRAFÍAS DEL EQUIPO -->
+            <table class="sec sec-photo" id="sec6">
+                <colgroup><col style="width:49.5%"><col></colgroup>
+                <tr><th class="sec-title" colspan="2"><span class="n">6.</span>Fotografías del Equipo</th></tr>
+                <tr><td class="cap">Vista Frontal</td><td class="cap">Vista Horómetro</td></tr>
+                <tr>
+                    <td class="ph"><div class="ph-box" data-slot="fotoFrontal" style="height:145px"></div></td>
+                    <td class="ph"><div class="ph-box" data-slot="fotoHorometro" style="height:145px"></div></td>
+                </tr>
+            </table>
+
+            <!-- 7. SÍNTOMAS -->
+            <table class="sec sec-text" id="sec7">
+                <tr><th class="sec-title"><span class="n">7.</span>Síntomas</th></tr>
+                <tr><td class="txt"><textarea id="sintomas" rows="3" placeholder="Describir por qué se atiende el equipo, cuales fueron los síntomas del problema, quien reporta la avería y el contexto operacional"></textarea></td></tr>
+            </table>
+
+            <!-- 8. CAUSAS DE FALLA -->
+            <table class="sec sec-text" id="sec8">
+                <tr><th class="sec-title"><span class="n">8.</span>Causas de Falla</th></tr>
+                <tr><td class="txt"><textarea id="causas" rows="3" placeholder="Describir los hallazgos obtenidos durante el proceso de identificación de la falla, detallando las posibles causas que la originaron"></textarea></td></tr>
+            </table>
+
+            <!-- 9. ¿CÓMO SE CORRIGIÓ EL PROBLEMA? -->
+            <table class="sec sec-text" id="sec9">
+                <tr><th class="sec-title"><span class="n">9.</span>¿Cómo se Corrigió el Problema?</th></tr>
+                <tr><td class="txt"><textarea id="correccion" rows="3" placeholder="Describir cuales fueron las acciones para corregir la falla"></textarea></td></tr>
+            </table>
+
+            <!-- 10. ACTIVIDADES REALIZADAS -->
+            <table class="sec sec-text" id="sec10">
+                <tr><th class="sec-title"><span class="n">10.</span>Actividades Realizadas</th></tr>
+                <tr><td class="txt"><textarea id="actividades" rows="3" placeholder="Describa cuales fueron las actividades realizadas considerando los requisitos mínimos para el informe"></textarea></td></tr>
+            </table>
+
+            <!-- 11. IMÁGENES DEL COMPONENTE EN FALLA -->
+            <table class="sec sec-photo" id="sec11" data-newpage="1">
+                <colgroup><col style="width:49.5%"><col></colgroup>
+                <tr><th class="sec-title" colspan="2"><span class="n">11.</span>Imágenes del Componente en Falla</th></tr>
+                <tr><td class="cap">Componente en falla</td><td class="cap">Identificación de falla</td></tr>
+                <tr>
+                    <td class="ph"><div class="ph-box" data-slot="imgComponente" style="height:171px"></div></td>
+                    <td class="ph"><div class="ph-box" data-slot="imgIdentificacion1" style="height:171px"></div></td>
+                </tr>
+                <tr><td class="cap">Códigos de falla (si aplica)</td><td class="cap">Identificación de falla</td></tr>
+                <tr>
+                    <td class="ph"><div class="ph-box" data-slot="imgCodigos" style="height:189px"></div></td>
+                    <td class="ph"><div class="ph-box" data-slot="imgIdentificacion2" style="height:189px"></div></td>
+                </tr>
+            </table>
+
+            <!-- 12. FOTOGRAFÍAS ADICIONALES -->
+            <table class="sec sec-photo" id="sec12">
+                <colgroup><col style="width:49.5%"><col></colgroup>
+                <tr><th class="sec-title" colspan="2"><span class="n">12.</span>Fotografías Adicionales (Si Aplica)</th></tr>
+                <tr><td class="cap">Otros</td><td class="cap">Otros</td></tr>
+                <tr>
+                    <td class="ph"><div class="ph-box" data-slot="fotoOtros1" style="height:178px"></div></td>
+                    <td class="ph"><div class="ph-box" data-slot="fotoOtros2" style="height:178px"></div></td>
+                </tr>
+            </table>
+
+        </div>
+        </form>
+    </div>
+
+    <input type="file" id="photoUpload" accept="image/*" style="display:none;">
+
+    <div id="message" class="hidden"></div>
+
+    <div class="actions">
+        <button type="button" class="btn btn-back" onclick="location.href='index.html'">Volver al Menú</button>
+        <button type="button" class="btn" id="btnGuardar">Guardar Informe (PDF)</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+    <script src="js/fault-report-caex.js"></script>
+</body>
+</html>

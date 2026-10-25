@@ -67,6 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initCondiciones();
   initAutoGrow();
   initProyecciones();
+  initPhotoSlots();
   recalcular();
 
   document.getElementById("btnGuardar").addEventListener("click", saveReport);
@@ -248,6 +249,137 @@ function recalcular() {
   setPct(document.getElementById("promedioDesgaste"), n ? suma / n : null);
 }
 
+
+// ========== FOTOS (Equipo / Condición) ==========
+const PHOTO_MAX_SIDE = 1200; // se reducen para que el PDF pese poco
+let currentPhotoBox = null;
+
+function renderPhotoBox(box, dataUrl) {
+  box.innerHTML = "";
+  if (dataUrl) {
+    box.classList.add("has-img");
+    const img = document.createElement("img");
+    img.src = dataUrl;
+    img.alt = "";
+    box.appendChild(img);
+
+    const del = document.createElement("button");
+    del.type = "button";
+    del.className = "ph-del no-pdf";
+    del.textContent = "×";
+    del.title = "Quitar foto";
+    del.addEventListener("click", (e) => {
+      e.stopPropagation();
+      renderPhotoBox(box, null);
+    });
+    box.appendChild(del);
+  } else {
+    box.classList.remove("has-img");
+    const hint = document.createElement("span");
+    hint.className = "ph-hint no-pdf";
+    hint.textContent = "+ Agregar foto";
+    box.appendChild(hint);
+  }
+}
+
+function initPhotoSlots() {
+  const input = document.getElementById("photoUpload");
+
+  document.querySelectorAll(".ph-box").forEach((box) => {
+    renderPhotoBox(box, null);
+    box.addEventListener("click", () => {
+      currentPhotoBox = box;
+      input.click();
+    });
+  });
+
+  input.addEventListener("change", async () => {
+    const file = input.files && input.files[0];
+    input.value = "";
+    if (!file || !currentPhotoBox) return;
+
+    if (!file.type.startsWith("image/")) {
+      alert("Por favor, seleccione solo archivos de imagen.");
+      return;
+    }
+    try {
+      renderPhotoBox(currentPhotoBox, await resizeImageToDataUrl(file, PHOTO_MAX_SIDE));
+    } catch (err) {
+      console.error(err);
+      alert("No se pudo cargar la imagen. Intente con otra foto.");
+    }
+  });
+}
+
+// Reduce la foto (manteniendo proporción) y la devuelve como JPEG en base64.
+function resizeImageToDataUrl(file, maxSide) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      let { naturalWidth: w, naturalHeight: h } = img;
+      const scale = Math.min(1, maxSide / Math.max(w, h));
+      w = Math.round(w * scale);
+      h = Math.round(h * scale);
+      const canvas = document.createElement("canvas");
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, w, h);
+      ctx.drawImage(img, 0, 0, w, h);
+      URL.revokeObjectURL(url);
+      resolve(canvas.toDataURL("image/jpeg", 0.85));
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error("No se pudo leer la imagen"));
+    };
+    img.src = url;
+  });
+}
+
+// Hoja extra del PDF con las fotos (solo si se agregó alguna): título + logo y las dos fotos, una bajo la otra.
+function addPhotoPage(root, pages, values) {
+  if (!document.querySelector("#photoSection .ph-box.has-img")) return;
+
+  const page = document.createElement("div");
+  page.className = "pdf-page";
+  const wrap = document.createElement("div");
+  wrap.appendChild(document.querySelector("#sheetBody .top").cloneNode(true));
+
+  const titulo = document.createElement("div");
+  titulo.className = "bar fotos-title";
+  titulo.style.margin = "14px 0 6px";
+  titulo.textContent = "Set Fotográfico";
+  wrap.appendChild(titulo);
+
+  const table = document.createElement("table");
+  table.className = "gt fotos";
+  [["fotoEquipo", "Equipo"], ["fotoCondicion", "Condición"]].forEach(([slot, label]) => {
+    const box = document.querySelector(`#photoSection .ph-box[data-slot="${slot}"]`);
+    const cap = table.insertRow().insertCell();
+    cap.className = "cap";
+    cap.textContent = label;
+
+    const cell = table.insertRow().insertCell();
+    cell.className = "ph";
+    const clone = box.cloneNode(true);
+    clone.querySelectorAll(".no-pdf").forEach((n) => n.remove());
+    clone.style.background = "#ffffff";
+    clone.style.cursor = "default";
+    clone.style.height = "430px";
+    cell.appendChild(clone);
+  });
+  wrap.appendChild(table);
+
+  page.appendChild(wrap);
+  root.appendChild(page);
+  pages.push(page);
+
+  fieldsToText(wrap, values); // convierte el título (input) a texto
+}
+
 // ========== ARMADO DEL PDF (una hoja A4, igual a la planilla) ==========
 
 // Valores actuales de los campos, por id (los clones no conservan lo escrito).
@@ -376,7 +508,10 @@ function buildPdfPages() {
   const horo = body.querySelector(".horo");
   const fits = (pg) => contentBottom(pg) <= PAGE_H;
 
-  if (fits(first)) return { root, pages };
+  if (fits(first)) {
+    addPhotoPage(root, pages, values);
+    return { root, pages };
+  }
 
   horo.remove(); // el Horómetro va al final de la última hoja
   let cur = first;
@@ -410,6 +545,7 @@ function buildPdfPages() {
     if (fits(cur)) break;
     horo.remove();
   }
+  addPhotoPage(root, pages, values);
   return { root, pages };
 }
 

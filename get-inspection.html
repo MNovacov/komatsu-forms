@@ -92,6 +92,25 @@
         .obs-box { border: 1px solid #000; min-height: 66px; padding: 4px 6px; margin-top: 6px; font-size: 13px; }
         .horo { border: 1px solid #000; margin-top: 6px; padding: 3px 6px; font-size: 13px; height: 25px; line-height: 17px; }
 
+
+        /* ---------- Set fotográfico (Equipo / Condición) ---------- */
+        .fotos-wrap { margin-top: 18px; }
+        .fotos-title { margin-bottom: 6px; font-weight: bold; font-size: 14px; }
+        .fotos { margin-bottom: 0; }
+        .fotos td { padding: 0; }
+        .fotos td.cap { background: #c0c0c0; text-align: center; height: 21px; font-weight: bold; font-family: Arial, Helvetica, sans-serif; font-size: 12px; }
+        .ph-box {
+            position: relative; display: flex; align-items: center; justify-content: center;
+            background: #e9effb; cursor: pointer; overflow: hidden;
+        }
+        .ph-box.has-img { background: #fff; }
+        .ph-box img { display: block; max-width: 96%; max-height: 96%; }
+        .ph-box .ph-hint { color: #5b6b8c; font-size: 13px; text-align: center; padding: 6px; pointer-events: none; font-family: Arial, Helvetica, sans-serif; }
+        .ph-box .ph-del {
+            position: absolute; top: 5px; right: 5px; width: 24px; height: 24px; border: 0; border-radius: 50%;
+            background: rgba(0,0,0,.72); color: #fff; font-size: 16px; line-height: 22px; cursor: pointer; padding: 0;
+        }
+
         /* Campos (pantalla) */
         .sheet input[type="text"], .sheet input[type="date"], .sheet input[type="number"], .sheet select, .sheet textarea {
             width: 100%; border: 0; background: transparent; font: inherit; color: inherit;
@@ -171,6 +190,10 @@
             .sheet .resumen td { height: auto; min-height: 30px; text-align: left; }
             .sheet .resumen colgroup { display: none; }
             .sheet .obs-label { width: 40%; }
+            .sheet .fotos, .sheet .fotos tbody, .sheet .fotos tr, .sheet .fotos td { display: block; width: 100%; }
+            .sheet .fotos colgroup { display: none; }
+            .sheet .fotos td { height: auto !important; margin-bottom: 6px; }
+            .sheet .fotos .ph-box { height: 230px !important; }
         }
     </style>
 </head>
@@ -284,7 +307,21 @@
         <div class="horo">Horometro: <input type="text" id="horometro" class="inl" inputmode="decimal"> hrs.</div>
 
     </div>
+
+    <!-- Set fotográfico: sale en una hoja aparte del PDF (solo si se agrega alguna foto) -->
+    <div id="photoSection" class="fotos-wrap">
+        <div class="bar fotos-title">Set Fotográfico</div>
+        <table class="gt fotos">
+            <colgroup><col style="width:50%"><col></colgroup>
+            <tr><td class="cap">Equipo</td><td class="cap">Condición</td></tr>
+            <tr>
+                <td class="ph"><div class="ph-box" data-slot="fotoEquipo" style="height:240px"></div></td>
+                <td class="ph"><div class="ph-box" data-slot="fotoCondicion" style="height:240px"></div></td>
+            </tr>
+        </table>
+    </div>
     </form>
+    <input type="file" id="photoUpload" accept="image/*" style="display:none;">
     </div>
 
     <div id="message" class="hidden"></div>
